@@ -12,8 +12,8 @@ Built by [Jose L. Blas](https://joselblas.com), a product designer, during a rea
 
 | | The Claude kit | The dashboard |
 |---|---|---|
-| What it is | Markdown instructions and playbooks that turn a Claude Project (or Claude Code) into a job-search assistant | A page in your browser that shows your tracker and gives you small tools |
-| Where it lives | `AGENTS.md`, `playbooks/`, `templates/`, `scripts/` | `app/` |
+| What it is | Three Claude skills (or the same playbooks as plain markdown) that turn a Claude Project or Claude Code into a job-search assistant | A page in your browser that shows your tracker and gives you small tools |
+| Where it lives | `skills/`, `AGENTS.md`, `playbooks/`, `templates/`, `scripts/` | `app/` |
 | What it does | Finds and screens listings, checks the gates, tailors CVs from your facts, fills forms and stops before Submit, reads your email export for replies | Funnel and odds, tracker, step-by-step updates, proposed updates, follow-up drafts, weekly review |
 | Needs | A Claude account with Projects | A browser. Chrome or Edge to save to your file |
 
@@ -21,7 +21,7 @@ They share one file, `tracker.csv`. The assistant writes proposals. You accept t
 
 ## Pick your path
 
-- **I want the assistant.** Follow [docs/setup.md](docs/setup.md), parts 1 to 4. Claude Project, no code.
+- **I want the assistant.** Follow [docs/setup.md](docs/setup.md), parts 1 to 4. Install three skills, make a Claude Project, no code.
 - **I use Claude Code.** Same guide, "Using Claude Code instead".
 - **I only want the dashboard.** Open the [demo](https://joselblas.github.io/jobops-kit/app/), or open `app/index.html` and load your own CSV (columns in `app/README.md`).
 
@@ -32,6 +32,16 @@ They share one file, `tracker.csv`. The assistant writes proposals. You accept t
 - **Works from outside the US.** Country lists and entity locations are verified, not assumed from the word "remote".
 - **Honest about gaps.** Gaps in fit are stated, not softened.
 - **You press the button.** The assistant will not submit, send messages, create accounts or enter passwords. It will not invent anything about you.
+
+## The skills
+
+| Skill | Covers |
+|---|---|
+| `jobops-screen` | Scout, gates, legitimacy check, fit score |
+| `jobops-apply` | Tailor the CV, fact check, fill the form, stop before Submit |
+| `jobops-review` | Funnel review, email sweep, fit ratings, interview story bank |
+
+They are condensed copies of the playbooks and work without the scripts. The playbooks stay the full reference and the path for Claude Code. To check the skills behave, run the test in [docs/testing-skills.md](docs/testing-skills.md). Fit ratings use the anchors in [docs/score-anchors.md](docs/score-anchors.md).
 
 ## How it flows
 

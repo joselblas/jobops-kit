@@ -53,31 +53,33 @@ You should see no template placeholders left (`Country, Region`, `ExampleCorp`, 
 
 If you do not know a fact, leave it blank. A blank is safe. A guess is not.
 
-## Part 4. Create the Claude Project
+## Part 4. Set up Claude
 
-10. In Claude, create a new **Project**. Name it "Job search".
-11. Open the Project's files and upload:
-    - `AGENTS.md`
-    - everything inside `playbooks/`
-    - your `career-context.md`
-    - your `profile.yml`
-    - your `tracker.csv`
-12. In the Project instructions, paste one line: `Read AGENTS.md first, every session.`
-13. Start a chat in the Project and type: `Scout today's listings and run the gates.`
+The rules and playbooks come packaged as three skills in the `skills/` folder. You install them once, and they work in every Project.
 
-You should get a short scout note: new leads with a score, the gates checked with quoted evidence, and a list of anything not suitable, each with a reason.
+10. In Claude, open **Settings** and then **Skills**. Add the three skills from the `skills/` folder: `jobops-screen`, `jobops-apply`, `jobops-review`. Each is a folder with one `SKILL.md` file. If Claude asks for a zip, zip the folder first.
+11. Create a new **Project** called "Job search".
+12. Upload three files to the Project: your `career-context.md`, `profile.yml` and `tracker.csv`.
+13. In the Project instructions, paste one line: `Use the JobOps skills for job search tasks.`
+14. Start a chat in the Project and type: `Scout today's listings and run the gates.`
+
+You should see all three skills switched on in Settings. Then you should get a short scout note: new leads with a score, the gates checked with quoted evidence, and a list of anything not suitable, each with a reason.
 
 Rules the assistant follows (see `AGENTS.md`): it never submits, sends or creates accounts. You press the final button, every time.
 
+### Without skills
+
+If you prefer not to install skills, skip step 10 and upload `AGENTS.md` and everything in `playbooks/` to the Project instead. The rules are the same.
+
 ### Using Claude Code instead
 
-If you prefer the terminal: put the repo folder and your private files side by side, copy `career-context.md`, `profile.yml` and `tracker.csv` into the repo folder (they are gitignored), run `claude` there. It reads `AGENTS.md` by itself.
+If you prefer the terminal: put the repo folder and your private files side by side, copy `career-context.md`, `profile.yml` and `tracker.csv` into the repo folder (they are gitignored), run `claude` there. It reads `AGENTS.md` by itself and uses the playbooks and scripts directly.
 
 ## Part 5. Open the dashboard
 
-14. Try it first: https://joselblas.github.io/jobops-kit/app/ shows fictional sample data.
-15. For your own data, open `app/index.html` from the unzipped folder in Chrome or Edge.
-16. Click **Open and edit** and choose `jobops-private/tracker.csv`.
+15. Try it first: https://joselblas.github.io/jobops-kit/app/ shows fictional sample data.
+16. For your own data, open `app/index.html` from the unzipped folder in Chrome or Edge.
+17. Click **Open and edit** and choose `jobops-private/tracker.csv`.
 
 You should see your own listings in the overview. Edits save straight back to the file. Nothing leaves your computer.
 

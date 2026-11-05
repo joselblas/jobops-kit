@@ -36,6 +36,8 @@ Only for listings with no failed gate. Score each dimension 1 to 5, then give th
 
 Write one line each for "strongest match" and "biggest gap". Gaps must be real, not softened.
 
+Rate against the anchors in `docs/score-anchors.md`. Between two anchors, take the lower and say why. A missing salary is a 3 for practical terms, not a 1.
+
 ## Using the score
 
 - 4.0 and above: recommend. Tailor a CV.
