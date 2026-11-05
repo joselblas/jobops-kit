@@ -11,7 +11,7 @@
   /* ---------- Language ---------- */
   var I = {
     "nav.overview": ["Overview", "Resumen"], "nav.tracker": ["Tracker", "Seguimiento"], "nav.log": ["Log an update", "Registrar novedad"],
-    "nav.steady": ["Steady", "Calma"], "nav.inbox": ["Proposed updates", "Cambios propuestos"], "title.inbox": ["Proposed updates.", "Cambios propuestos."],
+    "nav.steady": ["Steady", "Calma"], "nav.design": ["Design and story", "Diseño e historia"], "grp.about": ["About", "Acerca de"], "nav.inbox": ["Proposed updates", "Cambios propuestos"], "title.inbox": ["Proposed updates.", "Cambios propuestos."],
     "inbox.lede": ["An agent reads your email and proposes changes with the evidence. You decide each one. Nothing changes until you accept.", "Un agente lee tu correo y propone cambios con la evidencia. Tú decides cada uno. Nada cambia hasta que aceptes."],
     "inbox.load": ["Load proposals.csv", "Cargar proposals.csv"], "inbox.sample": ["Sample proposals", "Propuestas de ejemplo"], "inbox.acceptall": ["Accept all matched", "Aceptar todas las coincidentes"],
     "inbox.accept": ["Accept", "Aceptar"], "inbox.skip": ["Skip", "Omitir"], "inbox.pending": ["{n} waiting for you", "{n} esperando tu decisión"], "inbox.empty": ["Nothing to review. Load a proposals file, or try the sample.", "Nada que revisar. Carga un archivo de propuestas o prueba el ejemplo."],
@@ -245,6 +245,7 @@
         h += '<a href="#' + it[0] + '"' + (state.view === it[0] ? ' aria-current="page"' : "") + ">" + esc(tl("nav." + it[0])) + tag + "</a>";
       });
     });
+    h += '<p class="label nav-group">' + esc(tl("grp.about")) + '</p><a href="../design/">' + esc(tl("nav.design")) + "</a>";
     $("#nav").innerHTML = h;
     $("#themeSeg").innerHTML = ["light", "dark"].map(function (m) { return '<button type="button" data-theme-set="' + m + '" aria-pressed="' + (state.theme === m) + '">' + (m === "light" ? (state.lang === "es" ? "Claro" : "Light") : (state.lang === "es" ? "Oscuro" : "Dark")) + "</button>"; }).join("");
     $("#langSeg").innerHTML = ["en", "es"].map(function (m) { return '<button type="button" data-lang-set="' + m + '" aria-pressed="' + (state.lang === m) + '">' + m.toUpperCase() + "</button>"; }).join("");
