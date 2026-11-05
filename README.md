@@ -68,6 +68,7 @@ A full-screen dashboard for your tracker, in `app/`. Rounded cards, a left menu,
 - **Tracker**: filter, search, sort and edit every listing. In Chrome or Edge it saves straight back to your file.
 - **Log an update**: one question per step. A reply arrived, I applied, an interview happened.
 - **Proposed updates**: an agent reads your email export and proposes changes with a quote as evidence. You accept or skip each one. See `playbooks/inbox-sweep.md`.
+- **Weekly review**: five calm minutes, once a week. The week against the one before, a chance to close applications that never got a reply, one thing you did well, and a focus for next week.
 - **Steady** (preview): your own base rate, a pacing guard, and one dry line after a rejection.
 - **Scout, CV and portfolio, Apply, Interview prep**: menu pages marked Soon, so you can see where it is going.
 

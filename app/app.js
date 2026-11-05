@@ -11,7 +11,27 @@
   /* ---------- Language ---------- */
   var I = {
     "nav.overview": ["Overview", "Resumen"], "nav.tracker": ["Tracker", "Seguimiento"], "nav.log": ["Log an update", "Registrar novedad"],
-    "nav.steady": ["Steady", "Calma"], "nav.design": ["Design and story", "Diseño e historia"], "grp.about": ["About", "Acerca de"], "nav.inbox": ["Proposed updates", "Cambios propuestos"], "title.inbox": ["Proposed updates.", "Cambios propuestos."],
+    "nav.steady": ["Steady", "Calma"], "nav.review": ["Weekly review", "Revisión semanal"], "title.review": ["Weekly review.", "Revisión semanal."],
+    "rev.lede": ["Five calm minutes, once a week. See the week, tidy what is waiting, name one thing that went well, and pick a focus.", "Cinco minutos de calma, una vez por semana. Mira la semana, ordena lo que espera, nombra algo que fue bien y elige un enfoque."],
+    "rev.start": ["Start the review", "Empezar la revisión"], "rev.last": ["Last review: {d}. Focus: {f}.", "Última revisión: {d}. Enfoque: {f}."],
+    "rev.q1": ["This week", "Esta semana"], "rev.h1": ["The last seven days, against the seven before.", "Los últimos siete días, frente a los siete anteriores."],
+    "rev.applied": ["Applications sent", "Candidaturas enviadas"], "rev.replies": ["Replies received", "Respuestas recibidas"], "rev.rej": ["Rejections", "Rechazos"], "rev.int": ["Interviews or offers", "Entrevistas u ofertas"], "rev.prev": ["last week {n}", "semana pasada {n}"],
+    "rev.wit0": ["A quiet week. Quiet is data too. Pick one small thing for next week.", "Una semana tranquila. Lo tranquilo también es un dato. Elige una cosa pequeña para la próxima."],
+    "rev.wit1": ["{a} sent, {r} answered. Replies lag by weeks, so this week's replies are mostly last month's work.", "{a} enviadas, {r} con respuesta. Las respuestas llegan con semanas de retraso, así que las de esta semana son sobre todo trabajo del mes pasado."],
+    "rev.q2": ["Still waiting", "Siguen en espera"], "rev.h2": ["Anything waiting 30 days or more can be closed as no reply. You can always reopen it in the tracker.", "Lo que lleva 30 días o más en espera puede cerrarse como sin respuesta. Siempre puedes reabrirlo en el seguimiento."],
+    "rev.fresh": ["{n} are under two weeks old. Nothing to do about those.", "{n} llevan menos de dos semanas. Con esas no hay nada que hacer."], "rev.midn": ["{n} are two to four weeks old. Still normal.", "{n} llevan de dos a cuatro semanas. Aún es normal."],
+    "rev.close": ["Mark as no reply", "Marcar sin respuesta"], "rev.none30": ["Nothing waiting 30 days or more.", "Nada esperando 30 días o más."], "rev.closed": ["Closed as no reply.", "Cerrada como sin respuesta."],
+    "rev.q3": ["One thing you did well this week?", "¿Una cosa que hiciste bien esta semana?"], "rev.h3": ["Optional. Small counts. Saved in this browser only, and it will show in Steady.", "Opcional. Lo pequeño cuenta. Se guarda solo en este navegador y aparecerá en Calma."],
+    "rev.q4": ["What is the focus for next week?", "¿Cuál es el enfoque de la próxima semana?"],
+    "rev.f.apply": ["Send new applications", "Enviar candidaturas nuevas"], "rev.f.apply.d": ["A few good ones beat many fast ones.", "Pocas buenas valen más que muchas rápidas."],
+    "rev.f.follow": ["Follow up on old ones", "Retomar las antiguas"], "rev.f.follow.d": ["A short, plain note is enough.", "Una nota corta y sencilla basta."],
+    "rev.f.craft": ["Improve the CV and portfolio", "Mejorar el CV y el portafolio"], "rev.f.craft.d": ["Sharper material helps every application after.", "Un material más afinado ayuda a todas las candidaturas siguientes."],
+    "rev.f.rest": ["Rest", "Descansar"], "rev.f.rest.d": ["A search needs a person who can keep going.", "Una búsqueda necesita a alguien que pueda seguir."],
+    "rev.done": ["Review done.", "Revisión hecha."], "rev.next": ["Next week: {f}.", "Próxima semana: {f}."],
+    "rev.line.apply": ["New applications. Choose the ones you would be glad to get.", "Candidaturas nuevas. Elige las que te alegraría conseguir."], "rev.line.follow": ["Follow-ups. Be brief, be kind, ask one question.", "Seguimientos. Sé breve, amable y haz una sola pregunta."],
+    "rev.line.craft": ["The CV and portfolio. You will reuse the work every time.", "El CV y el portafolio. Reutilizarás ese trabajo cada vez."], "rev.line.rest": ["Rest. The search will still be here, and so will you.", "Descanso. La búsqueda seguirá aquí, y tú también."],
+    "rev.wins": ["Your wins", "Tus logros"], "rev.wins.none": ["Wins from your weekly reviews will appear here.", "Los logros de tus revisiones semanales aparecerán aquí."],
+    "nav.design": ["Design and story", "Diseño e historia"], "grp.about": ["About", "Acerca de"], "nav.inbox": ["Proposed updates", "Cambios propuestos"], "title.inbox": ["Proposed updates.", "Cambios propuestos."],
     "inbox.lede": ["An agent reads your email and proposes changes with the evidence. You decide each one. Nothing changes until you accept.", "Un agente lee tu correo y propone cambios con la evidencia. Tú decides cada uno. Nada cambia hasta que aceptes."],
     "inbox.load": ["Load proposals.csv", "Cargar proposals.csv"], "inbox.sample": ["Sample proposals", "Propuestas de ejemplo"], "inbox.acceptall": ["Accept all matched", "Aceptar todas las coincidentes"],
     "inbox.accept": ["Accept", "Aceptar"], "inbox.skip": ["Skip", "Omitir"], "inbox.pending": ["{n} waiting for you", "{n} esperando tu decisión"], "inbox.empty": ["Nothing to review. Load a proposals file, or try the sample.", "Nada que revisar. Carga un archivo de propuestas o prueba el ejemplo."],
@@ -111,7 +131,7 @@
     "soon.prepare.b": [["A story bank: situation, action, result, and the claim each one proves.", "Practice questions for the stage you are about to face.", "A short debrief after each interview, saved to the tracker."], ["Un banco de historias: situación, acción, resultado y qué afirmación prueba cada una.", "Preguntas de práctica para la fase que vas a afrontar.", "Un breve repaso tras cada entrevista, guardado en el seguimiento."]]
   };
   var NAV = [
-    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["inbox", "live"], ["steady", "preview"]]],
+    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["inbox", "live"], ["review", "live"], ["steady", "preview"]]],
     ["grp.soon", [["scout", "soon"], ["craft", "soon"], ["apply", "soon"], ["prepare", "soon"]]]
   ];
   var PHASE = { scout: "5", craft: "3", apply: "4", prepare: "3" };
@@ -119,7 +139,7 @@
   var state = {
     rows: [], head: [], handle: null, dirty: false, editing: null, selected: null,
     filter: "all", q: "", sortKey: "date_found", sortDir: -1, ref: new Date(), label: "",
-    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: []
+    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: [], rev: null
   };
 
   function $(s) { return document.querySelector(s); }
@@ -281,6 +301,7 @@
     else if (v === "tracker") { box.innerHTML = viewTracker(); renderTableBody(); }
     else if (v === "log") { box.innerHTML = viewLog(); }
     else if (v === "inbox") box.innerHTML = viewInbox();
+    else if (v === "review") box.innerHTML = viewReview();
     else if (v === "steady") box.innerHTML = viewSteady();
     else box.innerHTML = viewSoon(v);
   }
@@ -449,7 +470,7 @@
     var h = '<div class="grid12"><div class="c7">' + (last ? steadyCardFor(last) : '<section class="card"><p class="muted">' + esc(tl("last.none")) + "</p></section>") + "</div>";
     h += '<div class="c5">' + oddsCard(s) + "</div>";
     h += '<section class="card c6"><span class="label" style="color:var(--calm)">' + esc(tl("pace.s")) + '</span><div class="card-head" style="margin:6px 0 0"><h2>' + esc(tl("pace.k")) + '</h2></div><div class="dots" role="img" aria-label="' + a + " / " + L + '">' + dots + "</div><p>" + esc(msg) + '</p><p class="caveat">' + esc(tl("pace.note")) + "</p></section>";
-    h += '<section class="card c6"><span class="label" style="color:var(--calm)">' + esc(tl("tag.soon")) + '</span><div class="card-head" style="margin:6px 0 0"><h2>' + esc(tl("conf.k")) + "</h2></div><p class=\"muted\">" + esc(tl("conf.t")) + "</p></section></div>";
+    h += '<section class="card c6"><span class="label" style="color:var(--calm)">' + esc(tl("tag.soon")) + '</span><div class="card-head" style="margin:6px 0 0"><h2>' + esc(tl("conf.k")) + "</h2></div><p class=\"muted\">" + esc(tl("conf.t")) + "</p>" + winsHTML() + "</section></div>";
     return h;
   }
 
@@ -513,6 +534,75 @@
       if (state.selected === row) state.selected = state.rows[p.match];
     }
     p.status = "accepted"; state.dirty = true; return true;
+  }
+
+
+  /* ---------- Weekly review ---------- */
+  var FOCI = ["apply", "follow", "craft", "rest"];
+  function getReviews() { try { return JSON.parse(fetchStore("jo.reviews") || "[]") || []; } catch (e) { return []; } }
+  function winsHTML() {
+    var w = getReviews().filter(function (r) { return r.win; }).slice(-3).reverse();
+    return '<p class="label" style="margin-top:16px">' + esc(tl("rev.wins")) + "</p>" + (w.length ? '<ul class="review">' + w.map(function (r) { return "<li><span class=\"label\">" + esc(r.date) + "</span><span>" + esc(r.win) + "</span></li>"; }).join("") + "</ul>" : '<p class="muted">' + esc(tl("rev.wins.none")) + "</p>");
+  }
+  function day0(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function weekStats() {
+    var end = day0(state.ref), s1 = new Date(end.getTime() - 6 * 86400000), p1 = new Date(end.getTime() - 13 * 86400000), p2 = new Date(end.getTime() - 7 * 86400000);
+    function inR(d, a, b) { return d && d >= a && d <= b; }
+    function cnt(a, b) {
+      var o = { applied: 0, replies: 0, rej: 0, int: 0 };
+      state.rows.forEach(function (r) {
+        if (inR(r.dApplied, a, b)) o.applied++;
+        if (inR(r.dOutcome, a, b) && r.outcome && r.outcome !== "no-response") { o.replies++; if (r.outcome.indexOf("rejected") === 0) o.rej++; if (r.outcome === "interview" || r.outcome === "offer") o.int++; }
+      });
+      return o;
+    }
+    return { cur: cnt(s1, end), prev: cnt(p1, p2) };
+  }
+  function viewReview() {
+    var w = state.rev;
+    if (!w) {
+      var last = getReviews().slice(-1)[0];
+      return '<div class="wiz-wrap"><div class="wiz"><span class="label">' + esc(tl("nav.review")) + "</span><h2>" + esc(tl("title.review")) + '</h2><p class="hint">' + esc(tl("rev.lede")) + "</p>" +
+        (last ? '<p class="muted">' + esc(t("rev.last", { d: last.date, f: tl("rev.f." + last.focus) })) + "</p>" : "") +
+        '<div class="wiz-nav"><span></span><button class="btn accent" type="button" data-act="rev-start">' + esc(tl("rev.start")) + "</button></div></div></div>";
+    }
+    var h = '<div class="wiz-wrap"><div class="wiz" role="group" aria-live="polite">';
+    if (w.done) {
+      var f = w.data.focus;
+      return h + '<span class="label">' + esc(tl("rev.done")) + "</span><h2>" + esc(t("rev.next", { f: tl("rev.f." + f).toLowerCase() })) + '</h2><section class="steady"><span class="label k">' + esc(tl("steady.k")) + '</span><p class="big">' + esc(tl("rev.line." + f)) + "</p>" +
+        (w.data.win ? '<p class="wit">' + esc(w.data.win) + "</p>" : "") + '</section><div class="wiz-nav"><button class="btn ghost" type="button" data-act="rev-again">' + esc(tl("btn.close")) + '</button><a class="btn" href="#overview">' + esc(tl("nav.overview")) + "</a></div></div></div>";
+    }
+    var n = 4, i = w.step;
+    h += '<div class="prog" role="img" aria-label="' + esc(t("step.of", { a: i + 1, b: n })) + '">' + [0, 1, 2, 3].map(function (k) { return "<i" + (k <= i ? ' class="on"' : "") + "></i>"; }).join("") + "</div>";
+    h += '<span class="label">' + esc(t("step.of", { a: i + 1, b: n })) + "</span><h2>" + esc(tl("rev.q" + (i + 1))) + "</h2>";
+    if (i === 0) {
+      var ws = weekStats(), c = ws.cur, p = ws.prev;
+      h += '<p class="hint">' + esc(tl("rev.h1")) + '</p><ul class="review">' + [["rev.applied", "applied"], ["rev.replies", "replies"], ["rev.rej", "rej"], ["rev.int", "int"]].map(function (x) {
+        return "<li><span class=\"label\">" + esc(tl(x[0])) + "</span><span><b>" + c[x[1]] + "</b> · " + esc(t("rev.prev", { n: p[x[1]] })) + "</span></li>";
+      }).join("") + '</ul><p class="steady wit" style="margin:18px 0 0;padding:16px 20px">' + esc(c.applied === 0 ? tl("rev.wit0") : t("rev.wit1", { a: c.applied, r: c.replies })) + "</p>";
+    } else if (i === 1) {
+      var wait = state.rows.filter(function (r) { return r.stateKey === "waiting" && r.dApplied; }).map(function (r) { return { r: r, d: days(r.dApplied, state.ref) }; });
+      var fresh = wait.filter(function (x) { return x.d < 14; }).length, mid = wait.filter(function (x) { return x.d >= 14 && x.d < 30; }).length, old = wait.filter(function (x) { return x.d >= 30; }).sort(function (a, b) { return b.d - a.d; });
+      h += '<p class="hint">' + esc(tl("rev.h2")) + '</p><p class="muted" style="margin:0 0 12px">' + esc(t("rev.fresh", { n: fresh })) + " " + esc(t("rev.midn", { n: mid })) + "</p>";
+      h += old.length ? '<ul class="waiting" style="max-height:340px">' + old.slice(0, 40).map(function (x) {
+        return '<li><span class="d num">' + x.d + "<small>" + esc(tl("wait.days")) + "</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + '</span></span><button type="button" class="btn ghost" data-act="rev-close" data-i="' + state.rows.indexOf(x.r) + '">' + esc(tl("rev.close")) + "</button></li>";
+      }).join("") + "</ul>" : '<p class="empty">' + esc(tl("rev.none30")) + "</p>";
+    } else if (i === 2) {
+      h += '<p class="hint">' + esc(tl("rev.h3")) + '</p><textarea class="big-input" id="revIn" rows="3">' + esc(w.data.win || "") + "</textarea>";
+    } else {
+      h += '<p class="hint"></p><div class="opts">' + FOCI.map(function (f) {
+        return '<button class="opt" type="button" data-act="rev-focus" data-v="' + f + '" aria-pressed="' + (w.data.focus === f) + '"><strong>' + esc(tl("rev.f." + f)) + "</strong><small>" + esc(tl("rev.f." + f + ".d")) + "</small></button>";
+      }).join("") + "</div>";
+    }
+    h += '<div class="wiz-nav"><button class="btn ghost" type="button" data-act="rev-back">' + esc(i === 0 ? tl("btn.cancel") : tl("btn.back")) + "</button>" + (i < 3 ? '<button class="btn" type="button" data-act="rev-next">' + esc(i === 2 && !w.data.win ? tl("btn.skip") : tl("btn.continue")) + "</button>" : "") + "</div></div></div>";
+    return h;
+  }
+  function revCapture() { var el = $("#revIn"); if (el && state.rev) state.rev.data.win = el.value.trim(); }
+  function revFinish() {
+    var d = state.rev.data, list = getReviews();
+    list.push({ date: todayISO(), focus: d.focus, win: d.win || "" });
+    store("jo.reviews", JSON.stringify(list.slice(-60)));
+    state.rev.done = true; render();
   }
 
   /* ---------- Soon ---------- */
@@ -696,7 +786,7 @@
 
   /* ---------- Events ---------- */
   function route() {
-    var v = (location.hash || "#overview").slice(1), ok = ["overview", "tracker", "log", "inbox", "steady", "scout", "craft", "apply", "prepare"];
+    var v = (location.hash || "#overview").slice(1), ok = ["overview", "tracker", "log", "inbox", "review", "steady", "scout", "craft", "apply", "prepare"];
     state.view = ok.indexOf(v) >= 0 ? v : "overview";
     if (state.view !== "log") state.wiz = state.wiz && state.wiz.done ? null : state.wiz;
     render(); window.scrollTo(0, 0);
@@ -725,6 +815,12 @@
     else if (act === "wiz-opt") { var wz = state.wiz, st = FLOWS[wz.flow].steps[wz.step]; wz.data[st.key] = st.optional && wz.data[st.key] === el.dataset.v ? "" : el.dataset.v; if (st.optional) render(); else setTimeout(function () { wizNext(); }, 140); render(); }
     else if (act === "wiz-pick") { state.wiz.data.row = i; setTimeout(function () { wizNext(); }, 140); render(); }
     else if (act === "wiz-save") wizSave();
+    else if (act === "rev-start") { state.rev = { step: 0, data: {}, done: false }; render(); }
+    else if (act === "rev-again") { state.rev = null; render(); }
+    else if (act === "rev-back") { if (state.rev.step === 0) state.rev = null; else { revCapture(); state.rev.step--; } render(); }
+    else if (act === "rev-next") { revCapture(); state.rev.step++; render(); }
+    else if (act === "rev-close") { var rr = state.rows[i]; rr.raw.outcome = "no-response"; rr.raw.date_outcome = ""; state.rows[i] = normalise(rr.raw); state.dirty = true; render(); persist(); }
+    else if (act === "rev-focus") { state.rev.data.focus = el.dataset.v; render(); setTimeout(revFinish, 160); }
     else if (act === "prop-accept") { if (applyProp(state.props[i])) { render(); persist(); } }
     else if (act === "prop-skip") { state.props[i].status = "skipped"; render(); }
     else if (act === "prop-acceptall") { var n = 0; state.props.forEach(function (p) { if (p.status === "pending" && (p.kind === "applied" || p.match >= 0) && applyProp(p)) n++; }); render(); if (n) persist(); }
