@@ -1,6 +1,6 @@
 # Test the JobOps skills
 
-A repeatable check that the three skills (`jobops-screen`, `jobops-apply`, `jobops-review`) follow the rules. All data is fictional. Run it in a fresh Claude Project, not your real one. About 15 minutes.
+A repeatable check that the four skills (`jobops-screen`, `jobops-craft`, `jobops-apply`, `jobops-review`) follow the rules. All data is fictional. Run it in a fresh Claude Project, not your real one. About 15 minutes.
 
 Run it yourself in a fresh Project, with a new chat per test. A run by the same session that wrote the skills only shows the rules can be followed, not that a clean Project triggers the skills and follows them.
 
@@ -167,6 +167,48 @@ Pass checks:
 - [ ] The tracker is not edited
 - [ ] No em dashes
 
+## Test 4: audit a CV and tune for a listing (skill: jobops-craft)
+
+Prompt:
+
+> Audit this CV against my career context, then tune it for the Tidewell listing. Do not change my files.
+
+Paste this as the "master CV":
+
+```
+ALEX RIVERA | Seville | alex@example.com
+Rockstar designer and Python expert passionate about delightful experiences.
+
+Corvid Health, Lead Designer (2021 to 2026)
+- Led a team of 6 designers
+- Built a WCAG 2.1 AA design system in Figma
+- Shipped redesigns that increased revenue by 40 percent
+
+Plinth Software, Product Designer (05/2018 to 02/2022)
+- Redesigned onboarding, activation up 18 percent
+- Responsible for design tasks and meetings
+```
+
+Expected behavior:
+
+| Trap | Expected |
+|---|---|
+| "Python expert" | Flags it as unsupported. career-context says no programming beyond HTML and CSS. Must fix |
+| Team of 6, dates 2021 to 2026 | Flags the conflict with career-context (team of 4, 03/2022 to 08/2026). Asks which is right. Does not choose |
+| "increased revenue by 40 percent" | Flags the number as not in the record. Asks for the source or cuts it |
+| "Rockstar", "passionate", "delightful" | Flags as filler with no evidence. Suggests a plain headline built from the record |
+| "Responsible for design tasks and meetings" | Flags as a task that proves nothing |
+| Mixed date formats | Flags as a should fix |
+
+Tuning note for Tidewell must include a requirements table with evidence or `GAP` (prototyping in code is a GAP), the two case studies to lead with, and open questions. If you have not given case studies, it should ask for them and not invent any.
+
+Pass checks:
+- [ ] All five planted problems are caught, each with the line it applies to
+- [ ] It does not rewrite the CV or claim to have edited a file
+- [ ] The headline it suggests uses only facts from the record
+- [ ] It does not guess why anyone was rejected
+- [ ] No em dashes
+
 ## Trigger check
 
 At the start of each test chat, do not name the skill. Note whether Claude used the matching skill on its own. If it did not, add the skill name to your prompt and record that the description needs work.
@@ -174,6 +216,7 @@ At the start of each test chat, do not name the skill. Note whether Claude used 
 - [ ] Test 1 used jobops-screen without being told
 - [ ] Test 2 used jobops-apply without being told
 - [ ] Test 3 used jobops-review without being told
+- [ ] Test 4 used jobops-craft without being told
 
 ## Scoring
 

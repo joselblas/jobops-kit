@@ -55,15 +55,15 @@ If you do not know a fact, leave it blank. A blank is safe. A guess is not.
 
 ## Part 4. Set up Claude
 
-The rules and playbooks come packaged as three skills in the `skills/` folder. You install them once, and they work in every Project.
+The rules and playbooks come packaged as four skills in the `skills/` folder. You install them once, and they work in every Project.
 
-10. In Claude, open **Settings** and then **Skills**. Add the three skills from the `skills/` folder: `jobops-screen`, `jobops-apply`, `jobops-review`. Each is a folder with one `SKILL.md` file. If Claude asks for a zip, zip the folder first.
+10. In Claude, open **Settings** and then **Skills**. Add the four skills from the `skills/` folder: `jobops-screen`, `jobops-craft`, `jobops-apply`, `jobops-review`. Each is a folder with one `SKILL.md` file. If Claude asks for a zip, zip the folder first.
 11. Create a new **Project** called "Job search".
 12. Upload three files to the Project: your `career-context.md`, `profile.yml` and `tracker.csv`.
 13. In the Project instructions, paste one line: `Use the JobOps skills for job search tasks.`
 14. Start a chat in the Project and type: `Scout today's listings and run the gates.`
 
-You should see all three skills switched on in Settings. Then you should get a short scout note: new leads with a score, the gates checked with quoted evidence, and a list of anything not suitable, each with a reason.
+You should see all four skills switched on in Settings. Then you should get a short scout note: new leads with a score, the gates checked with quoted evidence, and a list of anything not suitable, each with a reason.
 
 Rules the assistant follows (see `AGENTS.md`): it never submits, sends or creates accounts. You press the final button, every time.
 

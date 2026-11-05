@@ -4,7 +4,7 @@ A calm, careful way to run a remote job search with Claude. You stay in control 
 
 **Why this exists.** I am a UX designer. I used AI to look for work and the results were poor: lots of rejections, and some applications asked how I use AI in my job. I kept seeing repos with tens of thousands of stars, a full studio of agents or a content workflow in a box, and wanted to add what I know as a UX designer to something like that: a tool that is useful from day one, not an example, and easy for creatives with no AI background. This is that, built with Claude and used on my own search. It is also my portfolio. [Read the story](https://joselblas.github.io/jobops-kit/story/).
 
-In my own search so far (3 August to 5 November 2026): 126 listings logged, 29 stopped at a gate before any work, 89 applications, 45 rejections, 1 interview. It is early, it is one person's data, and the tool did not fix the market. It made the search clearer.
+In my own search so far (3 August to 5 November 2026): 126 listings logged, 29 stopped at a gate before any work, 89 applications, 46 rejections (one after an interview call), 1 interview call. It is early, it is one person's data, and the tool did not fix the market. It made the search clearer.
 
 Built by [Jose L. Blas](https://joselblas.com), a product designer, during a real search for remote roles from Spain. No framework, no server, no telemetry.
 
@@ -16,7 +16,7 @@ Built by [Jose L. Blas](https://joselblas.com), a product designer, during a rea
 
 | | The Claude kit | The dashboard |
 |---|---|---|
-| What it is | Three Claude skills (or the same playbooks as plain markdown) that turn a Claude Project or Claude Code into a job-search assistant | A page in your browser that shows your tracker and gives you small tools |
+| What it is | Four Claude skills (or the same playbooks as plain markdown) that turn a Claude Project or Claude Code into a job-search assistant | A page in your browser that shows your tracker and gives you small tools |
 | Where it lives | `skills/`, `AGENTS.md`, `playbooks/`, `templates/`, `scripts/` | `app/` |
 | What it does | Finds and screens listings, checks the gates, tailors CVs from your facts, fills forms and stops before Submit, reads your email export for replies | Funnel and odds, tracker, step-by-step updates, proposed updates, follow-up drafts, weekly review |
 | Needs | A Claude account with Projects | A browser. Chrome or Edge to save to your file |
@@ -25,7 +25,7 @@ They share one file, `tracker.csv`. The assistant writes proposals. You accept t
 
 ## Pick your path
 
-- **I want the assistant.** Follow [docs/setup.md](docs/setup.md), parts 1 to 4. Install three skills, make a Claude Project, no code.
+- **I want the assistant.** Follow [docs/setup.md](docs/setup.md), parts 1 to 4. Install four skills, make a Claude Project, no code.
 - **I use Claude Code.** Same guide, "Using Claude Code instead".
 - **I only want the dashboard.** Open the [demo](https://joselblas.github.io/jobops-kit/app/), or open `app/index.html` and load your own CSV (columns in `app/README.md`).
 
@@ -42,6 +42,7 @@ They share one file, `tracker.csv`. The assistant writes proposals. You accept t
 | Skill | Covers |
 |---|---|
 | `jobops-screen` | Scout, gates, legitimacy check, fit score |
+| `jobops-craft` | Audit the master CV and portfolio, tune them for each listing |
 | `jobops-apply` | Tailor the CV, fact check, fill the form, stop before Submit |
 | `jobops-review` | Funnel review, email sweep, fit ratings, interview story bank |
 
@@ -60,6 +61,7 @@ scout -> gates -> fit score -> you pick -> tailor CV -> fact check
 | Find and screen listings | `playbooks/scout.md` | |
 | Gates and fit score | `playbooks/score-rubric.md` | |
 | Open? Real? | `playbooks/liveness-and-legitimacy.md` | `scripts/liveness.py` |
+| Build and tune the CV and portfolio | `playbooks/craft.md` | |
 | Tailor CV | `playbooks/cv-tailor.md` | `scripts/cv_factcheck.py` |
 | Fill forms | `playbooks/apply.md` | |
 | Rate fit for unrated listings | `playbooks/fit-helper.md` | |
