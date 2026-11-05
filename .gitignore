@@ -1,0 +1,19 @@
+# Personal data: never commit
+profile.yml
+career-context.md
+tracker.csv
+cv/
+logs/
+stories/
+reports/
+references*
+*.docx
+*.pdf
+.env
+.DS_Store
+*.tmp
+__pycache__/
+private/
+data/
+.privacy-terms
+*.local.*

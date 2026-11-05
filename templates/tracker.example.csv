@@ -1,0 +1,9 @@
+date_found,company,role,source,score,gate_result,status,date_applied,date_outcome,outcome,notes
+2026-01-05,ExampleCo,Senior Product Designer,linkedin,4.2,pass,applied,2026-01-06,2026-01-26,rejected,Generic email; no feedback
+2026-01-05,SampleSoft,Lead UX Designer,company-site,3.8,pass,applied,2026-01-07,2026-01-08,rejected-auto,Rejected next day
+2026-01-06,DemoLabs,Product Designer,ats-api,4.5,pass,applied,2026-01-08,2026-01-20,interview,Screening call booked
+2026-01-06,AcmeCorp,Senior Designer,linkedin,,fail:geo,gated,,,,Country list excludes Spain; quote in notes
+2026-01-07,Foobar GmbH,UX Designer,job-board,,fail:lang,gated,,,,German fluent required
+2026-01-09,TestInc,Design Systems Lead,ats-api,4.0,pass,applied,2026-01-10,,,No reply yet
+2026-01-09,OldPost Ltd,Product Designer,linkedin,,fail:closed,gated,,,,Gone on employer page
+2026-01-12,Widgets SA,Senior UX Designer,job-board,3.2,pass,applied,2026-01-13,2026-02-10,rejected,Template email

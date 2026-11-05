@@ -1,0 +1,23 @@
+# Your hard gates and preferences. Copy to profile.yml (gitignored) and edit.
+# Playbooks read gates from here. Keep personal details out of the public repo.
+
+target_roles:
+  - Senior Product Designer
+  - Lead UX Designer
+
+work_mode: remote_only          # remote_only | remote_or_hybrid | any
+geography:
+  based_in: "Country, Region"
+  eligible_regions: ["Region A", "Your country"]   # what counts as a pass on the posting
+  need_explicit_country_list: true       # do not assume "EMEA" or "Europe" covers you
+languages:
+  - { lang: Language one, level: native }
+  - { lang: Language two, level: professional }
+work_authorization: "Where you can work without sponsorship. Other regions: ask."
+seniority_band: [senior, lead]
+apply_threshold: 4.0            # advice only; lower it if you need income fast
+never_apply:                    # companies you will not work for
+  - ExampleCorp
+rules:
+  submit: manual                # the agent never presses final Submit
+  send_messages: manual         # drafts only

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Job Ops Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Job Ops <span>/ dashboard</span></div>
+  <div class="actions">
+    <button class="btn ghost" id="btnSample" type="button">Sample data</button>
+    <label class="btn" for="file">Load tracker.csv</label>
+    <input type="file" id="file" accept=".csv,text/csv" hidden>
+  </div>
+</header>
+
+<main id="drop">
+  <section class="hero">
+    <p class="eyebrow" id="meta">Loading</p>
+    <h1>The search,<br><em>in numbers.</em></h1>
+    <p class="lede">Every listing logged, gated and scored against your own evidence. Drop your <code>tracker.csv</code> anywhere on this page. Nothing leaves your browser.</p>
+  </section>
+
+  <section class="kpis" id="kpis" aria-label="Key numbers"></section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Funnel</h2>
+      <p>Where the effort goes, and where it stops.</p>
+    </div>
+    <div id="funnel" class="funnel"></div>
+    <p class="caveat" id="caveat"></p>
+  </section>
+
+  <section class="block split">
+    <div>
+      <div class="block-head">
+        <h2>Fit</h2>
+        <p>Pick an opportunity to see how your evidence matches it.</p>
+      </div>
+      <ol id="fitList" class="fit-list"></ol>
+    </div>
+    <div class="radar-card" id="radarCard" aria-live="polite"></div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Score against outcome</h2>
+      <p>Does the fit score predict anything? Each dot is one application.</p>
+    </div>
+    <div id="swarm" class="swarm"></div>
+  </section>
+
+  <section class="block split even">
+    <div>
+      <div class="block-head">
+        <h2>Gates</h2>
+        <p>Listings stopped before any CV work.</p>
+      </div>
+      <div id="gates" class="bars"></div>
+    </div>
+    <div>
+      <div class="block-head">
+        <h2>Sources</h2>
+        <p>Applied, heard back, interview or better.</p>
+      </div>
+      <div id="sources" class="bars"></div>
+    </div>
+  </section>
+
+  <section class="block" id="waitingBlock">
+    <div class="block-head">
+      <h2>Waiting</h2>
+      <p>Applied, no outcome after two weeks or more. Candidates for a follow-up.</p>
+    </div>
+    <ul id="waiting" class="waiting"></ul>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Tracker</h2>
+      <p id="count"></p>
+    </div>
+    <div class="controls">
+      <div class="chips" id="chips" role="group" aria-label="Filter by status"></div>
+      <input type="search" id="q" placeholder="Search company, role, note" aria-label="Search">
+    </div>
+    <div class="table-wrap">
+      <table id="table">
+        <thead>
+          <tr>
+            <th data-sort="date_found">Found</th>
+            <th data-sort="company">Company</th>
+            <th data-sort="role">Role</th>
+            <th data-sort="source">Source</th>
+            <th data-sort="score" class="num">Score</th>
+            <th data-sort="state">State</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Part of <strong>jobops-kit</strong>. Gates first, then fit. Small samples stay small. Sample data on first load is fictional.</p>
+</footer>
+
+<script src="sample-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
