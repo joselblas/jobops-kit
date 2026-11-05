@@ -4,7 +4,7 @@ A calm, careful way to run a remote job search with Claude. You stay in control 
 
 Built by [Jose L. Blas](https://joselblas.com), a product designer, during a real search for remote roles from Spain. No framework, no server, no telemetry.
 
-**[Set it up in 30 minutes](docs/setup.md)** · [Live demo](https://joselblas.github.io/jobops-kit/app/) · [Design and story](https://joselblas.github.io/jobops-kit/design/)
+**[Set it up in 30 minutes](https://joselblas.github.io/jobops-kit/setup/)** ([text version](docs/setup.md)) · [Live demo](https://joselblas.github.io/jobops-kit/app/) · [Design and story](https://joselblas.github.io/jobops-kit/design/)
 
 ![Overview](docs/screenshots/overview-light.png)
 

@@ -1,5 +1,7 @@
 # Set up Job Ops
 
+An illustrated version of these steps is at https://joselblas.github.io/jobops-kit/setup/.
+
 About 30 minutes. No code needed. You build it once, then you use it every week.
 
 This repo has two parts. You can use either one alone.
