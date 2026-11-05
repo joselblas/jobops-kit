@@ -1,19 +1,132 @@
-/* Job Ops dashboard. No dependencies, no network. Reads tracker.csv in the browser. */
+/* Jobops dashboard. No dependencies, no network. Reads tracker.csv in the browser. */
 (function () {
   "use strict";
 
   var DIMS = ["domain", "skill", "level", "evidence", "terms"];
-  var DIM_LABEL = { domain: "Domain", skill: "Skills", level: "Level", evidence: "Evidence", terms: "Terms" };
-  var NS = "http://www.w3.org/2000/svg";
+  var DIM_KEY = { domain: "dim.domain", skill: "dim.skill", level: "dim.level", evidence: "dim.evidence", terms: "dim.terms" };
+  var OUTCOMES = ["", "rejected", "rejected-auto", "interview", "offer", "withdrawn", "no-response"];
+  var STATUSES = ["found", "gated", "skipped", "tailored", "applied", "closed"];
+  var SOURCES = ["linkedin", "job-board", "company-site", "indeed", "email", "recruiter", "referral", "other"];
 
-  var state = { rows: [], selected: null, filter: "all", q: "", sortKey: "date_found", sortDir: -1, ref: new Date(), label: "" };
+  /* ---------- Language ---------- */
+  var I = {
+    "nav.overview": ["Overview", "Resumen"], "nav.tracker": ["Tracker", "Seguimiento"], "nav.log": ["Log an update", "Registrar novedad"],
+    "nav.steady": ["Steady", "Calma"], "nav.scout": ["Scout", "Buscar ofertas"], "nav.craft": ["CV and portfolio", "CV y portafolio"],
+    "nav.apply": ["Apply", "Candidaturas"], "nav.prepare": ["Interview prep", "Preparar entrevistas"],
+    "grp.work": ["Your search", "Tu búsqueda"], "grp.soon": ["Coming", "Próximamente"],
+    "tag.soon": ["Soon", "Pronto"], "tag.preview": ["Preview", "Avance"],
+    "title.overview": ["The search, in numbers.", "La búsqueda, en números."], "title.tracker": ["Every listing.", "Cada oferta."],
+    "title.log": ["Log an update.", "Registra una novedad."], "title.steady": ["Keep a clear head.", "Cabeza clara."],
+    "title.scout": ["Scout.", "Buscar ofertas."], "title.craft": ["CV and portfolio.", "CV y portafolio."],
+    "title.apply": ["Apply.", "Candidaturas."], "title.prepare": ["Interview prep.", "Entrevistas."],
+    "meta.listings": ["listings", "ofertas"], "meta.asof": ["as of", "a fecha"], "meta.unsaved": ["unsaved changes", "cambios sin guardar"], "meta.saved": ["saved to file", "guardado en el archivo"],
+    "btn.open": ["Open and edit", "Abrir y editar"], "btn.load": ["Load tracker.csv", "Cargar tracker.csv"], "btn.download": ["Download CSV", "Descargar CSV"],
+    "btn.sample": ["Sample data", "Datos de ejemplo"], "btn.add": ["Add listing", "Añadir oferta"], "btn.edit": ["Edit", "Editar"],
+    "btn.cancel": ["Cancel", "Cancelar"], "btn.save": ["Save", "Guardar"], "btn.back": ["Back", "Atrás"], "btn.continue": ["Continue", "Continuar"], "btn.skip": ["Skip", "Omitir"],
+    "btn.another": ["Log another", "Registrar otra"], "btn.totracker": ["Go to tracker", "Ir al seguimiento"], "btn.close": ["Close", "Cerrar"],
+    "foot": ["Nothing leaves your browser. Gates first, then fit. Small samples stay small.", "Nada sale de tu navegador. Primero los filtros, luego el encaje. Las muestras pequeñas siguen siendo pequeñas."],
+    "kpi.logged": ["Logged", "Registradas"], "kpi.gated": ["Stopped at a gate", "Frenadas en un filtro"], "kpi.applied": ["Applied", "Enviadas"], "kpi.heard": ["Heard back", "Con respuesta"], "kpi.inter": ["Interview or better", "Entrevista o más"],
+    "card.funnel": ["Funnel", "Embudo"], "card.funnel.s": ["Where the effort goes, and where it stops.", "Dónde va el esfuerzo y dónde se detiene."],
+    "f.logged": ["Logged", "Registradas"], "f.passed": ["Passed gates", "Pasan filtros"], "f.applied": ["Applied", "Enviadas"], "f.heard": ["Heard back", "Con respuesta"], "f.inter": ["Interview or better", "Entrevista o más"],
+    "f.prev": ["of previous", "del anterior"],
+    "caveat.small": ["Only {n} applications. Treat every comparison as a hint, not a result.", "Solo {n} candidaturas. Trata cada comparación como una pista, no como un resultado."],
+    "caveat.mid": ["Buckets under about 30 applications are still noisy. Read with care.", "Los grupos de menos de 30 candidaturas aún tienen mucho ruido. Léelos con cuidado."],
+    "card.fit": ["Fit", "Encaje"], "card.fit.s": ["Pick an opportunity to see how your evidence matches it.", "Elige una oportunidad para ver cómo encaja tu experiencia."],
+    "fit.none": ["No scored listings yet.", "Aún no hay ofertas puntuadas."], "fit.select": ["Select an opportunity.", "Selecciona una oportunidad."],
+    "fit.overall": ["overall {s} / 5", "total {s} / 5"], "fit.unscored": ["unscored", "sin puntuar"],
+    "fit.nodims": ["No fit profile for this row yet. Use Edit and rate the five dimensions, 1 to 5.", "Esta fila aún no tiene perfil de encaje. Usa Editar y puntúa las cinco dimensiones del 1 al 5."],
+    "dim.domain": ["Domain", "Ámbito"], "dim.skill": ["Skills", "Habilidades"], "dim.level": ["Level", "Nivel"], "dim.evidence": ["Evidence", "Evidencia"], "dim.terms": ["Terms", "Condiciones"],
+    "card.swarm": ["Score against outcome", "Puntuación y resultado"], "card.swarm.s": ["Does the fit score predict anything? Each dot is one application.", "¿Predice algo la puntuación? Cada punto es una candidatura."],
+    "swarm.none": ["No scored applications yet.", "Aún no hay candidaturas puntuadas."], "swarm.rec": ["Recommend", "Recomendado"],
+    "lg.int": ["Interview or better", "Entrevista o más"], "lg.rej": ["Rejected", "Rechazada"], "lg.wait": ["Waiting", "En espera"],
+    "swarm.n": ["{n} scored applications. Too few to say the score predicts anything.", "{n} candidaturas puntuadas. Pocas para decir que la puntuación predice algo."],
+    "swarm.n2": ["{n} scored applications. Read the pattern as a hint.", "{n} candidaturas puntuadas. Lee el patrón como una pista."],
+    "card.gates": ["Gates", "Filtros"], "card.gates.s": ["Listings stopped before any CV work.", "Ofertas frenadas antes de tocar el CV."], "none": ["None logged.", "Nada registrado."],
+    "card.sources": ["Sources", "Fuentes"], "card.sources.s": ["Applied / heard back / interview or better.", "Enviadas / con respuesta / entrevista o más."], "noapps": ["No applications yet.", "Aún no hay candidaturas."],
+    "card.waiting": ["Waiting", "En espera"], "card.waiting.s": ["Applied, no outcome after two weeks or more.", "Enviadas, sin resultado tras dos semanas o más."],
+    "wait.none": ["Nothing waiting 14 days or more.", "Nada esperando 14 días o más."], "wait.days": ["DAYS", "DÍAS"], "wait.follow": ["30+ follow up", "30+ seguimiento"],
+    "st.waiting": ["Waiting", "En espera"], "st.interview": ["Interview", "Entrevista"], "st.offer": ["Offer", "Oferta"], "st.rejected": ["Rejected", "Rechazada"], "st.auto": ["Rejected, auto", "Rechazo automático"],
+    "st.withdrawn": ["Withdrawn", "Retirada"], "st.silent": ["No reply", "Sin respuesta"], "st.gated": ["Gated", "Filtrada"], "st.other": ["Logged", "Registrada"],
+    "ch.all": ["All", "Todas"], "ch.applied": ["Applied", "Enviadas"], "ch.waiting": ["Waiting", "En espera"], "ch.interview": ["Interview", "Entrevista"], "ch.rejected": ["Rejected", "Rechazadas"], "ch.silent": ["No reply", "Sin respuesta"], "ch.gated": ["Gated", "Filtradas"],
+    "th.found": ["Found", "Encontrada"], "th.company": ["Company", "Empresa"], "th.role": ["Role", "Puesto"], "th.source": ["Source", "Fuente"], "th.score": ["Score", "Puntuación"], "th.state": ["State", "Estado"],
+    "search": ["Search company, role, note", "Buscar empresa, puesto, nota"], "count": ["{a} of {b} listings", "{a} de {b} ofertas"], "nomatch": ["No listings match.", "Ninguna oferta coincide."],
+    "edit.new": ["New listing", "Nueva oferta"], "edit.newsub": ["Log a listing by hand.", "Registra una oferta a mano."], "edit.legend": ["Fit profile, 1 to 5 each. Leave all blank if unrated.", "Perfil de encaje, del 1 al 5. Déjalo en blanco si no lo has puntuado."],
+    "none.yet": ["none yet", "ninguno aún"],
+    "toast.saved": ["Saved to {f}", "Guardado en {f}"], "toast.pagecopy": ["Changed in this page only. Use Download CSV to keep it.", "Cambiado solo en esta página. Usa Descargar CSV para conservarlo."],
+    "toast.fail": ["Could not save to the file: {e}. Use Download CSV instead.", "No se pudo guardar en el archivo: {e}. Usa Descargar CSV."], "toast.editing": ["Editing {f}. Changes save straight to this file.", "Editando {f}. Los cambios se guardan directamente en este archivo."],
+    "toast.need": ["Please answer this one first.", "Responde a esta primero."],
+    "log.lede": ["One question at a time. Pick what happened.", "Una pregunta cada vez. Elige qué ha pasado."],
+    "flow.reply": ["A reply arrived", "Ha llegado una respuesta"], "flow.reply.d": ["Rejection, interview invite, offer or silence.", "Rechazo, invitación a entrevista, oferta o silencio."],
+    "flow.apply": ["I applied to something", "He enviado una candidatura"], "flow.apply.d": ["Add a new application to the tracker.", "Añade una candidatura nueva al seguimiento."],
+    "flow.interview": ["An interview happened", "He tenido una entrevista"], "flow.interview.d": ["Log the stage, the date and how it felt.", "Registra la fase, la fecha y cómo fue."],
+    "step.of": ["Step {a} of {b}", "Paso {a} de {b}"], "step.review": ["Review", "Revisión"],
+    "q.which": ["Which application?", "¿Qué candidatura?"], "h.which": ["Search by company or role. The ones still waiting come first.", "Busca por empresa o puesto. Primero las que siguen en espera."],
+    "q.reply": ["What was the reply?", "¿Cuál fue la respuesta?"],
+    "o.rejected": ["Rejected", "Rechazada"], "o.rejected.d": ["A person or a template said no.", "Una persona o una plantilla dijo que no."],
+    "o.auto": ["Rejected within a day or two", "Rechazada en uno o dos días"], "o.auto.d": ["Probably a filter, not a reader.", "Probablemente un filtro, no una persona."],
+    "o.interview": ["Interview invite", "Invitación a entrevista"], "o.interview.d": ["They want to talk.", "Quieren hablar."], "o.offer": ["Offer", "Oferta"], "o.offer.d": ["In writing or on a call.", "Por escrito o en llamada."],
+    "o.silent": ["No reply, treat as closed", "Sin respuesta, darla por cerrada"], "o.silent.d": ["It has been long enough. Move on.", "Ha pasado tiempo suficiente. Sigue adelante."],
+    "o.withdrawn": ["I withdrew", "Me retiré"], "o.withdrawn.d": ["You decided not to continue.", "Decidiste no continuar."],
+    "q.when": ["When was it?", "¿Cuándo fue?"], "h.when": ["Today is filled in for you.", "Hoy viene rellenado."],
+    "q.note": ["Anything worth remembering?", "¿Algo que merezca recordarse?"], "h.note": ["Optional. The reason they gave, pay, feedback, the person's name.", "Opcional. El motivo que dieron, el salario, comentarios, el nombre de la persona."],
+    "q.company": ["Which company?", "¿Qué empresa?"], "q.role": ["Which role?", "¿Qué puesto?"], "q.source": ["Where did you find it?", "¿Dónde la encontraste?"],
+    "q.applied": ["When did you apply?", "¿Cuándo la enviaste?"], "q.score": ["How strong is the fit, 1 to 5?", "¿Qué tan fuerte es el encaje, del 1 al 5?"], "h.score": ["Optional. Rate it honestly, you can change it later.", "Opcional. Puntúa con honestidad, puedes cambiarlo después."],
+    "q.stage": ["Which stage?", "¿Qué fase?"], "stg.recruiter": ["Recruiter call", "Llamada con reclutador"], "stg.manager": ["Hiring manager", "Responsable de contratación"], "stg.exercise": ["Design exercise", "Ejercicio de diseño"], "stg.panel": ["Panel or team", "Panel o equipo"], "stg.final": ["Final round", "Ronda final"], "stg.other": ["Something else", "Otra"],
+    "q.date.int": ["When was the interview?", "¿Cuándo fue la entrevista?"], "q.note.int": ["How did it go?", "¿Cómo fue?"], "h.note.int": ["Optional. What they asked, what landed, what you would change, what happens next.", "Opcional. Qué preguntaron, qué funcionó, qué cambiarías, qué sigue."],
+    "r.application": ["Application", "Candidatura"], "r.reply": ["Reply", "Respuesta"], "r.date": ["Date", "Fecha"], "r.note": ["Note", "Nota"], "r.company": ["Company", "Empresa"], "r.role": ["Role", "Puesto"], "r.source": ["Source", "Fuente"], "r.score": ["Score", "Puntuación"], "r.stage": ["Stage", "Fase"],
+    "done.title": ["Logged.", "Registrado."], "done.sub": ["The tracker is updated.", "El seguimiento está actualizado."],
+    "steady.k": ["Steady", "Calma"], "steady.reject": ["Rejected", "Rechazada"],
+    "steady.big": ["A rejection is the usual result: about {p} in 100 applications.", "Un rechazo es lo habitual: unas {p} de cada 100 candidaturas."],
+    "steady.body": ["{k} of {n} applications led to an interview so far. {co}, {role}.", "{k} de {n} candidaturas llegaron a entrevista hasta ahora. {co}, {role}."],
+    "steady.hands": ["In your hands", "En tus manos"], "steady.hands.t": ["The next application, and the story you tell about this one.", "La próxima candidatura y la historia que cuentas sobre esta."],
+    "steady.not": ["Not in your hands", "Fuera de tu alcance"], "steady.not.t": ["The other candidates, the budget, the inbox.", "Los demás candidatos, el presupuesto, la bandeja."],
+    "steady.many": ["{n} rejections logged today. That is mail, not a trend. Close the inbox.", "Hoy has registrado {n} rechazos. Es correo, no una tendencia. Cierra la bandeja."],
+    "wit": [["Mail, not a verdict.", "The inbox is not yours. The next application is.", "One more data point. Not one more opinion of you.", "You were never going to win every game. You are playing a lot of them."],
+            ["Correo, no un veredicto.", "La bandeja no es tuya. La próxima candidatura sí.", "Un dato más. No una opinión más sobre ti.", "Nunca ibas a ganar todas las partidas. Estás jugando muchas."]],
+    "wit.auto": ["Answered in under two days. That was a filter, not a reader.", "Respuesta en menos de dos días. Eso fue un filtro, no una persona."],
+    "odds.k": ["Odds of an interview, per application", "Probabilidad de entrevista, por candidatura"], "odds.about": ["about {p} in 100", "unas {p} de cada 100"], "odds.none": ["none in {n} yet", "ninguna en {n} por ahora"],
+    "odds.range": ["Range {a} to {b} percent. {n} applications is a small sample, so treat this as a hint. Quality still beats volume here.", "Rango de {a} a {b} por ciento. {n} candidaturas es una muestra pequeña, así que tómalo como una pista. Aquí la calidad sigue ganando al volumen."],
+    "odds.range2": ["Range {a} to {b} percent, from {n} applications.", "Rango de {a} a {b} por ciento, con {n} candidaturas."],
+    "odds.s": ["Your own history, in plain words.", "Tu propia historia, en palabras claras."],
+    "pace.k": ["Today", "Hoy"], "pace.s": ["Pacing", "Ritmo"], "pace.msg0": ["Nothing sent today. Three is a good day. Fewer is fine too.", "Nada enviado hoy. Tres es un buen día. Menos también está bien."],
+    "pace.msg": ["{a} of {l} applications today. One more is a good day.", "{a} de {l} candidaturas hoy. Una más es un buen día."],
+    "pace.full": ["{a} applications today. That is a day's work. The rest can wait.", "{a} candidaturas hoy. Eso es una jornada. Lo demás puede esperar."],
+    "pace.note": ["The limit is yours to set. The tool only reminds.", "El límite lo pones tú. La herramienta solo recuerda."],
+    "last.none": ["No rejections logged yet. When one arrives, it will land here with the odds and one line to carry.", "Aún no hay rechazos registrados. Cuando llegue uno, aparecerá aquí con las probabilidades y una frase para llevarte."],
+    "conf.k": ["Confidence bank", "Banco de confianza"], "conf.t": ["Your proven strengths, with the evidence behind each. They will appear here from your career record.", "Tus fortalezas probadas, con la evidencia detrás de cada una. Aparecerán aquí a partir de tu historial."],
+    "soon.phase": ["Planned", "Previsto"], "soon.status": ["Not built yet", "Aún no construido"],
+    "soon.scout.l": ["Search for free, from new sources, or check a link.", "Busca libremente, desde nuevas fuentes o comprueba un enlace."],
+    "soon.scout.b": [["Free search with the gates applied before you see a result.", "New sources added without touching code.", "Paste a link and get the fit, the gates and what is missing."], ["Búsqueda libre con los filtros aplicados antes de ver el resultado.", "Nuevas fuentes sin tocar código.", "Pega un enlace y obtén el encaje, los filtros y lo que falta."]],
+    "soon.craft.l": ["Create and improve your CV and portfolio from facts you have confirmed.", "Crea y mejora tu CV y tu portafolio a partir de datos que has confirmado."],
+    "soon.craft.b": [["A CV tailored per listing, fact-checked against your career record.", "A portfolio review that tells you what to cut and what to add.", "ATS readiness check and a clean export."], ["Un CV adaptado a cada oferta, contrastado con tu historial.", "Una revisión del portafolio que te dice qué quitar y qué añadir.", "Comprobación para sistemas ATS y una exportación limpia."]],
+    "soon.apply.l": ["Prepare every application. You press the final button.", "Prepara cada candidatura. El botón final lo pulsas tú."],
+    "soon.apply.b": [["Forms filled from your record, one at a time.", "Screening answers drafted from your own stories, shown to you before anything is sent.", "A stop before every final submit."], ["Formularios rellenados desde tu historial, de uno en uno.", "Respuestas de cribado redactadas con tus propias historias, que ves antes de enviar nada.", "Una pausa antes de cada envío final."]],
+    "soon.prepare.l": ["Stories and practice built from your own record.", "Historias y práctica construidas desde tu propio historial."],
+    "soon.prepare.b": [["A story bank: situation, action, result, and the claim each one proves.", "Practice questions for the stage you are about to face.", "A short debrief after each interview, saved to the tracker."], ["Un banco de historias: situación, acción, resultado y qué afirmación prueba cada una.", "Preguntas de práctica para la fase que vas a afrontar.", "Un breve repaso tras cada entrevista, guardado en el seguimiento."]]
+  };
+  var NAV = [
+    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["steady", "preview"]]],
+    ["grp.soon", [["scout", "soon"], ["craft", "soon"], ["apply", "soon"], ["prepare", "soon"]]]
+  ];
+  var PHASE = { scout: "5", craft: "3", apply: "4", prepare: "3" };
+
+  var state = {
+    rows: [], head: [], handle: null, dirty: false, editing: null, selected: null,
+    filter: "all", q: "", sortKey: "date_found", sortDir: -1, ref: new Date(), label: "",
+    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null
+  };
 
   function $(s) { return document.querySelector(s); }
-  function esc(v) {
-    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-    });
+  function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function t(k, v) {
+    var e = I[k]; if (!e) return k;
+    var s = e[state.lang === "es" ? 1 : 0];
+    if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]);
+    return s;
   }
+  function tl(k) { return I[k][state.lang === "es" ? 1 : 0]; }
+  function store(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+  function fetchStore(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 
   /* ---------- CSV ---------- */
   function parseCSV(text) {
@@ -22,8 +135,7 @@
     for (i = 0; i < text.length; i++) {
       c = text[i];
       if (inQ) {
-        if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else { inQ = false; } }
-        else { cur += c; }
+        if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else { inQ = false; } } else { cur += c; }
       } else if (c === '"') { inQ = true; }
       else if (c === ",") { row.push(cur); cur = ""; }
       else if (c === "\n" || c === "\r") {
@@ -36,13 +148,18 @@
     if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
     if (!rows.length) return [];
     var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
-    return rows.slice(1).map(function (r) {
-      var o = {};
-      head.forEach(function (h, k) { o[h] = (r[k] || "").trim(); });
-      return o;
-    });
+    state.head = head.slice();
+    return rows.slice(1).map(function (r) { var o = {}; head.forEach(function (h, k) { o[h] = (r[k] || "").trim(); }); return o; });
   }
-
+  function csvCell(v) { v = v == null ? "" : String(v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function serialise() {
+    var head = state.head.slice();
+    var used = state.rows.some(function (r) { return DIMS.some(function (d) { return r.raw[d]; }); });
+    if (used) DIMS.forEach(function (d) { if (head.indexOf(d) < 0) head.push(d); });
+    var lines = [head.join(",")];
+    state.rows.forEach(function (r) { lines.push(head.map(function (h) { return csvCell(r.raw[h]); }).join(",")); });
+    return lines.join("\n") + "\n";
+  }
   function toDate(s) {
     if (!s) return null;
     var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
@@ -52,10 +169,12 @@
     return null;
   }
   function days(a, b) { return Math.round((b - a) / 86400000); }
+  function todayISO() { var d = new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
 
   function normalise(r) {
     var o = {};
     for (var k in r) o[k] = r[k];
+    o.raw = r;
     o.score = r.score === "" || isNaN(parseFloat(r.score)) ? null : parseFloat(r.score);
     o.gate = r.gate_result || "";
     o.gated = o.gate.indexOf("fail") === 0;
@@ -64,237 +183,213 @@
     o.dims = null;
     var vals = DIMS.map(function (d) { return parseFloat(r[d]); });
     if (vals.every(function (v) { return !isNaN(v); })) o.dims = vals;
-    o.dFound = toDate(r.date_found);
-    o.dApplied = toDate(r.date_applied);
-    o.dOutcome = toDate(r.date_outcome);
-    if (o.gated) { o.stateKey = "gated"; o.stateText = "Gated: " + o.gate.replace(/^fail:?/, ""); }
-    else if (o.applied && !o.outcome) { o.stateKey = "waiting"; o.stateText = "Waiting"; }
-    else if (o.outcome === "interview" || o.outcome === "offer") { o.stateKey = "interview"; o.stateText = o.outcome === "offer" ? "Offer" : "Interview"; }
-    else if (o.outcome.indexOf("rejected") === 0) { o.stateKey = "rejected"; o.stateText = o.outcome === "rejected-auto" ? "Rejected, auto" : "Rejected"; }
-    else if (o.outcome === "withdrawn") { o.stateKey = "rejected"; o.stateText = "Withdrawn"; }
-    else { o.stateKey = "other"; o.stateText = (r.status || "Logged"); }
+    o.dFound = toDate(r.date_found); o.dApplied = toDate(r.date_applied); o.dOutcome = toDate(r.date_outcome);
+    if (o.gated) { o.stateKey = "gated"; o.stateText = tl("st.gated") + ": " + o.gate.replace(/^fail:?/, ""); }
+    else if (o.applied && !o.outcome) { o.stateKey = "waiting"; o.stateText = tl("st.waiting"); }
+    else if (o.outcome === "interview" || o.outcome === "offer") { o.stateKey = "interview"; o.stateText = tl(o.outcome === "offer" ? "st.offer" : "st.interview"); }
+    else if (o.outcome.indexOf("rejected") === 0) { o.stateKey = "rejected"; o.stateText = tl(o.outcome === "rejected-auto" ? "st.auto" : "st.rejected"); }
+    else if (o.outcome === "no-response") { o.stateKey = "silent"; o.stateText = tl("st.silent"); }
+    else if (o.outcome === "withdrawn") { o.stateKey = "rejected"; o.stateText = tl("st.withdrawn"); }
+    else { o.stateKey = "other"; o.stateText = r.status || tl("st.other"); }
     return o;
   }
+  function renorm() { state.rows = state.rows.map(function (r) { return normalise(r.raw); }); if (state.selected) { var i = 0; } }
 
-  /* ---------- Load ---------- */
-  function load(text, label) {
+  function load(text, label, keepHandle) {
+    if (!keepHandle) state.handle = null;
+    state.dirty = false;
     var raw = parseCSV(text);
     state.rows = raw.filter(function (r) { return r.company || r.role; }).map(normalise);
     state.label = label;
     var latest = null;
-    state.rows.forEach(function (r) {
-      [r.dFound, r.dApplied, r.dOutcome].forEach(function (d) { if (d && (!latest || d > latest)) latest = d; });
-    });
+    state.rows.forEach(function (r) { [r.dFound, r.dApplied, r.dOutcome].forEach(function (d) { if (d && (!latest || d > latest)) latest = d; }); });
     var today = new Date();
-    if (latest) {
-      var cap = new Date(latest.getTime() + 3 * 86400000);
-      state.ref = cap < today ? cap : today;
-    } else { state.ref = today; }
+    if (latest) { var cap = new Date(latest.getTime() + 3 * 86400000); state.ref = cap < today ? cap : today; } else { state.ref = today; }
     var best = state.rows.filter(function (r) { return r.score != null; }).sort(function (a, b) { return b.score - a.score; })[0];
     state.selected = best || null;
-    state.filter = "all"; state.q = ""; $("#q").value = "";
+    state.filter = "all"; state.q = ""; state.wiz = null;
     render();
   }
 
-  /* ---------- Render ---------- */
-  function render() {
-    renderMeta(); renderKpis(); renderFunnel(); renderFit(); renderSwarm();
-    renderGates(); renderSources(); renderWaiting(); renderChips(); renderTable();
-  }
-
+  /* ---------- Stats ---------- */
   function stats() {
     var rows = state.rows;
     var applied = rows.filter(function (r) { return r.applied; });
-    var heard = applied.filter(function (r) { return r.outcome; });
+    var heard = applied.filter(function (r) { return r.outcome && r.outcome !== "no-response"; });
     var inter = applied.filter(function (r) { return r.stateKey === "interview"; });
     var gated = rows.filter(function (r) { return r.gated; });
     return { rows: rows, applied: applied, heard: heard, inter: inter, gated: gated };
   }
   function pct(a, b) { return b ? Math.round(100 * a / b) + "%" : "n/a"; }
+  function wilson(k, n) {
+    if (!n) return [0, 0];
+    var z = 1.96, p = k / n, d = 1 + z * z / n, c = p + z * z / (2 * n), a = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n));
+    return [Math.max(0, (c - a) / d), Math.min(1, (c + a) / d)];
+  }
+  function fmt(v) { var s = v < 10 ? (Math.round(v * 10) / 10).toString() : String(Math.round(v)); return state.lang === "es" ? s.replace(".", ",") : s; }
 
-  function renderMeta() {
+  /* ---------- Chrome ---------- */
+  function renderNav() {
+    var h = "";
+    NAV.forEach(function (g) {
+      h += '<p class="label nav-group">' + esc(tl(g[0])) + "</p>";
+      g[1].forEach(function (it) {
+        var tag = it[1] === "soon" ? '<span class="tag">' + esc(tl("tag.soon")) + "</span>" : it[1] === "preview" ? '<span class="tag calm">' + esc(tl("tag.preview")) + "</span>" : "";
+        h += '<a href="#' + it[0] + '"' + (state.view === it[0] ? ' aria-current="page"' : "") + ">" + esc(tl("nav." + it[0])) + tag + "</a>";
+      });
+    });
+    $("#nav").innerHTML = h;
+    $("#themeSeg").innerHTML = ["light", "dark"].map(function (m) { return '<button type="button" data-theme-set="' + m + '" aria-pressed="' + (state.theme === m) + '">' + (m === "light" ? (state.lang === "es" ? "Claro" : "Light") : (state.lang === "es" ? "Oscuro" : "Dark")) + "</button>"; }).join("");
+    $("#langSeg").innerHTML = ["en", "es"].map(function (m) { return '<button type="button" data-lang-set="' + m + '" aria-pressed="' + (state.lang === m) + '">' + m.toUpperCase() + "</button>"; }).join("");
+  }
+  function renderTop() {
     var s = stats();
-    $("#meta").textContent = (state.label || "Tracker") + "  ·  " + s.rows.length + " listings  ·  as of " + state.ref.toISOString().slice(0, 10);
+    $("#meta").textContent = (state.label || "Tracker") + "  ·  " + s.rows.length + " " + tl("meta.listings") + "  ·  " + tl("meta.asof") + " " + state.ref.toISOString().slice(0, 10) +
+      (state.dirty ? "  ·  " + tl("meta.unsaved") : state.handle ? "  ·  " + tl("meta.saved") : "");
+    $("#title").textContent = tl("title." + state.view);
+    var a = "";
+    if (state.view === "overview" || state.view === "tracker") {
+      if (state.view === "tracker") a += '<button class="btn accent" type="button" data-act="add">' + esc(tl("btn.add")) + "</button>";
+      a += '<button class="btn ghost" type="button" data-act="sample">' + esc(tl("btn.sample")) + "</button>";
+      a += '<button class="btn ghost" type="button" data-act="download">' + esc(tl("btn.download")) + "</button>";
+      a += '<label class="btn ghost" for="file">' + esc(tl("btn.load")) + "</label>";
+      if (window.showOpenFilePicker) a += '<button class="btn" type="button" data-act="open">' + esc(tl("btn.open")) + "</button>";
+    }
+    $("#actions").innerHTML = a;
+    $("#foot").textContent = tl("foot");
+    document.documentElement.lang = state.lang;
+    document.title = "Jobops · " + tl("nav." + state.view);
+  }
+  function setBadge(n) { return n; }
+
+  function render() {
+    renderNav(); renderTop();
+    var v = state.view, box = $("#view");
+    if (v === "overview") box.innerHTML = viewOverview();
+    else if (v === "tracker") { box.innerHTML = viewTracker(); renderTableBody(); }
+    else if (v === "log") { box.innerHTML = viewLog(); }
+    else if (v === "steady") box.innerHTML = viewSteady();
+    else box.innerHTML = viewSoon(v);
   }
 
-  function renderKpis() {
-    var s = stats();
-    var items = [
-      [s.rows.length, "Logged", ""],
-      [s.gated.length, "Stopped at a gate", ""],
-      [s.applied.length, "Applied", ""],
-      [pct(s.heard.length, s.applied.length), "Heard back", ""],
-      [s.inter.length, "Interview or better", "accent"]
-    ];
-    $("#kpis").innerHTML = items.map(function (i) {
-      return '<div class="kpi ' + i[2] + '"><div class="n">' + esc(i[0]) + '</div><div class="l">' + esc(i[1]) + "</div></div>";
-    }).join("");
-  }
-
-  function renderFunnel() {
-    var s = stats();
-    var steps = [
-      ["Logged", s.rows.length],
-      ["Passed gates", s.rows.length - s.gated.length],
-      ["Applied", s.applied.length],
-      ["Heard back", s.heard.length],
-      ["Interview or better", s.inter.length]
-    ];
-    var top = steps[0][1] || 1;
-    $("#funnel").innerHTML = steps.map(function (st, i) {
-      var of = i ? steps[i - 1][1] : 0;
-      var sub = i ? pct(st[1], of) + " of previous" : "";
-      return '<div class="f-row"><div class="f-label">' + esc(st[0]) + '</div>' +
-        '<div class="f-track"><div class="f-bar" style="width:' + (100 * st[1] / top) + '%"></div></div>' +
-        '<div class="f-val">' + st[1] + (sub ? "<small>" + sub + "</small>" : "") + "</div></div>";
-    }).join("");
-    var n = s.applied.length;
-    $("#caveat").textContent = n < 30
-      ? "Only " + n + " applications. Treat every comparison here as a hint, not a result."
-      : "Buckets under about 30 applications are still noisy. Read with care.";
-  }
-
+  /* ---------- Shared pieces ---------- */
   function tagFor(r) {
-    var cls = r.stateKey === "interview" ? "gold" : r.stateKey === "rejected" ? "rust" : "";
+    var cls = r.stateKey === "interview" ? "accent" : r.stateKey === "rejected" ? "rust" : "";
     return '<span class="tag ' + cls + '">' + esc(r.stateText) + "</span>";
   }
-
-  function renderFit() {
-    var scored = state.rows.filter(function (r) { return r.score != null; })
-      .sort(function (a, b) { return b.score - a.score; });
-    var ol = $("#fitList");
-    if (!scored.length) { ol.innerHTML = '<li class="empty" style="padding:16px 0">No scored listings yet.</li>'; renderRadar(); return; }
-    ol.innerHTML = scored.map(function (r, i) {
-      var sel = r === state.selected;
-      return '<li class="fit-item" tabindex="0" role="option" aria-selected="' + sel + '" data-i="' + state.rows.indexOf(r) + '">' +
-        '<span class="fit-score">' + r.score.toFixed(1) + "</span>" +
-        '<span><span class="fit-co">' + esc(r.company) + '</span><br><span class="fit-role">' + esc(r.role) + "</span></span>" +
-        tagFor(r) + "</li>";
-    }).join("");
-    ol.setAttribute("role", "listbox");
-    renderRadar();
+  function card(cls, title, sub, body) {
+    return '<section class="card ' + cls + '"><div class="card-head"><h2>' + esc(title) + "</h2>" + (sub ? "<p>" + esc(sub) + "</p>" : "") + "</div>" + body + "</section>";
   }
 
-  function pt(cx, cy, r, k, n) {
-    var a = -Math.PI / 2 + (2 * Math.PI * k) / n;
-    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  /* ---------- Overview ---------- */
+  function viewOverview() {
+    var s = stats();
+    var k = [[s.rows.length, "kpi.logged", ""], [s.gated.length, "kpi.gated", ""], [s.applied.length, "kpi.applied", ""], [pct(s.heard.length, s.applied.length), "kpi.heard", ""], [s.inter.length, "kpi.inter", "accent"]];
+    var h = '<div class="grid12"><div class="c12"><div class="kpis">' + k.map(function (i) {
+      return '<div class="card kpi ' + i[2] + '"><div class="n">' + esc(i[0]) + '</div><div class="label">' + esc(tl(i[1])) + "</div></div>";
+    }).join("") + "</div></div>";
+    h += card("c7", tl("card.funnel"), tl("card.funnel.s"), funnelHTML(s));
+    h += '<div class="c5">' + oddsCard(s) + "</div>";
+    h += card("c12", tl("card.fit"), tl("card.fit.s"), fitHTML());
+    h += card("c8", tl("card.swarm"), tl("card.swarm.s"), swarmHTML());
+    h += card("c4", tl("card.waiting"), tl("card.waiting.s"), waitingHTML());
+    h += card("c6", tl("card.gates"), tl("card.gates.s"), gatesHTML());
+    h += card("c6", tl("card.sources"), tl("card.sources.s"), sourcesHTML());
+    return h + "</div>";
   }
-
-  function renderRadar() {
-    var r = state.selected, card = $("#radarCard");
-    if (!r) { card.innerHTML = '<p class="empty">Select an opportunity.</p>'; return; }
-    var head = "<h3>" + esc(r.company) + '</h3><p class="sub">' + esc(r.role) + " · " + (r.score != null ? "overall " + r.score.toFixed(1) + " / 5" : "unscored") + " · " + esc(r.stateText) + "</p>";
-    if (!r.dims) {
-      card.innerHTML = head + '<p class="radar-note">No dimension scores for this row. Add <code>domain, skill, level, evidence, terms</code> columns (1 to 5) to see the profile.</p>' +
-        (r.notes ? '<p class="radar-note">' + esc(r.notes) + "</p>" : "");
-      return;
-    }
-    var size = 360, c = size / 2, R = 120, n = DIMS.length, svg = "";
-    for (var ring = 1; ring <= 5; ring++) {
-      var poly = DIMS.map(function (_, k) { return pt(c, c, R * ring / 5, k, n).join(","); }).join(" ");
-      svg += '<polygon points="' + poly + '" fill="none" stroke="#2b2b2f" stroke-width="1"/>';
-    }
+  function funnelHTML(s) {
+    var steps = [["f.logged", s.rows.length], ["f.passed", s.rows.length - s.gated.length], ["f.applied", s.applied.length], ["f.heard", s.heard.length], ["f.inter", s.inter.length]];
+    var top = steps[0][1] || 1, n = s.applied.length;
+    return '<div class="funnel">' + steps.map(function (st, i) {
+      var of = i ? steps[i - 1][1] : 0, sub = i ? pct(st[1], of) + " " + tl("f.prev") : "";
+      return '<div class="f-row"><div class="f-label">' + esc(tl(st[0])) + '</div><div class="f-track"><div class="f-bar" style="width:' + (100 * st[1] / top) + '%"></div></div><div class="f-val">' + st[1] + (sub ? "<small>" + esc(sub) + "</small>" : "") + "</div></div>";
+    }).join("") + "</div><p class=\"caveat\">" + esc(n < 30 ? t("caveat.small", { n: n }) : tl("caveat.mid")) + "</p>";
+  }
+  function oddsCard(s) {
+    var n = s.applied.length, k = s.inter.length, w = wilson(k, n), p = n ? 100 * k / n : 0;
+    var est = k ? t("odds.about", { p: fmt(p) }) : t("odds.none", { n: n });
+    var cap = t(n < 30 ? "odds.range" : "odds.range2", { a: fmt(w[0] * 100), b: fmt(w[1] * 100), n: n });
+    var scale = Math.max(w[1] * 100, 5) * 1.1;
+    return '<section class="card meter" style="height:100%"><span class="label" style="color:var(--calm)">' + esc(tl("steady.k")) + '</span><div class="card-head" style="margin:6px 0 0"><h2>' + esc(tl("odds.k")) + '</h2></div><p class="est num">' + esc(est) +
+      '</p><div class="track" role="img" aria-label="' + esc(est) + '"><div class="fill" style="left:' + (100 * w[0] * 100 / scale) + '%;width:' + Math.max(1, 100 * (w[1] - w[0]) * 100 / scale) + '%"></div><div class="tick" style="left:' + (100 * p / scale) + '%"></div></div><p class="caveat" style="margin-top:6px">' + esc(cap) + "</p></section>";
+  }
+  function fitHTML() {
+    var scored = state.rows.filter(function (r) { return r.score != null; }).sort(function (a, b) { return b.score - a.score; });
+    if (!scored.length) return '<p class="empty">' + esc(tl("fit.none")) + "</p>";
+    var list = '<ol class="fit-list" role="listbox">' + scored.map(function (r) {
+      return '<li class="fit-item" tabindex="0" role="option" aria-selected="' + (r === state.selected) + '" data-act="select" data-i="' + state.rows.indexOf(r) + '"><span class="fit-score">' + r.score.toFixed(1) + '</span><span><span>' + esc(r.company) + '</span><br><span class="fit-role">' + esc(r.role) + "</span></span>" + tagFor(r) + "</li>";
+    }).join("") + "</ol>";
+    return '<div class="fit">' + list + '<div class="radar" aria-live="polite">' + radarHTML() + "</div></div>";
+  }
+  function pt(cx, cy, r, k, n) { var a = -Math.PI / 2 + (2 * Math.PI * k) / n; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+  function radarHTML() {
+    var r = state.selected;
+    if (!r) return '<p class="empty">' + esc(tl("fit.select")) + "</p>";
+    var head = "<h3>" + esc(r.company) + '</h3><p class="sub">' + esc(r.role) + " · " + (r.score != null ? t("fit.overall", { s: r.score.toFixed(1) }) : tl("fit.unscored")) + " · " + esc(r.stateText) + "</p>";
+    if (!r.dims) return head + '<p class="radar-note">' + esc(tl("fit.nodims")) + "</p>" + (r.notes ? '<p class="radar-note">' + esc(r.notes) + "</p>" : "");
+    var size = 360, c = size / 2, R = 120, n = DIMS.length, svg = "", ring;
+    for (ring = 1; ring <= 5; ring++) svg += '<polygon points="' + DIMS.map(function (_, k) { return pt(c, c, R * ring / 5, k, n).join(","); }).join(" ") + '" fill="none" stroke="var(--line-strong)" opacity=".45"/>';
     DIMS.forEach(function (d, k) {
-      var e = pt(c, c, R, k, n), l = pt(c, c, R + 26, k, n);
-      svg += '<line x1="' + c + '" y1="' + c + '" x2="' + e[0] + '" y2="' + e[1] + '" stroke="#2b2b2f"/>';
-      var anchor = l[0] < c - 8 ? "end" : l[0] > c + 8 ? "start" : "middle";
-      svg += '<text x="' + l[0] + '" y="' + (l[1] + 4) + '" text-anchor="' + anchor + '" fill="#8d8a83" font-size="12" letter-spacing="1.2" font-family="-apple-system,Helvetica,Arial,sans-serif">' + DIM_LABEL[d].toUpperCase() + "</text>";
+      var e = pt(c, c, R, k, n), l = pt(c, c, R + 26, k, n), anc = l[0] < c - 8 ? "end" : l[0] > c + 8 ? "start" : "middle";
+      svg += '<line x1="' + c + '" y1="' + c + '" x2="' + e[0] + '" y2="' + e[1] + '" stroke="var(--line-strong)" opacity=".45"/><text x="' + l[0] + '" y="' + (l[1] + 4) + '" text-anchor="' + anc + '" fill="var(--ink-muted)" font-size="11" letter-spacing="1.2" font-family="var(--sans)">' + esc(tl(DIM_KEY[d]).toUpperCase()) + "</text>";
     });
-    var shape = r.dims.map(function (v, k) { return pt(c, c, R * Math.max(0, Math.min(5, v)) / 5, k, n).join(","); }).join(" ");
-    svg += '<polygon points="' + shape + '" fill="rgba(194,168,120,0.16)" stroke="#c2a878" stroke-width="1.6" stroke-linejoin="round"/>';
-    r.dims.forEach(function (v, k) {
-      var p = pt(c, c, R * v / 5, k, n);
-      svg += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.5" fill="#c2a878"/>';
-    });
-    var list = DIMS.map(function (d, k) {
-      return "<li><span>" + DIM_LABEL[d] + '</span><span class="dim-bar"><i style="width:' + (r.dims[k] * 20) + '%"></i></span><b>' + r.dims[k] + "</b></li>";
-    }).join("");
-    card.innerHTML = head +
-      '<svg viewBox="-60 0 ' + (size + 120) + " " + size + '" role="img" aria-label="Fit profile for ' + esc(r.company) + ": " +
-      DIMS.map(function (d, k) { return DIM_LABEL[d] + " " + r.dims[k]; }).join(", ") + '">' + svg + "</svg>" +
-      '<ul class="dim-list">' + list + "</ul>" +
-      (r.notes ? '<p class="radar-note">' + esc(r.notes) + "</p>" : "");
+    svg += '<polygon points="' + r.dims.map(function (v, k) { return pt(c, c, R * Math.max(0, Math.min(5, v)) / 5, k, n).join(","); }).join(" ") + '" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>';
+    r.dims.forEach(function (v, k) { var p = pt(c, c, R * v / 5, k, n); svg += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.5" fill="var(--accent)"/>'; });
+    var list = DIMS.map(function (d, k) { return "<li><span>" + esc(tl(DIM_KEY[d])) + '</span><span class="dim-bar"><i style="width:' + (r.dims[k] * 20) + '%"></i></span><b>' + r.dims[k] + "</b></li>"; }).join("");
+    return head + '<svg viewBox="' + [-60, 0, 480, 360].join(" ") + '" role="img" aria-label="' + esc(r.company) + ": " + DIMS.map(function (d, k) { return tl(DIM_KEY[d]) + " " + r.dims[k]; }).join(", ") + '">' + svg + '</svg><ul class="dim-list">' + list + "</ul>" + (r.notes ? '<p class="radar-note">' + esc(r.notes) + "</p>" : "");
   }
-
-  function renderSwarm() {
+  function swarmHTML() {
     var apps = state.rows.filter(function (r) { return r.applied && r.score != null; });
-    var box = $("#swarm");
-    if (!apps.length) { box.innerHTML = '<p class="empty">No scored applications yet.</p>'; return; }
+    if (!apps.length) return '<p class="empty">' + esc(tl("swarm.none")) + "</p>";
     var W = 1000, H = 200, padL = 20, padR = 20, base = 140;
     var min = Math.min(3, Math.floor(Math.min.apply(null, apps.map(function (a) { return a.score; }))));
-    var max = 5;
-    function x(s) { return padL + (W - padL - padR) * (s - min) / (max - min); }
-    var svg = '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + base + '" y2="' + base + '" stroke="#323236"/>';
-    for (var t = min; t <= max + 0.001; t += 0.5) {
-      svg += '<line x1="' + x(t) + '" x2="' + x(t) + '" y1="' + base + '" y2="' + (base + 6) + '" stroke="#323236"/>' +
-        '<text x="' + x(t) + '" y="' + (base + 26) + '" text-anchor="middle" fill="#8d8a83" font-size="13" font-family="-apple-system,Helvetica,Arial,sans-serif">' + t.toFixed(1) + "</text>";
-    }
+    function x(s) { return padL + (W - padL - padR) * (s - min) / (5 - min); }
+    var svg = '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + base + '" y2="' + base + '" stroke="var(--line-strong)"/>';
+    for (var tk = min; tk <= 5.001; tk += 0.5) svg += '<line x1="' + x(tk) + '" x2="' + x(tk) + '" y1="' + base + '" y2="' + (base + 6) + '" stroke="var(--line-strong)"/><text x="' + x(tk) + '" y="' + (base + 26) + '" text-anchor="middle" fill="var(--ink-muted)" font-size="13" font-family="var(--sans)">' + tk.toFixed(1) + "</text>";
     var gx = x(4);
-    svg += '<line x1="' + gx + '" x2="' + gx + '" y1="14" y2="' + base + '" stroke="#c2a878" stroke-dasharray="3 5" opacity="0.6"/>' +
-      '<text x="' + (gx + 8) + '" y="24" fill="#c2a878" font-size="12" letter-spacing="1.2" font-family="-apple-system,Helvetica,Arial,sans-serif">RECOMMEND</text>';
-    var buckets = {};
+    svg += '<line x1="' + gx + '" x2="' + gx + '" y1="14" y2="' + base + '" stroke="var(--accent)" stroke-dasharray="3 5"/><text x="' + (gx + 8) + '" y="24" fill="var(--accent)" font-size="12" letter-spacing="1.2" font-family="var(--sans)">' + esc(tl("swarm.rec").toUpperCase()) + "</text>";
+    var bk = {};
     apps.slice().sort(function (a, b) { return a.score - b.score; }).forEach(function (a) {
-      var key = Math.round(a.score * 10);
-      var k = buckets[key] = (buckets[key] || 0) + 1;
-      var cy = base - 12 - (k - 1) * 20;
-      var cx = x(a.score);
-      var title = esc(a.company) + ", " + a.score.toFixed(1) + ", " + esc(a.stateText);
-      if (a.stateKey === "interview") svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="#c2a878"><title>' + title + "</title></circle>";
-      else if (a.stateKey === "rejected") svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="#5c5a56"><title>' + title + "</title></circle>";
-      else svg += '<circle cx="' + cx + '" cy="' + cy + '" r="7" fill="none" stroke="#ece8e0" stroke-width="1.5"><title>' + title + "</title></circle>";
+      var key = Math.round(a.score * 10), kk = bk[key] = (bk[key] || 0) + 1, cy = base - 12 - (kk - 1) * 20, cx = x(a.score), ti = esc(a.company) + ", " + a.score.toFixed(1) + ", " + esc(a.stateText);
+      if (a.stateKey === "interview") svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="var(--accent)"><title>' + ti + "</title></circle>";
+      else if (a.stateKey === "rejected") svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="var(--ink-faint)"><title>' + ti + "</title></circle>";
+      else svg += '<circle cx="' + cx + '" cy="' + cy + '" r="7" fill="none" stroke="var(--ink)" stroke-width="1.5"><title>' + ti + "</title></circle>";
     });
-    box.innerHTML = '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Applications placed by fit score, coloured by outcome">' + svg + "</svg>" +
-      '<div class="legend"><span class="l-int">Interview or better</span><span class="l-rej">Rejected</span><span class="l-wait">Waiting</span></div>';
+    return '<div class="swarm"><svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + esc(tl("card.swarm")) + '">' + svg + '</svg><div class="legend"><span class="l-int">' + esc(tl("lg.int")) + '</span><span class="l-rej">' + esc(tl("lg.rej")) + '</span><span class="l-wait">' + esc(tl("lg.wait")) + "</span></div></div>" +
+      '<p class="caveat">' + esc(t(apps.length < 30 ? "swarm.n" : "swarm.n2", { n: apps.length })) + "</p>";
   }
-
-  function renderGates() {
+  function gatesHTML() {
     var counts = {};
-    state.rows.filter(function (r) { return r.gated; }).forEach(function (r) {
-      var k = r.gate.replace(/^fail:?/, "") || "other";
-      counts[k] = (counts[k] || 0) + 1;
-    });
+    state.rows.filter(function (r) { return r.gated; }).forEach(function (r) { var k = r.gate.replace(/^fail:?/, "") || "other"; counts[k] = (counts[k] || 0) + 1; });
     var keys = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
-    if (!keys.length) { $("#gates").innerHTML = '<p class="empty">None logged.</p>'; return; }
+    if (!keys.length) return '<p class="empty">' + esc(tl("none")) + "</p>";
     var top = counts[keys[0]];
-    $("#gates").innerHTML = keys.map(function (k) {
-      return '<div class="b-row"><span class="b-label">' + esc(k) + '</span><span class="b-track"><i style="width:' + (100 * counts[k] / top) + '%"></i></span><span class="b-val">' + counts[k] + "</span></div>";
-    }).join("");
+    return '<div class="bars">' + keys.map(function (k) { return '<div class="b-row"><span class="b-label">' + esc(k) + '</span><span class="b-track"><i style="width:' + (100 * counts[k] / top) + '%"></i></span><span class="b-val">' + counts[k] + "</span></div>"; }).join("") + "</div>";
   }
-
-  function renderSources() {
+  function sourcesHTML() {
     var by = {};
-    state.rows.filter(function (r) { return r.applied; }).forEach(function (r) {
-      var s = r.source || "unknown";
-      by[s] = by[s] || { a: 0, h: 0, i: 0 };
-      by[s].a++; if (r.outcome) by[s].h++; if (r.stateKey === "interview") by[s].i++;
-    });
+    state.rows.filter(function (r) { return r.applied; }).forEach(function (r) { var s = r.source || "unknown"; by[s] = by[s] || { a: 0, h: 0, i: 0 }; by[s].a++; if (r.outcome && r.outcome !== "no-response") by[s].h++; if (r.stateKey === "interview") by[s].i++; });
     var keys = Object.keys(by).sort(function (a, b) { return by[b].a - by[a].a; });
-    if (!keys.length) { $("#sources").innerHTML = '<p class="empty">No applications yet.</p>'; return; }
+    if (!keys.length) return '<p class="empty">' + esc(tl("noapps")) + "</p>";
     var top = by[keys[0]].a;
-    $("#sources").innerHTML = keys.map(function (k) {
-      var v = by[k];
-      return '<div class="b-row"><span class="b-label">' + esc(k) + '</span><span class="b-track"><i style="width:' + (100 * v.a / top) + '%"></i></span><span class="b-val">' + v.a + " / " + v.h + " / " + v.i + "</span></div>";
-    }).join("");
+    return '<div class="bars">' + keys.map(function (k) { var v = by[k]; return '<div class="b-row"><span class="b-label">' + esc(k) + '</span><span class="b-track"><i style="width:' + (100 * v.a / top) + '%"></i></span><span class="b-val">' + v.a + " / " + v.h + " / " + v.i + "</span></div>"; }).join("") + "</div>";
+  }
+  function waitingHTML() {
+    var list = state.rows.filter(function (r) { return r.stateKey === "waiting" && r.dApplied; }).map(function (r) { return { r: r, d: days(r.dApplied, state.ref) }; }).filter(function (x) { return x.d >= 14; }).sort(function (a, b) { return b.d - a.d; });
+    return list.length ? '<ul class="waiting">' + list.map(function (x) {
+      return '<li><span class="d num">' + x.d + "<small>" + esc(tl("wait.days")) + "</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + "</span></span>" + (x.d >= 30 ? '<span class="tag accent">' + esc(tl("wait.follow")) + "</span>" : '<span class="tag">14+</span>') + "</li>";
+    }).join("") + "</ul>" : '<p class="empty">' + esc(tl("wait.none")) + "</p>";
   }
 
-  function renderWaiting() {
-    var list = state.rows.filter(function (r) { return r.stateKey === "waiting" && r.dApplied; })
-      .map(function (r) { return { r: r, d: days(r.dApplied, state.ref) }; })
-      .filter(function (x) { return x.d >= 14; })
-      .sort(function (a, b) { return b.d - a.d; });
-    $("#waiting").innerHTML = list.length ? list.map(function (x) {
-      return '<li><span class="d">' + x.d + "<small>DAYS</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + "</span></span>" +
-        (x.d >= 30 ? '<span class="tag gold">30+ follow up</span>' : '<span class="tag">14+</span>') + "</li>";
-    }).join("") : '<li class="empty">Nothing waiting 14 days or more.</li>';
+  /* ---------- Tracker ---------- */
+  var CHIPS = [["all", "ch.all"], ["applied", "ch.applied"], ["waiting", "ch.waiting"], ["interview", "ch.interview"], ["rejected", "ch.rejected"], ["silent", "ch.silent"], ["gated", "ch.gated"]];
+  function viewTracker() {
+    var th = [["date_found", "th.found"], ["company", "th.company"], ["role", "th.role"], ["source", "th.source"], ["score", "th.score", "num"], ["state", "th.state"]];
+    return '<section class="card"><div class="controls"><div class="chips" role="group" aria-label="Filter">' + CHIPS.map(function (c) {
+      return '<button class="chip" type="button" data-act="filter" data-f="' + c[0] + '" aria-pressed="' + (state.filter === c[0]) + '">' + esc(tl(c[1])) + "</button>";
+    }).join("") + '</div><input type="search" id="q" placeholder="' + esc(tl("search")) + '" aria-label="' + esc(tl("search")) + '" value="' + esc(state.q) + '"></div><p class="muted" id="count" style="margin-bottom:10px"></p><div class="table-wrap"><table id="table"><thead><tr>' +
+      th.map(function (h) { return '<th data-act="sort" data-sort="' + h[0] + '" tabindex="0" class="' + (h[2] || "") + '"' + (state.sortKey === h[0] ? ' aria-sort="' + (state.sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + esc(tl(h[1])) + "</th>"; }).join("") + '<th aria-label="' + esc(tl("btn.edit")) + '"></th></tr></thead><tbody id="tbody"></tbody></table></div></section>';
   }
-
-  var CHIPS = [["all", "All"], ["applied", "Applied"], ["waiting", "Waiting"], ["interview", "Interview"], ["rejected", "Rejected"], ["gated", "Gated"]];
-  function renderChips() {
-    $("#chips").innerHTML = CHIPS.map(function (c) {
-      return '<button class="chip" type="button" data-f="' + c[0] + '" aria-pressed="' + (state.filter === c[0]) + '">' + c[1] + "</button>";
-    }).join("");
-  }
-
   function visibleRows() {
     var q = state.q.toLowerCase();
     var rows = state.rows.filter(function (r) {
@@ -314,71 +409,269 @@
     });
     return rows;
   }
-
-  function renderTable() {
+  function renderTableBody() {
     var rows = visibleRows();
-    $("#count").textContent = rows.length + " of " + state.rows.length + " listings";
-    $("#table tbody").innerHTML = rows.map(function (r) {
-      return '<tr class="row" tabindex="0" data-i="' + state.rows.indexOf(r) + '">' +
-        '<td class="muted">' + esc(r.date_found) + "</td><td>" + esc(r.company) + '</td><td class="muted">' + esc(r.role) + '</td><td class="muted">' + esc(r.source) + "</td>" +
-        '<td class="num score">' + (r.score != null ? r.score.toFixed(1) : "") + "</td><td>" + tagFor(r) + "</td></tr>";
-    }).join("") || '<tr><td colspan="6" class="empty">No listings match.</td></tr>';
-    document.querySelectorAll("#table th").forEach(function (th) {
-      th.removeAttribute("aria-sort");
-      if (th.dataset.sort === state.sortKey) th.setAttribute("aria-sort", state.sortDir > 0 ? "ascending" : "descending");
-    });
+    $("#count").textContent = t("count", { a: rows.length, b: state.rows.length });
+    $("#tbody").innerHTML = rows.map(function (r) {
+      return '<tr class="row"><td class="date">' + esc(r.date_found) + "</td><td>" + esc(r.company) + '</td><td class="muted">' + esc(r.role) + '</td><td class="muted">' + esc(r.source) + '</td><td class="num score num">' + (r.score != null ? r.score.toFixed(1) : "") + "</td><td>" + tagFor(r) + '</td><td><button type="button" class="edit" data-act="edit" data-i="' + state.rows.indexOf(r) + '" aria-label="' + esc(tl("btn.edit") + " " + r.company) + '">' + esc(tl("btn.edit")) + "</button></td></tr>";
+    }).join("") || '<tr><td colspan="7" class="empty">' + esc(tl("nomatch")) + "</td></tr>";
   }
+
+  /* ---------- Steady ---------- */
+  function steadyCardFor(r, extra) {
+    var s = stats(), n = s.applied.length, k = s.inter.length, p = n ? Math.round(100 * (n - k) / n) : 0;
+    var lines = I.wit[state.lang === "es" ? 1 : 0], h = 0, name = r.company || "";
+    for (var i = 0; i < name.length; i++) h = (h + name.charCodeAt(i)) % 997;
+    var wit = r.outcome === "rejected-auto" ? tl("wit.auto") : lines[h % lines.length];
+    return '<section class="steady"><span class="label k">' + esc(tl("steady.reject")) + '</span><p class="big">' + esc(t("steady.big", { p: p })) + "</p><p>" + esc(t("steady.body", { k: k, n: n, co: r.company, role: r.role })) + '</p><div class="row"><span class="label">' + esc(tl("steady.hands")) + "</span><p>" + esc(tl("steady.hands.t")) + '</p></div><div class="row"><span class="label">' + esc(tl("steady.not")) + "</span><p>" + esc(tl("steady.not.t")) + '</p></div><p class="wit">' + esc(wit) + "</p>" + (extra || "") + "</section>";
+  }
+  function lastRejection() {
+    return state.rows.filter(function (r) { return r.stateKey === "rejected" && r.outcome.indexOf("rejected") === 0; }).sort(function (a, b) { return (b.dOutcome ? b.dOutcome.getTime() : 0) - (a.dOutcome ? a.dOutcome.getTime() : 0); })[0];
+  }
+  function appliedOn(iso) { return state.rows.filter(function (r) { return r.applied && r.raw.date_applied === iso; }).length; }
+  function viewSteady() {
+    var s = stats(), last = lastRejection(), a = appliedOn(todayISO()), L = state.limit, dots = "";
+    for (var i = 0; i < L; i++) dots += "<i" + (i < a ? ' class="on"' : "") + "></i>";
+    var msg = a === 0 ? tl("pace.msg0") : a >= L ? t("pace.full", { a: a }) : t("pace.msg", { a: a, l: L });
+    var h = '<div class="grid12"><div class="c7">' + (last ? steadyCardFor(last) : '<section class="card"><p class="muted">' + esc(tl("last.none")) + "</p></section>") + "</div>";
+    h += '<div class="c5">' + oddsCard(s) + "</div>";
+    h += '<section class="card c6"><span class="label" style="color:var(--calm)">' + esc(tl("pace.s")) + '</span><div class="card-head" style="margin:6px 0 0"><h2>' + esc(tl("pace.k")) + '</h2></div><div class="dots" role="img" aria-label="' + a + " / " + L + '">' + dots + "</div><p>" + esc(msg) + '</p><p class="caveat">' + esc(tl("pace.note")) + "</p></section>";
+    h += '<section class="card c6"><span class="label" style="color:var(--calm)">' + esc(tl("tag.soon")) + '</span><div class="card-head" style="margin:6px 0 0"><h2>' + esc(tl("conf.k")) + "</h2></div><p class=\"muted\">" + esc(tl("conf.t")) + "</p></section></div>";
+    return h;
+  }
+
+  /* ---------- Soon ---------- */
+  function viewSoon(v) {
+    return '<div class="card soon"><span class="tag">' + esc(tl("soon.status")) + " · " + esc(tl("soon.phase")) + " " + PHASE[v] + '</span><h2>' + esc(tl("nav." + v)) + '</h2><p class="lede">' + esc(tl("soon." + v + ".l")) + "</p><ul>" + I["soon." + v + ".b"][state.lang === "es" ? 1 : 0].map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul></div>";
+  }
+
+  /* ---------- Step forms ---------- */
+  var O = [["rejected", "o.rejected"], ["auto", "o.auto"], ["interview", "o.interview"], ["offer", "o.offer"], ["silent", "o.silent"], ["withdrawn", "o.withdrawn"]];
+  var STAGE = [["recruiter", "stg.recruiter"], ["manager", "stg.manager"], ["exercise", "stg.exercise"], ["panel", "stg.panel"], ["final", "stg.final"], ["other", "stg.other"]];
+  var FLOWS = {
+    reply: { steps: [
+      { key: "row", type: "pick", q: "q.which", h: "h.which" },
+      { key: "reply", type: "choice", q: "q.reply", opts: O.map(function (o) { return [o[0], o[1], o[1] + ".d"]; }) },
+      { key: "date", type: "date", q: "q.when", h: "h.when" },
+      { key: "note", type: "text", q: "q.note", h: "h.note", optional: true, long: true }] },
+    apply: { steps: [
+      { key: "company", type: "text", q: "q.company", required: true },
+      { key: "role", type: "text", q: "q.role", required: true },
+      { key: "source", type: "choice", q: "q.source", two: true, opts: SOURCES.map(function (s) { return [s, null]; }) },
+      { key: "date", type: "date", q: "q.applied", h: "h.when" },
+      { key: "score", type: "choice", q: "q.score", h: "h.score", two: true, optional: true, opts: [["1"], ["2"], ["3"], ["4"], ["5"]].map(function (s) { return [s[0], null]; }) },
+      { key: "note", type: "text", q: "q.note", h: "h.note", optional: true, long: true }] },
+    interview: { steps: [
+      { key: "row", type: "pick", q: "q.which", h: "h.which" },
+      { key: "stage", type: "choice", q: "q.stage", two: true, opts: STAGE.map(function (o) { return [o[0], o[1]]; }) },
+      { key: "date", type: "date", q: "q.date.int", h: "h.when" },
+      { key: "note", type: "text", q: "q.note.int", h: "h.note.int", optional: true, long: true }] }
+  };
+  function optLabel(o) { return o[1] ? tl(o[1]) : o[0]; }
+  function viewLog() {
+    var w = state.wiz;
+    if (!w) return '<p class="muted" style="margin:0 0 18px">' + esc(tl("log.lede")) + '</p><div class="start-grid">' + ["reply", "apply", "interview"].map(function (f) {
+      return '<button class="start" type="button" data-act="wiz-start" data-flow="' + f + '"><h3>' + esc(tl("flow." + f)) + "</h3><p>" + esc(tl("flow." + f + ".d")) + "</p></button>";
+    }).join("") + "</div>";
+    if (w.done) return '<div class="wiz-wrap"><div class="wiz"><span class="label">' + esc(tl("done.sub")) + "</span><h2>" + esc(tl("done.title")) + "</h2>" + (w.steady ? w.steady : "") + '<div class="wiz-nav"><button class="btn ghost" type="button" data-act="wiz-again">' + esc(tl("btn.another")) + '</button><a class="btn" href="#tracker">' + esc(tl("btn.totracker")) + "</a></div></div></div>";
+    var steps = FLOWS[w.flow].steps, n = steps.length, i = w.step, h = '<div class="wiz-wrap"><div class="wiz" role="group" aria-live="polite">';
+    h += '<div class="prog" role="img" aria-label="' + esc(t("step.of", { a: Math.min(i + 1, n + 1), b: n + 1 })) + '">' + steps.concat([0]).map(function (_, k) { return "<i" + (k <= i ? ' class="on"' : "") + "></i>"; }).join("") + "</div>";
+    h += '<span class="label">' + esc(i >= n ? tl("step.review") : t("step.of", { a: i + 1, b: n + 1 })) + "</span>";
+    if (i >= n) {
+      h += "<h2>" + esc(tl("step.review")) + '</h2><ul class="review">' + reviewItems(w).map(function (x) { return "<li><span class=\"label\">" + esc(x[0]) + "</span><span>" + esc(x[1]) + "</span></li>"; }).join("") + "</ul>";
+      h += '<div class="wiz-nav"><button class="btn ghost" type="button" data-act="wiz-back">' + esc(tl("btn.back")) + '</button><button class="btn accent" type="button" data-act="wiz-save">' + esc(tl("btn.save")) + "</button></div></div></div>";
+      return h;
+    }
+    var st = steps[i], val = w.data[st.key];
+    h += "<h2>" + esc(tl(st.q)) + "</h2>" + (st.h ? '<p class="hint">' + esc(tl(st.h)) + "</p>" : '<p class="hint"></p>');
+    if (st.type === "choice") {
+      h += '<div class="opts' + (st.two ? " two" : "") + '">' + st.opts.map(function (o) {
+        return '<button class="opt" type="button" data-act="wiz-opt" data-v="' + esc(o[0]) + '" aria-pressed="' + (val === o[0]) + '"><strong>' + esc(optLabel(o)) + "</strong>" + (o[2] ? "<small>" + esc(tl(o[2])) + "</small>" : "") + "</button>";
+      }).join("") + "</div>";
+    } else if (st.type === "date") {
+      h += '<input class="big-input" id="wizIn" type="date" value="' + esc(val || todayISO()) + '">';
+    } else if (st.type === "text") {
+      h += st.long ? '<textarea class="big-input" id="wizIn" rows="4">' + esc(val || "") + "</textarea>" : '<input class="big-input" id="wizIn" type="text" value="' + esc(val || "") + '" autocomplete="off">';
+    } else if (st.type === "pick") {
+      h += '<input type="search" class="input" id="wizQ" style="width:100%" placeholder="' + esc(tl("search")) + '" value="' + esc(w.q || "") + '" aria-label="' + esc(tl("search")) + '"><div class="pick-list" id="pickList">' + pickHTML(w) + "</div>";
+    }
+    h += '<div class="wiz-nav"><button class="btn ghost" type="button" data-act="wiz-back">' + esc(i === 0 ? tl("btn.cancel") : tl("btn.back")) + "</button>" + (st.type === "choice" && !st.optional ? "" : '<button class="btn" type="button" data-act="wiz-next">' + esc(st.optional && !val ? tl("btn.skip") : tl("btn.continue")) + "</button>") + "</div></div></div>";
+    return h;
+  }
+  function pickCandidates(w) {
+    var q = (w.q || "").toLowerCase();
+    var rows = state.rows.filter(function (r) { return r.applied; });
+    if (w.flow === "reply") rows.sort(function (a, b) { return (a.outcome ? 1 : 0) - (b.outcome ? 1 : 0) || (b.dApplied ? b.dApplied.getTime() : 0) - (a.dApplied ? a.dApplied.getTime() : 0); });
+    else rows.sort(function (a, b) { return (b.dApplied ? b.dApplied.getTime() : 0) - (a.dApplied ? a.dApplied.getTime() : 0); });
+    return rows.filter(function (r) { return !q || (r.company + " " + r.role).toLowerCase().indexOf(q) >= 0; }).slice(0, 60);
+  }
+  function pickHTML(w) {
+    var rows = pickCandidates(w);
+    return rows.map(function (r) { var i = state.rows.indexOf(r); return '<button class="opt" type="button" data-act="wiz-pick" data-i="' + i + '" aria-pressed="' + (w.data.row === i) + '"><strong>' + esc(r.company) + "</strong><small>" + esc(r.role) + " · " + esc(r.stateText) + "</small></button>"; }).join("") || '<p class="empty">' + esc(tl("nomatch")) + "</p>";
+  }
+  function reviewItems(w) {
+    var d = w.data, out = [];
+    if (w.flow === "apply") {
+      out = [[tl("r.company"), d.company], [tl("r.role"), d.role], [tl("r.source"), d.source], [tl("r.date"), d.date || todayISO()]];
+      if (d.score) out.push([tl("r.score"), d.score]);
+    } else {
+      var r = state.rows[d.row];
+      out.push([tl("r.application"), r ? r.company + ", " + r.role : ""]);
+      if (w.flow === "reply") out.push([tl("r.reply"), tl(O.filter(function (o) { return o[0] === d.reply; })[0][1])]);
+      else out.push([tl("r.stage"), tl(STAGE.filter(function (o) { return o[0] === d.stage; })[0][1])]);
+      out.push([tl("r.date"), d.date || todayISO()]);
+    }
+    if (d.note) out.push([tl("r.note"), d.note]);
+    return out;
+  }
+  function wizCapture() { var el = $("#wizIn"); if (el && state.wiz) state.wiz.data[FLOWS[state.wiz.flow].steps[state.wiz.step].key] = el.value.trim(); }
+  function wizValid() {
+    var w = state.wiz, st = FLOWS[w.flow].steps[w.step], v = w.data[st.key];
+    if (st.type === "date" && !v) { w.data[st.key] = todayISO(); return true; }
+    if ((st.required || st.type === "pick" || st.type === "choice") && !st.optional && (v == null || v === "")) { toast(tl("toast.need")); return false; }
+    return true;
+  }
+  function wizNext() {
+    var w = state.wiz; if (!w || w.done) return;
+    if (w.step < FLOWS[w.flow].steps.length) { wizCapture(); if (!wizValid()) return; }
+    w.step++; render(); focusWiz();
+  }
+  function focusWiz() { var el = $("#wizIn") || $("#wizQ"); if (el) el.focus(); }
+  function wizSave() {
+    var w = state.wiz, d = w.data, today = todayISO(), date = d.date || today, steady = "";
+    var MAP = { rejected: "rejected", auto: "rejected-auto", interview: "interview", offer: "offer", silent: "no-response", withdrawn: "withdrawn" };
+    function addNote(raw, text) { if (text) raw.notes = (raw.notes ? raw.notes + " " : "") + "[" + date + "] " + text; }
+    if (w.flow === "apply") {
+      var raw = {}; state.head.forEach(function (h) { raw[h] = ""; });
+      raw.date_found = date; raw.company = d.company; raw.role = d.role; raw.source = d.source || ""; raw.score = d.score || ""; raw.gate_result = "pass"; raw.status = "applied"; raw.date_applied = date; raw.notes = d.note || "";
+      state.rows.push(normalise(raw));
+    } else {
+      var row = state.rows[d.row], rw = row.raw, idx = d.row;
+      if (w.flow === "reply") {
+        rw.outcome = MAP[d.reply]; rw.date_outcome = date; rw.status = rw.status || "applied"; addNote(rw, d.note);
+      } else {
+        var sl = tl(STAGE.filter(function (o) { return o[0] === d.stage; })[0][1]);
+        if (!rw.outcome || rw.outcome === "no-response") { rw.outcome = "interview"; rw.date_outcome = date; }
+        addNote(rw, "Interview, " + sl + "." + (d.note ? " " + d.note : ""));
+      }
+      state.rows[idx] = normalise(rw);
+      if (w.flow === "reply" && (d.reply === "rejected" || d.reply === "auto")) steady = steadyCardFor(state.rows[idx]);
+    }
+    state.dirty = true; w.done = true; w.steady = steady;
+    render(); persist();
+  }
+
+  /* ---------- Edit dialog ---------- */
+  var EDIT_ES = { Company: "Empresa", Role: "Puesto", Source: "Fuente", "Score (1 to 5)": "Puntuación (1 a 5)", Status: "Estado", Outcome: "Resultado", Found: "Encontrada", Applied: "Enviada", "Outcome date": "Fecha del resultado", "Gate result": "Filtro", Domain: "Ámbito", Skills: "Habilidades", Level: "Nivel", Evidence: "Evidencia", Terms: "Condiciones", Notes: "Notas" };
+  function labelsLang() {
+    document.querySelectorAll("#editForm label").forEach(function (l) {
+      var n = l.firstChild; if (!n || n.nodeType !== 3) return;
+      if (!l.dataset.en) l.dataset.en = n.nodeValue;
+      n.nodeValue = state.lang === "es" ? (EDIT_ES[l.dataset.en] || l.dataset.en) : l.dataset.en;
+    });
+    $("#fitLegend").textContent = tl("edit.legend"); $("#editCancel").textContent = tl("btn.cancel"); $("#editSave").textContent = tl("btn.save");
+  }
+  function fillSelect(sel, values, current) {
+    var list = values.slice(); if (current && list.indexOf(current) < 0) list.push(current);
+    sel.innerHTML = list.map(function (v) { return '<option value="' + esc(v) + '"' + (v === current ? " selected" : "") + ">" + (v || tl("none.yet")) + "</option>"; }).join("");
+  }
+  function openEditor(i) {
+    var isNew = i < 0, r = isNew ? { raw: { date_found: todayISO(), status: "found" } } : state.rows[i], f = r.raw;
+    state.editing = isNew ? null : r;
+    var form = $("#editForm");
+    $("#editTitle").textContent = isNew ? tl("edit.new") : f.company;
+    $("#editSub").textContent = isNew ? tl("edit.newsub") : f.role;
+    ["company", "role", "source", "date_found", "date_applied", "date_outcome", "gate_result", "score", "notes"].concat(DIMS).forEach(function (k) { if (form.elements[k]) form.elements[k].value = f[k] || ""; });
+    fillSelect(form.elements.status, STATUSES, f.status || "found");
+    fillSelect(form.elements.outcome, OUTCOMES, f.outcome || "");
+    labelsLang(); $("#editor").showModal();
+  }
+  function saveEditor() {
+    var form = $("#editForm"), raw = state.editing ? state.editing.raw : {}, isNew = !state.editing;
+    ["company", "role", "source", "date_found", "date_applied", "date_outcome", "gate_result", "score", "status", "outcome", "notes"].concat(DIMS).forEach(function (k) { if (form.elements[k]) raw[k] = form.elements[k].value.trim(); });
+    if (raw.outcome && !raw.date_outcome && raw.outcome !== "no-response") raw.date_outcome = todayISO();
+    if (raw.status === "applied" && !raw.date_applied) raw.date_applied = todayISO();
+    if (isNew) { state.head.forEach(function (h) { if (raw[h] == null) raw[h] = ""; }); state.rows.push(normalise(raw)); }
+    else { var idx = state.rows.indexOf(state.editing), sel = state.selected === state.editing; state.rows[idx] = normalise(raw); if (sel) state.selected = state.rows[idx]; }
+    state.dirty = true; render(); persist();
+  }
+
+  /* ---------- Files ---------- */
+  function toast(msg) { var el = $("#toast"); el.textContent = msg; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { el.hidden = true; }, 4200); }
+  function persist() {
+    if (state.handle) {
+      state.handle.createWritable().then(function (w) { return w.write(serialise()).then(function () { return w.close(); }); })
+        .then(function () { state.dirty = false; renderTop(); toast(t("toast.saved", { f: state.handle.name })); })
+        .catch(function (err) { toast(t("toast.fail", { e: err.message })); });
+    } else { toast(tl("toast.pagecopy")); }
+  }
+  function download() {
+    var blob = new Blob([serialise()], { type: "text/csv" }), a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = (state.handle && state.handle.name) || "tracker.csv";
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    state.dirty = false; renderTop();
+  }
+  function openWithHandle() {
+    window.showOpenFilePicker({ types: [{ description: "Tracker CSV", accept: { "text/csv": [".csv"] } }] }).then(function (hs) {
+      var h = hs[0];
+      return h.getFile().then(function (file) { return file.text(); }).then(function (text) { state.handle = h; load(text, h.name, true); toast(t("toast.editing", { f: h.name })); });
+    }).catch(function (e) { if (e && e.name !== "AbortError") toast(e.message); });
+  }
+  function readFile(file) { if (!file) return; var fr = new FileReader(); fr.onload = function () { load(String(fr.result), file.name); }; fr.readAsText(file); }
 
   /* ---------- Events ---------- */
-  function select(i) {
-    var r = state.rows[i];
-    if (!r) return;
-    state.selected = r;
-    renderFit();
-    if (window.matchMedia("(max-width: 880px)").matches) $("#radarCard").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  function route() {
+    var v = (location.hash || "#overview").slice(1), ok = ["overview", "tracker", "log", "steady", "scout", "craft", "apply", "prepare"];
+    state.view = ok.indexOf(v) >= 0 ? v : "overview";
+    if (state.view !== "log") state.wiz = state.wiz && state.wiz.done ? null : state.wiz;
+    render(); window.scrollTo(0, 0);
   }
+  window.addEventListener("hashchange", route);
 
-  $("#fitList").addEventListener("click", function (e) { var li = e.target.closest(".fit-item"); if (li) select(+li.dataset.i); });
-  $("#fitList").addEventListener("keydown", function (e) {
-    if (e.key === "Enter" || e.key === " ") { var li = e.target.closest(".fit-item"); if (li) { e.preventDefault(); select(+li.dataset.i); } }
+  document.addEventListener("click", function (e) {
+    var th = e.target.closest("[data-theme-set]");
+    if (th) { state.theme = th.dataset.themeSet; document.documentElement.dataset.theme = state.theme; store("jo.theme", state.theme); renderNav(); return; }
+    var lg = e.target.closest("[data-lang-set]");
+    if (lg) { state.lang = lg.dataset.langSet; store("jo.lang", state.lang); renorm(); render(); return; }
+    var el = e.target.closest("[data-act]"); if (!el) return;
+    var act = el.dataset.act, i = +el.dataset.i;
+    if (act === "select") { state.selected = state.rows[i]; $("#view").innerHTML = viewOverview(); }
+    else if (act === "edit") openEditor(i);
+    else if (act === "add") openEditor(-1);
+    else if (act === "sample") load(window.SAMPLE_CSV, "Sample data (fictional)");
+    else if (act === "download") download();
+    else if (act === "open") openWithHandle();
+    else if (act === "filter") { state.filter = el.dataset.f; render(); }
+    else if (act === "sort") { var k = el.dataset.sort; if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = (k === "score" || k === "date_found") ? -1 : 1; } render(); }
+    else if (act === "wiz-start") { state.wiz = { flow: el.dataset.flow, step: 0, data: {}, q: "", done: false }; render(); focusWiz(); }
+    else if (act === "wiz-again") { state.wiz = null; render(); }
+    else if (act === "wiz-back") { var w = state.wiz; if (w.step === 0) state.wiz = null; else { if (w.step < FLOWS[w.flow].steps.length) wizCapture(); w.step--; } render(); focusWiz(); }
+    else if (act === "wiz-next") wizNext();
+    else if (act === "wiz-opt") { var wz = state.wiz, st = FLOWS[wz.flow].steps[wz.step]; wz.data[st.key] = st.optional && wz.data[st.key] === el.dataset.v ? "" : el.dataset.v; if (st.optional) render(); else setTimeout(function () { wizNext(); }, 140); render(); }
+    else if (act === "wiz-pick") { state.wiz.data.row = i; setTimeout(function () { wizNext(); }, 140); render(); }
+    else if (act === "wiz-save") wizSave();
   });
-  $("#table tbody").addEventListener("click", function (e) { var tr = e.target.closest("tr.row"); if (tr) select(+tr.dataset.i); });
-  $("#table tbody").addEventListener("keydown", function (e) {
-    if (e.key === "Enter") { var tr = e.target.closest("tr.row"); if (tr) select(+tr.dataset.i); }
+  document.addEventListener("keydown", function (e) {
+    var el = e.target;
+    if ((e.key === "Enter" || e.key === " ") && el.matches && el.matches("th[data-sort], .fit-item")) { e.preventDefault(); el.click(); return; }
+    if (e.key === "Enter" && state.view === "log" && state.wiz && !state.wiz.done && el.id === "wizIn" && (el.tagName !== "TEXTAREA" || e.metaKey || e.ctrlKey)) { e.preventDefault(); wizNext(); }
   });
-  $("#chips").addEventListener("click", function (e) {
-    var b = e.target.closest(".chip"); if (!b) return;
-    state.filter = b.dataset.f; renderChips(); renderTable();
+  document.addEventListener("input", function (e) {
+    if (e.target.id === "q") { state.q = e.target.value; renderTableBody(); }
+    else if (e.target.id === "wizQ") { state.wiz.q = e.target.value; $("#pickList").innerHTML = pickHTML(state.wiz); }
   });
-  $("#q").addEventListener("input", function (e) { state.q = e.target.value; renderTable(); });
-  document.querySelectorAll("#table th").forEach(function (th) {
-    th.tabIndex = 0;
-    function go() {
-      var k = th.dataset.sort;
-      if (state.sortKey === k) state.sortDir *= -1;
-      else { state.sortKey = k; state.sortDir = (k === "score" || k === "date_found") ? -1 : 1; }
-      renderTable();
-    }
-    th.addEventListener("click", go);
-    th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
-  });
-
-  function readFile(file) {
-    if (!file) return;
-    var fr = new FileReader();
-    fr.onload = function () { load(String(fr.result), file.name); };
-    fr.readAsText(file);
-  }
+  $("#editForm").addEventListener("submit", function (e) { if (e.submitter && e.submitter.value === "cancel") return; e.preventDefault(); saveEditor(); $("#editor").close(); });
   $("#file").addEventListener("change", function (e) { readFile(e.target.files[0]); e.target.value = ""; });
-  $("#btnSample").addEventListener("click", function () { load(window.SAMPLE_CSV, "Sample data (fictional)"); });
-
-  ["dragenter", "dragover"].forEach(function (ev) {
-    document.addEventListener(ev, function (e) { e.preventDefault(); document.body.classList.add("dragging"); });
-  });
-  ["dragleave", "drop"].forEach(function (ev) {
-    document.addEventListener(ev, function (e) { e.preventDefault(); document.body.classList.remove("dragging"); });
-  });
+  ["dragenter", "dragover"].forEach(function (ev) { document.addEventListener(ev, function (e) { e.preventDefault(); document.body.classList.add("dragging"); }); });
+  ["dragleave", "drop"].forEach(function (ev) { document.addEventListener(ev, function (e) { e.preventDefault(); document.body.classList.remove("dragging"); }); });
   document.addEventListener("drop", function (e) { if (e.dataTransfer && e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]); });
+  window.addEventListener("beforeunload", function (e) { if (state.dirty) { e.preventDefault(); e.returnValue = ""; } });
 
+  var sl = fetchStore("jo.lang"), sth = fetchStore("jo.theme");
+  if (sl === "es" || sl === "en") state.lang = sl;
+  if (sth === "dark" || sth === "light") state.theme = sth;
+  document.documentElement.dataset.theme = state.theme;
+  state.view = (location.hash || "#overview").slice(1);
   load(window.SAMPLE_CSV || "", "Sample data (fictional)");
+  route();
 })();

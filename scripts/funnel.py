@@ -6,7 +6,7 @@ Columns (extra columns are ignored):
   date_applied, date_outcome, outcome, notes
 
 status:  found | gated | skipped | tailored | applied | closed
-outcome: "" (none yet) | rejected | rejected-auto | interview | offer | withdrawn
+outcome: "" (none yet) | rejected | rejected-auto | interview | offer | withdrawn | no-response
 gate_result examples: pass, fail:geo, fail:lang, fail:onsite, fail:closed
 
 Usage: python3 funnel.py tracker.csv
@@ -52,7 +52,7 @@ def main(path):
 
     today = date.today()
     applied = [r for r in rows if (r.get("status") or "").strip() == "applied"]
-    responded = [r for r in applied if (r.get("outcome") or "").strip()]
+    responded = [r for r in applied if (r.get("outcome") or "").strip() not in ("", "no-response")]
     interviews = [r for r in applied if (r.get("outcome") or "").strip() in ("interview", "offer")]
     offers = [r for r in applied if (r.get("outcome") or "").strip() == "offer"]
 
@@ -82,7 +82,7 @@ def main(path):
         by[(r.get("source") or "unknown").strip() or "unknown"].append(r)
     print("| Source | Applied | Any outcome | Interview+ | Median days to outcome |\n|---|---|---|---|---|")
     for src, rs in sorted(by.items(), key=lambda kv: -len(kv[1])):
-        out = [x for x in rs if (x.get("outcome") or "").strip()]
+        out = [x for x in rs if (x.get("outcome") or "").strip() not in ("", "no-response")]
         iv = [x for x in rs if (x.get("outcome") or "").strip() in ("interview", "offer")]
         days = []
         for x in out:
@@ -99,7 +99,7 @@ def main(path):
     for k in ("4.0+", "3.0-3.9", "<3.0", "unscored"):
         rs = bb.get(k, [])
         if rs:
-            out = [x for x in rs if (x.get("outcome") or "").strip()]
+            out = [x for x in rs if (x.get("outcome") or "").strip() not in ("", "no-response")]
             iv = [x for x in rs if (x.get("outcome") or "").strip() in ("interview", "offer")]
             print(f"| {k} | {len(rs)} | {len(out)} | {len(iv)} |")
 

@@ -2,7 +2,7 @@
 
 A human-in-the-loop job search system for designers and other remote-first knowledge workers. Claude scouts and screens listings, tailors CVs from a verified fact file, fills application forms in your own browser, and stops before Submit. You stay in control of everything that leaves your hands.
 
-Built by [Jose L. Blas](https://portfolio.joselblas.com), a product designer, during a real search for remote roles from Spain. It is a set of plain markdown playbooks and three small scripts. No framework, no server, no telemetry.
+Built by [Jose L. Blas](https://portfolio.joselblas.com), a product designer, during a real search for remote roles from Spain. It is a set of plain markdown playbooks, three small scripts and a local dashboard. No framework, no server, no telemetry.
 
 ## What makes it different
 
@@ -56,6 +56,24 @@ python3 scripts/liveness.py <posting-url>
 python3 scripts/cv_factcheck.py --facts career-context.md --cv cv/CV-Company-2026-01-01.docx
 python3 scripts/funnel.py tracker.csv
 ```
+
+## The dashboard
+
+A full-screen dashboard for your tracker, in `app/`. Rounded cards, a left menu, light by default with a dark option, English and Spanish. It runs in your browser, reads your own `tracker.csv`, and sends nothing anywhere. [Live demo with sample data](https://joselblas.github.io/jobops-kit/app/).
+
+![Overview](docs/screenshots/overview-light.png)
+
+- **Overview**: funnel, odds of an interview in plain words, fit radar, score against outcome, waiting list.
+- **Tracker**: filter, search, sort and edit every listing. In Chrome or Edge it saves straight back to your file.
+- **Log an update**: one question per step. A reply arrived, I applied, an interview happened.
+- **Steady** (preview): your own base rate, a pacing guard, and one dry line after a rejection.
+- **Scout, CV and portfolio, Apply, Interview prep**: menu pages marked Soon, so you can see where it is going.
+
+| Log an update | Steady | Dark |
+|---|---|---|
+| ![Log](docs/screenshots/log-step.png) | ![Steady](docs/screenshots/steady.png) | ![Dark](docs/screenshots/overview-dark.png) |
+
+See `app/README.md` for columns and saving.
 
 ## Results
 

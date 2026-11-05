@@ -1,116 +1,70 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="dark">
-<title>Job Ops Dashboard</title>
+<meta name="color-scheme" content="light dark">
+<title>Jobops</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<header class="top">
-  <div class="brand">Job Ops <span>/ dashboard</span></div>
-  <div class="actions">
-    <button class="btn ghost" id="btnSample" type="button">Sample data</button>
-    <label class="btn" for="file">Load tracker.csv</label>
-    <input type="file" id="file" accept=".csv,text/csv" hidden>
+<div class="shell">
+  <aside class="side" id="side">
+    <a class="brand" href="#overview"><span class="mark" aria-hidden="true"></span><span>Jobops</span></a>
+    <nav id="nav" aria-label="Main"></nav>
+    <div class="side-foot">
+      <div class="seg" role="group" aria-label="Theme" id="themeSeg"></div>
+      <div class="seg" role="group" aria-label="Language" id="langSeg"></div>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="meta"></p>
+        <h1 id="title"></h1>
+      </div>
+      <div class="actions" id="actions"></div>
+    </header>
+    <main id="view" tabindex="-1"></main>
+    <footer id="foot"></footer>
   </div>
-</header>
+</div>
 
-<main id="drop">
-  <section class="hero">
-    <p class="eyebrow" id="meta">Loading</p>
-    <h1>The search,<br><em>in numbers.</em></h1>
-    <p class="lede">Every listing logged, gated and scored against your own evidence. Drop your <code>tracker.csv</code> anywhere on this page. Nothing leaves your browser.</p>
-  </section>
-
-  <section class="kpis" id="kpis" aria-label="Key numbers"></section>
-
-  <section class="block">
-    <div class="block-head">
-      <h2>Funnel</h2>
-      <p>Where the effort goes, and where it stops.</p>
+<dialog id="editor" aria-labelledby="editTitle">
+  <form id="editForm" method="dialog">
+    <h2 id="editTitle"></h2>
+    <p class="sub" id="editSub"></p>
+    <div class="grid">
+      <label>Company<input name="company" required></label>
+      <label>Role<input name="role"></label>
+      <label>Source<input name="source" placeholder="linkedin, job-board, email"></label>
+      <label>Score (1 to 5)<input name="score" type="number" step="0.1" min="0" max="5"></label>
+      <label>Status<select name="status"></select></label>
+      <label>Outcome<select name="outcome"></select></label>
+      <label>Found<input name="date_found" type="date"></label>
+      <label>Applied<input name="date_applied" type="date"></label>
+      <label>Outcome date<input name="date_outcome" type="date"></label>
+      <label>Gate result<input name="gate_result" placeholder="pass, fail:geo, fail:lang"></label>
     </div>
-    <div id="funnel" class="funnel"></div>
-    <p class="caveat" id="caveat"></p>
-  </section>
-
-  <section class="block split">
-    <div>
-      <div class="block-head">
-        <h2>Fit</h2>
-        <p>Pick an opportunity to see how your evidence matches it.</p>
+    <fieldset>
+      <legend id="fitLegend"></legend>
+      <div class="grid five">
+        <label>Domain<input name="domain" type="number" min="1" max="5" step="1"></label>
+        <label>Skills<input name="skill" type="number" min="1" max="5" step="1"></label>
+        <label>Level<input name="level" type="number" min="1" max="5" step="1"></label>
+        <label>Evidence<input name="evidence" type="number" min="1" max="5" step="1"></label>
+        <label>Terms<input name="terms" type="number" min="1" max="5" step="1"></label>
       </div>
-      <ol id="fitList" class="fit-list"></ol>
+    </fieldset>
+    <label class="wide">Notes<textarea name="notes" rows="3"></textarea></label>
+    <div class="row-actions">
+      <button class="btn ghost" value="cancel" formnovalidate id="editCancel"></button>
+      <button class="btn" value="save" id="editSave"></button>
     </div>
-    <div class="radar-card" id="radarCard" aria-live="polite"></div>
-  </section>
-
-  <section class="block">
-    <div class="block-head">
-      <h2>Score against outcome</h2>
-      <p>Does the fit score predict anything? Each dot is one application.</p>
-    </div>
-    <div id="swarm" class="swarm"></div>
-  </section>
-
-  <section class="block split even">
-    <div>
-      <div class="block-head">
-        <h2>Gates</h2>
-        <p>Listings stopped before any CV work.</p>
-      </div>
-      <div id="gates" class="bars"></div>
-    </div>
-    <div>
-      <div class="block-head">
-        <h2>Sources</h2>
-        <p>Applied, heard back, interview or better.</p>
-      </div>
-      <div id="sources" class="bars"></div>
-    </div>
-  </section>
-
-  <section class="block" id="waitingBlock">
-    <div class="block-head">
-      <h2>Waiting</h2>
-      <p>Applied, no outcome after two weeks or more. Candidates for a follow-up.</p>
-    </div>
-    <ul id="waiting" class="waiting"></ul>
-  </section>
-
-  <section class="block">
-    <div class="block-head">
-      <h2>Tracker</h2>
-      <p id="count"></p>
-    </div>
-    <div class="controls">
-      <div class="chips" id="chips" role="group" aria-label="Filter by status"></div>
-      <input type="search" id="q" placeholder="Search company, role, note" aria-label="Search">
-    </div>
-    <div class="table-wrap">
-      <table id="table">
-        <thead>
-          <tr>
-            <th data-sort="date_found">Found</th>
-            <th data-sort="company">Company</th>
-            <th data-sort="role">Role</th>
-            <th data-sort="source">Source</th>
-            <th data-sort="score" class="num">Score</th>
-            <th data-sort="state">State</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <p>Part of <strong>jobops-kit</strong>. Gates first, then fit. Small samples stay small. Sample data on first load is fictional.</p>
-</footer>
-
+  </form>
+</dialog>
+<div id="toast" role="status" hidden></div>
+<input type="file" id="file" accept=".csv,text/csv" hidden>
 <script src="sample-data.js"></script>
 <script src="app.js"></script>
 </body>
