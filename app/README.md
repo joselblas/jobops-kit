@@ -50,10 +50,16 @@ Your real tracker stays local and gitignored. The sample data is invented. The p
 
 ## Proposed updates
 
-Columns: `kind` (`outcome` or `applied`), `company`, `role`, `outcome`, `date`, `evidence`, `source`. See `templates/proposals.example.csv` and `playbooks/inbox-sweep.md`. Proposals that match no tracker row cannot be accepted, so nothing is created by accident.
+Columns: `kind` (`outcome`, `applied` or `fit`), `company`, `role`, `outcome`, `date`, `evidence`, `source`. See `templates/proposals.example.csv` and `playbooks/inbox-sweep.md`. Proposals that match no tracker row cannot be accepted, so nothing is created by accident.
 
 ![Proposed updates](../docs/screenshots/inbox.png)
 
 ## Weekly review
 
 ![Weekly review](../docs/screenshots/review.png)
+
+### Fit proposals
+
+A `fit` row proposes the five ratings (`domain`, `skill`, `level`, `evidence`, `terms`, each 1 to 5) with a `reason`. In a fit row the `evidence` column is the rating, not a quote. Accepting writes the ratings, and sets the overall score to the average rounded to a half point if the row has none. See `playbooks/fit-helper.md` and `templates/fit-proposals.example.csv`.
+
+![Fit proposal](../docs/screenshots/fit.png)

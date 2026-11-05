@@ -1,0 +1,7 @@
+kind,company,role,outcome,date,evidence,source,domain,skill,level,terms,reason
+outcome,Thistle Works,Senior Product Designer,rejected,2026-03-17,"""We have decided not to move forward with your application.""",email,,,,,
+outcome,Mossgate,Design Systems Lead,interview,2026-03-17,"""We would like to invite you to a first call next week.""",email,,,,,
+outcome,Wren Robotics,Product Designer,rejected-auto,2026-03-18,"""Thank you for your interest. Unfortunately we are not progressing your application.""",email,,,,,
+applied,Cobalt Studio,Senior Product Designer,,2026-03-18,"""Thank you for applying to Senior Product Designer.""",email,,,,,
+outcome,Nowhere Labs,Design Lead,rejected,2026-03-18,"""We went with another candidate.""",email,,,,,
+fit,Fernwood Systems,Staff Product Designer,,,4,scout-log,4,4,4,3,"Design systems and dashboards match the evidence. Gap: staff scope is one band above. Pay is not listed."

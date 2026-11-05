@@ -37,6 +37,7 @@
     "inbox.accept": ["Accept", "Aceptar"], "inbox.skip": ["Skip", "Omitir"], "inbox.pending": ["{n} waiting for you", "{n} esperando tu decisión"], "inbox.empty": ["Nothing to review. Load a proposals file, or try the sample.", "Nada que revisar. Carga un archivo de propuestas o prueba el ejemplo."],
     "inbox.accepted": ["Accepted", "Aceptada"], "inbox.skipped": ["Skipped", "Omitida"], "inbox.nomatch": ["No matching application in the tracker. Skip it, or add it with Log an update.", "No hay candidatura coincidente en el seguimiento. Omítela o añádela con Registrar novedad."],
     "inbox.newapp": ["New application", "Candidatura nueva"], "inbox.change": ["Change", "Cambio"], "inbox.evidence": ["Evidence", "Evidencia"], "inbox.from": ["from", "desde"], "inbox.guess": ["Closest match, check the role.", "Coincidencia más cercana, comprueba el puesto."],
+    "inbox.fit": ["Fit profile", "Perfil de encaje"], "inbox.fitavg": ["average {a}", "media {a}"], "inbox.fitnow": ["current score {s}", "puntuación actual {s}"], "inbox.fitrep": ["Replaces the current profile.", "Sustituye al perfil actual."], "inbox.fitwhy": ["Why these ratings", "Por qué estas puntuaciones"], "inbox.fitbad": ["Ratings must be five numbers from 1 to 5.", "Las puntuaciones deben ser cinco números del 1 al 5."],
     "inbox.done": ["{a} accepted, {s} skipped.", "{a} aceptadas, {s} omitidas."], "nav.scout": ["Scout", "Buscar ofertas"], "nav.craft": ["CV and portfolio", "CV y portafolio"],
     "nav.apply": ["Apply", "Candidaturas"], "nav.prepare": ["Interview prep", "Preparar entrevistas"],
     "grp.work": ["Your search", "Tu búsqueda"], "grp.soon": ["Coming", "Próximamente"],
@@ -497,6 +498,11 @@
     state.props = raw.filter(function (r) { return r.company; }).map(function (r, i) {
       var p = { id: i, kind: (r.kind || r.type || "outcome").toLowerCase(), company: r.company, role: r.role || "", outcome: (r.outcome || "").toLowerCase(), date: r.date || "", evidence: r.evidence || "", source: r.source || "email", status: "pending" };
       if (p.kind === "update") p.kind = "outcome";
+      if (p.kind === "fit") {
+        p.dims = [r.domain, r.skill, r.level, r.evidence, r.terms].map(function (x) { return parseFloat(x); });
+        p.bad = p.dims.some(function (x) { return isNaN(x) || x < 1 || x > 5; });
+        p.reason = r.reason || ""; p.evidence = p.reason;
+      }
       p.match = p.kind === "applied" ? -1 : matchRow(p);
       return p;
     });
@@ -506,23 +512,35 @@
     var list = state.props, pend = list.filter(function (p) { return p.status === "pending"; });
     if (!list.length) return '<p class="muted" style="margin:0 0 18px">' + esc(tl("inbox.lede")) + '</p><div class="card"><p class="empty">' + esc(tl("inbox.empty")) + "</p></div>";
     var acc = list.filter(function (p) { return p.status === "accepted"; }).length, sk = list.filter(function (p) { return p.status === "skipped"; }).length;
-    var h = '<p class="muted" style="margin:0 0 18px">' + esc(tl("inbox.lede")) + '</p><div class="controls"><span class="tag accent">' + esc(t("inbox.pending", { n: pend.length })) + "</span>" + (acc + sk ? '<span class="muted">' + esc(t("inbox.done", { a: acc, s: sk })) + "</span>" : "") + (pend.some(function (p) { return p.match >= 0 || p.kind === "applied"; }) ? '<button class="btn" type="button" data-act="prop-acceptall">' + esc(tl("inbox.acceptall")) + "</button>" : "") + '</div><div class="prop-list">';
+    var h = '<p class="muted" style="margin:0 0 18px">' + esc(tl("inbox.lede")) + '</p><div class="controls"><span class="tag accent">' + esc(t("inbox.pending", { n: pend.length })) + "</span>" + (acc + sk ? '<span class="muted">' + esc(t("inbox.done", { a: acc, s: sk })) + "</span>" : "") + (pend.some(function (p) { return (p.match >= 0 || p.kind === "applied") && !p.bad; }) ? '<button class="btn" type="button" data-act="prop-acceptall">' + esc(tl("inbox.acceptall")) + "</button>" : "") + '</div><div class="prop-list">';
     list.forEach(function (p) {
       var row = p.match >= 0 ? state.rows[p.match] : null, change;
-      if (p.kind === "applied") change = tl("inbox.newapp") + ": " + p.role + (p.date ? ", " + p.date : "");
+      var dimsHTML = "";
+      if (p.kind === "fit") {
+        var okd = !p.bad, avg = okd ? p.dims.reduce(function (a, b) { return a + b; }, 0) / 5 : 0;
+        change = tl("inbox.fit") + (okd ? ": " + t("inbox.fitavg", { a: fmt(avg) }) : "") + (row && row.score != null ? " · " + t("inbox.fitnow", { s: row.score.toFixed(1) }) : "");
+        if (okd) dimsHTML = '<ul class="dim-list">' + DIMS.map(function (d, k) { return "<li><span>" + esc(tl(DIM_KEY[d])) + '</span><span class="dim-bar"><i style="width:' + (p.dims[k] * 20) + '%"></i></span><b>' + p.dims[k] + "</b></li>"; }).join("") + "</ul>" + (row && row.dims ? '<p class="caveat">' + esc(tl("inbox.fitrep")) + "</p>" : "");
+      } else if (p.kind === "applied") change = tl("inbox.newapp") + ": " + p.role + (p.date ? ", " + p.date : "");
       else change = (row ? row.stateText : "?") + " → " + tl(OUT_KEY[p.outcome] || "st.other") + (p.date ? ", " + p.date : "");
-      var ok = p.kind === "applied" || row, done = p.status !== "pending";
+      var ok = p.kind === "applied" || (row && !p.bad), done = p.status !== "pending";
       h += '<article class="card prop' + (done ? " done" : "") + '"><div class="prop-head"><div><h3>' + esc(p.company) + '</h3><p class="fit-role">' + esc(row ? row.role : p.role) + "</p></div>" +
         (done ? '<span class="tag ' + (p.status === "accepted" ? "calm" : "") + '">' + esc(tl(p.status === "accepted" ? "inbox.accepted" : "inbox.skipped")) + "</span>" : "") + "</div>" +
-        '<p class="label">' + esc(tl("inbox.change")) + '</p><p class="prop-change">' + esc(change) + "</p>" +
-        (p.evidence ? '<p class="label">' + esc(tl("inbox.evidence")) + " · " + esc(tl("inbox.from")) + " " + esc(p.source) + '</p><blockquote>' + esc(p.evidence) + "</blockquote>" : "") +
-        (!ok ? '<p class="caveat">' + esc(tl("inbox.nomatch")) + "</p>" : "") +
+        '<p class="label">' + esc(tl("inbox.change")) + '</p><p class="prop-change">' + esc(change) + "</p>" + dimsHTML +
+        (p.evidence ? '<p class="label">' + esc(p.kind === "fit" ? tl("inbox.fitwhy") : tl("inbox.evidence")) + " · " + esc(tl("inbox.from")) + " " + esc(p.source) + '</p><blockquote>' + esc(p.evidence) + "</blockquote>" : "") +
+        (!ok ? '<p class="caveat">' + esc(p.bad ? tl("inbox.fitbad") : tl("inbox.nomatch")) + "</p>" : "") +
         (done ? "" : '<div class="wiz-nav"><button class="btn ghost" type="button" data-act="prop-skip" data-i="' + p.id + '">' + esc(tl("inbox.skip")) + "</button>" + (ok ? '<button class="btn accent" type="button" data-act="prop-accept" data-i="' + p.id + '">' + esc(tl("inbox.accept")) + "</button>" : "") + "</div>") + "</article>";
     });
     return h + "</div>";
   }
   function applyProp(p) {
     var date = p.date || todayISO();
+    if (p.kind === "fit") {
+      var fr = state.rows[p.match]; if (!fr || p.bad) return false;
+      var fw = fr.raw; DIMS.forEach(function (d, k) { fw[d] = String(p.dims[k]); });
+      if (!fw.score) fw.score = String(Math.round(p.dims.reduce(function (a, b) { return a + b; }, 0) / 5 * 2) / 2);
+      state.rows[p.match] = normalise(fw); if (state.selected === fr) state.selected = state.rows[p.match];
+      p.status = "accepted"; state.dirty = true; return true;
+    }
     if (p.kind === "applied") {
       var raw = {}; state.head.forEach(function (h) { raw[h] = ""; });
       raw.date_found = date; raw.company = p.company; raw.role = p.role; raw.source = p.source || "email"; raw.gate_result = "pass"; raw.status = "applied"; raw.date_applied = date;
@@ -823,7 +841,7 @@
     else if (act === "rev-focus") { state.rev.data.focus = el.dataset.v; render(); setTimeout(revFinish, 160); }
     else if (act === "prop-accept") { if (applyProp(state.props[i])) { render(); persist(); } }
     else if (act === "prop-skip") { state.props[i].status = "skipped"; render(); }
-    else if (act === "prop-acceptall") { var n = 0; state.props.forEach(function (p) { if (p.status === "pending" && (p.kind === "applied" || p.match >= 0) && applyProp(p)) n++; }); render(); if (n) persist(); }
+    else if (act === "prop-acceptall") { var n = 0; state.props.forEach(function (p) { if (p.status === "pending" && (p.kind === "applied" || p.match >= 0) && !p.bad && applyProp(p)) n++; }); render(); if (n) persist(); }
     else if (act === "prop-sample") loadProps(window.SAMPLE_PROPOSALS || "");
   });
   document.addEventListener("keydown", function (e) {

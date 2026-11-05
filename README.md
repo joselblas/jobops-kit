@@ -34,6 +34,7 @@ scout -> gates -> fit score -> you pick -> tailor CV -> fact check
 | Open? Real? | `playbooks/liveness-and-legitimacy.md` | `scripts/liveness.py` |
 | Tailor CV | `playbooks/cv-tailor.md` | `scripts/cv_factcheck.py` |
 | Fill forms | `playbooks/apply.md` | |
+| Rate fit for unrated listings | `playbooks/fit-helper.md` | |
 | Find replies in your email | `playbooks/inbox-sweep.md` | |
 | Learn what works | `playbooks/funnel-analytics.md` | `scripts/funnel.py` |
 | Interview prep | `playbooks/interview-story-bank.md` | |
@@ -68,6 +69,7 @@ A full-screen dashboard for your tracker, in `app/`. Rounded cards, a left menu,
 - **Tracker**: filter, search, sort and edit every listing. In Chrome or Edge it saves straight back to your file.
 - **Log an update**: one question per step. A reply arrived, I applied, an interview happened.
 - **Proposed updates**: an agent reads your email export and proposes changes with a quote as evidence. You accept or skip each one. See `playbooks/inbox-sweep.md`.
+- **Fit proposals**: the same panel can propose the five fit ratings for listings that have none, each with a plain reason. See `playbooks/fit-helper.md`.
 - **Weekly review**: five calm minutes, once a week. The week against the one before, a chance to close applications that never got a reply, one thing you did well, and a focus for next week.
 - **Steady** (preview): your own base rate, a pacing guard, and one dry line after a rejection.
 - **Scout, CV and portfolio, Apply, Interview prep**: menu pages marked Soon, so you can see where it is going.
