@@ -1,0 +1,14 @@
+target_roles: [Senior Product Designer, Lead UX Designer]
+work_mode: remote_only
+geography:
+  based_in: "Spain"
+  eligible_regions: ["Spain", "EU"]
+  need_explicit_country_list: true
+languages:
+  - { lang: Spanish, level: native }
+  - { lang: English, level: professional }
+work_authorization: "EU citizen. Can work anywhere in the EU without sponsorship."
+seniority_band: [senior, lead]
+apply_threshold: 4.0
+never_apply: [ExampleCorp]
+rules: { submit: manual, send_messages: manual }

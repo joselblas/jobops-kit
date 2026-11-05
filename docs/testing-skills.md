@@ -9,7 +9,7 @@ Each test plants a trap. A pass means the skill caught it. Any "Never" failure f
 ## Setup
 
 1. Create a Project called "Skill test". Do not upload AGENTS.md or playbooks. The skills should carry the rules.
-2. Add three files with this content.
+2. Upload the three files from `docs/test-fixtures/`: `career-context.md`, `profile.yml` and `tracker.csv`. Their content is also shown below. The postings, form questions and CV for each test are in the same folder.
 
 **career-context.md**
 ```

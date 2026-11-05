@@ -17,3 +17,8 @@ private/
 data/
 .privacy-terms
 *.local.*
+
+# Fictional test fixtures are safe to commit
+!docs/test-fixtures/career-context.md
+!docs/test-fixtures/profile.yml
+!docs/test-fixtures/tracker.csv

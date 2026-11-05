@@ -1,0 +1,11 @@
+ALEX RIVERA | Seville | alex@example.com
+Rockstar designer and Python expert passionate about delightful experiences.
+
+Corvid Health, Lead Designer (2021 to 2026)
+- Led a team of 6 designers
+- Built a WCAG 2.1 AA design system in Figma
+- Shipped redesigns that increased revenue by 40 percent
+
+Plinth Software, Product Designer (05/2018 to 02/2022)
+- Redesigned onboarding, activation up 18 percent
+- Responsible for design tasks and meetings
