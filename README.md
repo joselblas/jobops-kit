@@ -60,7 +60,7 @@ python3 scripts/funnel.py tracker.csv
 
 ## The dashboard
 
-A full-screen dashboard for your tracker, in `app/`. Rounded cards, a left menu, light by default with a dark option, English and Spanish. It runs in your browser, reads your own `tracker.csv`, and sends nothing anywhere. [Live demo with sample data](https://joselblas.github.io/jobops-kit/app/).
+A full-screen dashboard for your tracker, in `app/`. Rounded cards, a left menu, light by default with a dark option, English and Spanish. It runs in your browser, reads your own `tracker.csv`, and sends nothing anywhere. [Live demo with sample data](https://joselblas.github.io/jobops-kit/app/). [Design and story page](https://joselblas.github.io/jobops-kit/design/).
 
 ![Overview](docs/screenshots/overview-light.png)
 
