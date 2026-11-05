@@ -1,35 +1,38 @@
-date_found,company,role,source,score,gate_result,status,date_applied,date_outcome,outcome,notes,domain,skill,level,evidence,terms
-2026-01-05,Alder & Finch,Design Systems Lead,job-board,4.6,pass,applied,2026-01-06,2026-01-29,rejected,Strong across the board. No real gap found.,5,5,5,5,5
-2026-01-07,Kestrel Health,Product Designer,company-site,4.2,pass,applied,2026-01-09,2026-01-10,rejected-auto,Strongest: scope and ownership. Biggest gap: no experience in this sector.,3,3,5,5,4
-2026-01-09,Lumen Ledger,Senior Product Designer,linkedin,4.5,pass,applied,2026-01-10,2026-01-20,interview,Strong across the board. No real gap found.,4,4,4,4,4
-2026-01-11,Orbit Harbor,Design Systems Lead,company-site,,fail:geo,gated,,,,Country list excludes the candidate,,,,,
-2026-01-13,Quillmark,Senior UX Designer,company-site,3.4,pass,applied,2026-01-15,2026-02-01,rejected,Strongest: required skills. Biggest gap: one band above target.,3,4,2,2,4
-2026-01-15,Tidewater Labs,Design Systems Lead,linkedin,4.1,pass,applied,2026-01-16,2026-02-12,rejected,Strongest: sector and problem space. Biggest gap: pay not stated.,4,4,4,4,3
-2026-01-17,Vantage Row,Head of Design,linkedin,3.2,pass,applied,2026-01-18,2026-01-19,rejected-auto,Strongest: sector and problem space. Biggest gap: one required skill is thin.,4,2,3,4,2
-2026-01-19,Nimbus Parcel,Head of Design,linkedin,,fail:lang,gated,,,,Second language required,,,,,
-2026-01-21,Cobalt Orchard,Lead UX Designer,company-site,3.9,pass,applied,2026-01-22,2026-02-18,rejected,Strongest: required skills. Biggest gap: no experience in this sector.,3,5,5,5,5
-2026-01-23,Fernwood Systems,Staff Product Designer,company-site,4.0,pass,applied,2026-01-24,,,Strongest: sector and problem space. Biggest gap: one band above target.,4,4,3,4,4
-2026-01-26,Granite Loop,Design Systems Lead,linkedin,4.7,pass,applied,2026-01-27,2026-02-10,interview,Strongest: sector and problem space. Biggest gap: one band above target.,5,5,4,4,4
-2026-01-28,Juniper Signal,Design Systems Lead,company-site,,fail:onsite,gated,,,,Office days required,,,,,
-2026-01-30,Marlow Analytics,Staff Product Designer,company-site,3.6,pass,applied,2026-01-31,2026-02-21,rejected,Strongest: sector and problem space. Biggest gap: one required skill is thin.,5,4,4,5,5
-2026-02-01,Pinecrest Care,Design Systems Lead,company-site,3.8,pass,applied,2026-02-02,2026-02-23,rejected,Strongest: required skills. Biggest gap: no experience in this sector.,3,4,4,3,4
-2026-02-03,Saffron Pay,Head of Design,linkedin,,fail:closed,gated,,,,Gone on employer page,,,,,
-2026-02-05,Thistle Works,Senior Product Designer,company-site,4.3,pass,applied,2026-02-06,,,Strongest: required skills. Biggest gap: no case study for this problem.,4,5,4,3,4
-2026-02-07,Umber Cloud,Design Systems Lead,linkedin,3.5,pass,applied,2026-02-09,2026-02-10,rejected-auto,Strongest: scope and ownership. Biggest gap: no experience in this sector.,2,2,4,4,2
-2026-02-09,Wren Robotics,Product Designer,ats-api,4.4,pass,applied,2026-02-10,,,Strongest: sector and problem space. Biggest gap: one required skill is thin.,5,4,5,4,5
-2026-02-11,Yarrow Health,Staff Product Designer,company-site,3.3,pass,applied,2026-02-13,2026-03-11,rejected,Strong across the board. No real gap found.,3,3,3,3,3
-2026-02-13,Zenith Dock,Lead UX Designer,job-board,,fail:geo,gated,,,,Entity country only,,,,,
-2026-02-16,Birchwood AI,Design Systems Lead,linkedin,4.0,pass,applied,2026-02-18,,,Strongest: sector and problem space. Biggest gap: one required skill is thin.,5,3,3,3,3
-2026-02-18,Copperline,Product Designer,company-site,3.7,pass,applied,2026-02-20,,,Strongest: sector and problem space. Biggest gap: one required skill is thin.,5,4,5,5,4
-2026-02-20,Driftwood Data,Lead UX Designer,linkedin,4.1,pass,applied,2026-02-21,2026-03-08,rejected,Strongest: scope and ownership. Biggest gap: no case study for this problem.,4,4,5,3,4
-2026-02-22,Everline,Staff Product Designer,linkedin,,fail:level,gated,,,,Two bands above target,,,,,
-2026-02-24,Foxglove Bio,Senior Product Designer,ats-api,3.9,pass,applied,2026-02-25,,,Strongest: sector and problem space. Biggest gap: no case study for this problem.,5,5,4,3,3
-2026-02-26,Harbor & Pine,Product Designer,ats-api,4.2,pass,applied,2026-02-27,,,Strongest: pay and contract terms. Biggest gap: one required skill is thin.,4,3,4,4,5
-2026-02-28,Ironbark,Staff Product Designer,company-site,3.6,pass,applied,2026-03-01,,,Strongest: scope and ownership. Biggest gap: no experience in this sector.,3,3,5,4,4
-2026-03-02,Larkspur,Senior Product Designer,linkedin,,fail:lang,gated,,,,German fluent required,,,,,
-2026-03-04,Mossgate,Design Systems Lead,linkedin,4.5,pass,applied,2026-03-05,,,Strong across the board. No real gap found.,4,4,4,4,4
-2026-03-06,Northfield Pay,Senior UX Designer,ats-api,3.8,pass,applied,2026-03-08,,,Strongest: required skills. Biggest gap: no experience in this sector.,3,4,4,4,3
-2026-03-09,Oakhaven,Design Systems Lead,linkedin,,fail:closed,gated,,,,Reposted for months,,,,,
-2026-03-11,Pebble Street,Head of Design,job-board,4.0,pass,applied,2026-03-13,,,Strongest: required skills. Biggest gap: no experience in this sector.,3,5,3,5,5
-2026-03-13,Quartz Row,Senior Product Designer,linkedin,3.4,pass,applied,2026-03-15,,,Strongest: pay and contract terms. Biggest gap: no experience in this sector.,2,2,2,3,4
-2026-03-15,Redwood Signal,Product Designer,job-board,4.3,pass,applied,2026-03-16,,,Strongest: sector and problem space. Biggest gap: no case study for this problem.,5,5,5,3,3
+date_found,company,role,source,score,gate_result,status,date_applied,date_outcome,outcome,notes,domain,skill,level,evidence,terms,cv_version,portfolio_lead
+2026-01-05,Alder & Finch,Design Systems Lead,job-board,4.6,pass,applied,2026-01-06,2026-01-29,rejected,Strong across the board. No real gap found.,5,5,5,5,5,cv-v1-general,Design system
+2026-01-07,Kestrel Health,Product Designer,company-site,4.2,pass,applied,2026-01-09,2026-01-10,rejected-auto,Strongest: scope and ownership. Biggest gap: no experience in this sector.,3,3,5,5,4,cv-v1-general,Design system
+2026-01-09,Lumen Ledger,Senior Product Designer,linkedin,4.5,pass,applied,2026-01-10,2026-01-20,interview,Strong across the board. No real gap found.,4,4,4,4,4,cv-v1-general,Health app
+2026-01-11,Orbit Harbor,Design Systems Lead,company-site,,fail:geo,gated,,,,Country list excludes the candidate,,,,,,,
+2026-01-13,Quillmark,Senior UX Designer,company-site,3.4,pass,applied,2026-01-15,2026-02-01,rejected,Strongest: required skills. Biggest gap: one band above target.,3,4,2,2,4,cv-v1-general,Design system
+2026-01-15,Tidewater Labs,Design Systems Lead,linkedin,4.1,pass,applied,2026-01-16,2026-02-12,rejected,Strongest: sector and problem space. Biggest gap: pay not stated.,4,4,4,4,3,cv-v1-general,Design system
+2026-01-17,Vantage Row,Head of Design,linkedin,3.2,pass,applied,2026-01-18,2026-01-19,rejected-auto,Strongest: sector and problem space. Biggest gap: one required skill is thin.,4,2,3,4,2,cv-v1-general,Health app
+2026-01-19,Nimbus Parcel,Head of Design,linkedin,,fail:lang,gated,,,,Second language required,,,,,,,
+2026-01-21,Cobalt Orchard,Lead UX Designer,company-site,3.9,pass,applied,2026-01-22,2026-02-18,rejected,Strongest: required skills. Biggest gap: no experience in this sector.,3,5,5,5,5,cv-v1-general,Design system
+2026-01-23,Fernwood Systems,Staff Product Designer,company-site,4.0,pass,applied,2026-01-24,,,Strongest: sector and problem space. Biggest gap: one band above target.,4,4,3,4,4,cv-v1-general,Design system
+2026-01-26,Granite Loop,Design Systems Lead,linkedin,4.7,pass,applied,2026-01-27,2026-02-10,interview,Strongest: sector and problem space. Biggest gap: one band above target.,5,5,4,4,4,cv-v1-general,Health app
+2026-01-28,Juniper Signal,Design Systems Lead,company-site,,fail:onsite,gated,,,,Office days required,,,,,,,
+2026-01-30,Marlow Analytics,Staff Product Designer,company-site,3.6,pass,applied,2026-01-31,2026-02-21,rejected,Strongest: sector and problem space. Biggest gap: one required skill is thin.,5,4,4,5,5,cv-v1-general,Design system
+2026-02-01,Pinecrest Care,Design Systems Lead,company-site,3.8,pass,applied,2026-02-02,2026-02-23,rejected,Strongest: required skills. Biggest gap: no experience in this sector.,3,4,4,3,4,cv-v2-systems,Design system
+2026-02-03,Saffron Pay,Head of Design,linkedin,,fail:closed,gated,,,,Gone on employer page,,,,,,,
+2026-02-05,Thistle Works,Senior Product Designer,company-site,4.3,pass,applied,2026-02-06,,,Strongest: required skills. Biggest gap: no case study for this problem.,4,5,4,3,4,cv-v2-systems,Health app
+2026-02-07,Umber Cloud,Design Systems Lead,linkedin,3.5,pass,applied,2026-02-09,2026-02-10,rejected-auto,Strongest: scope and ownership. Biggest gap: no experience in this sector.,2,2,4,4,2,cv-v2-systems,Design system
+2026-02-09,Wren Robotics,Product Designer,ats-api,4.4,pass,applied,2026-02-10,,,Strongest: sector and problem space. Biggest gap: one required skill is thin.,5,4,5,4,5,cv-v2-systems,Design system
+2026-02-11,Yarrow Health,Staff Product Designer,company-site,3.3,pass,applied,2026-02-13,2026-03-11,rejected,Strong across the board. No real gap found.,3,3,3,3,3,cv-v2-systems,Health app
+2026-02-13,Zenith Dock,Lead UX Designer,job-board,,fail:geo,gated,,,,Entity country only,,,,,,,
+2026-02-16,Birchwood AI,Design Systems Lead,linkedin,4.0,pass,applied,2026-02-18,,,Strongest: sector and problem space. Biggest gap: one required skill is thin.,5,3,3,3,3,cv-v2-systems,Design system
+2026-02-18,Copperline,Product Designer,company-site,3.7,pass,applied,2026-02-20,,,Strongest: sector and problem space. Biggest gap: one required skill is thin.,5,4,5,5,4,cv-v2-systems,Design system
+2026-02-20,Driftwood Data,Lead UX Designer,linkedin,4.1,pass,applied,2026-02-21,2026-03-08,rejected,Strongest: scope and ownership. Biggest gap: no case study for this problem.,4,4,5,3,4,cv-v2-systems,Health app
+2026-02-22,Everline,Staff Product Designer,linkedin,,fail:level,gated,,,,Two bands above target,,,,,,,
+2026-02-24,Foxglove Bio,Senior Product Designer,ats-api,3.9,pass,applied,2026-02-25,,,Strongest: sector and problem space. Biggest gap: no case study for this problem.,5,5,4,3,3,cv-v2-systems,Design system
+2026-02-26,Harbor & Pine,Product Designer,ats-api,4.2,pass,applied,2026-02-27,,,Strongest: pay and contract terms. Biggest gap: one required skill is thin.,4,3,4,4,5,cv-v2-systems,Design system
+2026-02-28,Ironbark,Staff Product Designer,company-site,3.6,pass,applied,2026-03-01,,,Strongest: scope and ownership. Biggest gap: no experience in this sector.,3,3,5,4,4,cv-v2-systems,Health app
+2026-03-02,Larkspur,Senior Product Designer,linkedin,,fail:lang,gated,,,,German fluent required,,,,,,,
+2026-03-04,Mossgate,Design Systems Lead,linkedin,4.5,pass,applied,2026-03-05,,,Strong across the board. No real gap found.,4,4,4,4,4,cv-v2-systems,Design system
+2026-03-06,Northfield Pay,Senior UX Designer,ats-api,3.8,pass,applied,2026-03-08,,,Strongest: required skills. Biggest gap: no experience in this sector.,3,4,4,4,3,cv-v2-systems,Design system
+2026-03-09,Oakhaven,Design Systems Lead,linkedin,,fail:closed,gated,,,,Reposted for months,,,,,,,
+2026-03-11,Pebble Street,Head of Design,job-board,4.0,pass,applied,2026-03-13,,,Strongest: required skills. Biggest gap: no experience in this sector.,3,5,3,5,5,cv-v2-systems,Health app
+2026-03-13,Quartz Row,Senior Product Designer,linkedin,3.4,pass,applied,2026-03-15,,,Strongest: pay and contract terms. Biggest gap: no experience in this sector.,2,2,2,3,4,cv-v2-systems,Design system
+2026-03-15,Redwood Signal,Product Designer,job-board,4.3,pass,applied,2026-03-16,,,Strongest: sector and problem space. Biggest gap: no case study for this problem.,5,5,5,3,3,cv-v2-systems,Design system
+2026-03-12,Sable Quay,Senior Product Designer,company-site,4.1,pass,tailored,,,,CV tailored. Waiting for my review.,,,,,,,
+2026-03-14,Pomelo Grid,Design Systems Lead,job-board,3.8,pass,found,,,,Open and remote. Decide next.,,,,,,,
+2026-03-16,Tarn & Co,Lead UX Designer,linkedin,4.3,pass,found,,,,Strong fit on paper. Check language gate.,,,,,,,

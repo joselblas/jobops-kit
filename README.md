@@ -80,9 +80,10 @@ Rounded cards, a left menu, light by default with a dark option, English and Spa
 - **Log an update**: one question per step. A reply arrived, I applied, an interview happened.
 - **Follow-ups**: applications silent for three weeks, each with a short draft in English or Spanish. You copy it and send it yourself. Nothing is sent from the app.
 - **Proposed updates**: the assistant reads your email export and proposes changes with a quote as evidence. You accept or skip each one. It can also propose fit ratings for unrated listings.
+- **CV and portfolio**: tag each application with the CV version and portfolio lead you used and see which gets replies, with the small-sample caveat. Also copy-ready prompts for the `jobops-craft` skill.
 - **Weekly review**: five calm minutes. The week against the one before, a chance to close dead applications, one thing you did well, a focus for next week.
 - **Steady** (preview): your own base rate and one dry line after a rejection.
-- **Scout, CV and portfolio, Apply, Interview prep**: menu pages marked Soon.
+- **Scout, Apply, Interview prep**: menu pages marked Soon.
 
 | Log an update | Steady | Dark |
 |---|---|---|

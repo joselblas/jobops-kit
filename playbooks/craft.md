@@ -49,7 +49,7 @@ Then hand over to `cv-tailor.md` to produce the CV and fact check it. The person
 
 ## D. Learn from results
 
-After about ten applications per CV version, compare reply rates by version and by portfolio lead. Under about thirty per bucket, call differences hints. Suggest one change at a time, and say how you will know if it worked. Record the CV file used in the tracker notes so versions can be compared later.
+After about ten applications per CV version, compare reply rates by version and by portfolio lead. Under about thirty per bucket, call differences hints. Suggest one change at a time, and say how you will know if it worked. Record the CV file used in the `cv_version` column of the tracker, and the case study you led with in `portfolio_lead`, so versions can be compared later. The dashboard's CV and portfolio page reads them.
 
 ## Do not
 

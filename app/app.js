@@ -3,6 +3,7 @@
   "use strict";
 
   var DIMS = ["domain", "skill", "level", "evidence", "terms"];
+  var EXTRA = ["cv_version", "portfolio_lead"];
   var DIM_KEY = { domain: "dim.domain", skill: "dim.skill", level: "dim.level", evidence: "dim.evidence", terms: "dim.terms" };
   var OUTCOMES = ["", "rejected", "rejected-auto", "interview", "offer", "withdrawn", "no-response"];
   var STATUSES = ["found", "gated", "skipped", "tailored", "applied", "closed"];
@@ -57,7 +58,21 @@
     "tag.soon": ["Soon", "Pronto"], "tag.preview": ["Preview", "Avance"],
     "title.overview": ["The search, in numbers.", "La búsqueda, en números."], "title.tracker": ["Every listing.", "Cada oferta."],
     "title.log": ["Log an update.", "Registra una novedad."], "title.steady": ["Keep a clear head.", "Cabeza clara."],
-    "title.scout": ["Scout.", "Buscar ofertas."], "title.craft": ["CV and portfolio.", "CV y portafolio."],
+    "title.scout": ["Scout.", "Buscar ofertas."], "title.craft": ["Tune your CV and portfolio.", "Afina tu CV y tu portafolio."],
+    "craft.intro": ["Tag each application with the CV and portfolio lead you used, then see what gets replies. Small numbers are hints, not findings.", "Etiqueta cada candidatura con el CV y el portafolio que usaste y mira qué recibe respuesta. Los números pequeños son pistas, no conclusiones."],
+    "craft.by": ["Compare by", "Comparar por"], "craft.by.cv": ["CV version", "Versión del CV"], "craft.by.pf": ["Portfolio lead", "Portafolio principal"],
+    "craft.th.v": ["Version", "Versión"], "craft.th.n": ["Applied", "Enviadas"], "craft.th.r": ["Replies", "Respuestas"], "craft.th.w": ["Too recent", "Muy recientes"], "craft.th.i": ["Interviews", "Entrevistas"], "craft.th.rate": ["Reply rate", "Tasa de respuesta"],
+    "craft.few": ["Too few to compare", "Muy pocas para comparar"], "craft.range": ["likely {a} to {b}", "probable {a} a {b}"],
+    "craft.untagged": ["{n} applications have no value here. Add it in the tracker editor.", "{n} candidaturas no tienen valor aquí. Añádelo en el editor del seguimiento."],
+    "craft.none": ["Nothing is tagged yet. Open any applied listing in the Tracker and fill in CV version, for example cv-2026-11-systems. After about ten applications per version, this table starts to say something.", "Aún no hay nada etiquetado. Abre cualquier oferta enviada en el Seguimiento y rellena la versión del CV, por ejemplo cv-2026-11-systems. Con unas diez candidaturas por versión, esta tabla empieza a decir algo."],
+    "craft.caveat": ["Applications under 21 days old with no reply are left out of the rate, because silence is not an answer yet. Under about 30 applications per version, treat differences as hints. A reply is any answer that is not silence, so it includes rejections.", "Las candidaturas de menos de 21 días sin respuesta se dejan fuera de la tasa, porque el silencio aún no es una respuesta. Con menos de unas 30 candidaturas por versión, trata las diferencias como pistas. Una respuesta es cualquier contestación que no sea silencio, así que incluye rechazos."],
+    "craft.ask": ["Ask Claude", "Pregunta a Claude"], "craft.ask.s": ["Copy a prompt, paste it into your Job search Project. It uses the jobops-craft skill and proposes. It never edits your files.", "Copia un prompt y pégalo en tu Proyecto de búsqueda. Usa la skill jobops-craft y propone. Nunca edita tus archivos."],
+    "craft.p.cv": ["Audit my CV", "Auditar mi CV"], "craft.p.pf": ["Audit my portfolio", "Auditar mi portafolio"], "craft.p.tune": ["Tune for a listing", "Afinar para una oferta"],
+    "craft.p.pick": ["Listing", "Oferta"], "craft.p.nopick": ["Choose a listing", "Elige una oferta"], "craft.copy": ["Copy prompt", "Copiar prompt"], "craft.copied": ["Copied. Paste it into your Project.", "Copiado. Pégalo en tu Proyecto."],
+    "craft.t.cv": ["Use jobops-craft. Audit my master CV against career-context.md. Rank the fixes as must, should and nice, and name the line each one applies to. Do not change my files. If a fact is missing, ask me.", "Usa jobops-craft. Audita mi CV maestro contra career-context.md. Ordena los arreglos en obligatorios, recomendables y opcionales, e indica a qué línea afecta cada uno. No cambies mis archivos. Si falta un dato, pregúntame."],
+    "craft.t.pf": ["Use jobops-craft. Audit my portfolio the way a hiring manager skims it. Tell me which three or four case studies to lead with for my target roles, what to cut, and what each case study is missing. Do not invent projects.", "Usa jobops-craft. Audita mi portafolio como lo hojea quien contrata. Dime con qué tres o cuatro casos de estudio abrir para mis roles objetivo, qué quitar y qué le falta a cada uno. No inventes proyectos."],
+    "craft.t.tune": ["Use jobops-craft. Tune my CV and portfolio for {co}, {role}. Give me the requirements table with evidence or GAP, the two case studies to lead with, one true headline for this role, what to leave out, and your open questions. Then wait for my approval.", "Usa jobops-craft. Afina mi CV y mi portafolio para {co}, {role}. Dame la tabla de requisitos con evidencia o GAP, los dos casos de estudio con los que abrir, un titular veraz para este rol, qué dejar fuera y tus preguntas abiertas. Después espera mi aprobación."],
+   
     "title.apply": ["Apply.", "Candidaturas."], "title.prepare": ["Interview prep.", "Entrevistas."],
     "meta.listings": ["listings", "ofertas"], "meta.asof": ["as of", "a fecha"], "meta.unsaved": ["unsaved changes", "cambios sin guardar"], "meta.saved": ["saved to file", "guardado en el archivo"],
     "btn.open": ["Open and edit", "Abrir y editar"], "btn.load": ["Load tracker.csv", "Cargar tracker.csv"], "btn.download": ["Download CSV", "Descargar CSV"],
@@ -145,15 +160,15 @@
     "soon.prepare.b": [["A story bank: situation, action, result, and the claim each one proves.", "Practice questions for the stage you are about to face.", "A short debrief after each interview, saved to the tracker."], ["Un banco de historias: situación, acción, resultado y qué afirmación prueba cada una.", "Preguntas de práctica para la fase que vas a afrontar.", "Un breve repaso tras cada entrevista, guardado en el seguimiento."]]
   };
   var NAV = [
-    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["followups", "live"], ["inbox", "live"], ["review", "live"], ["steady", "preview"]]],
-    ["grp.soon", [["scout", "soon"], ["craft", "soon"], ["apply", "soon"], ["prepare", "soon"]]]
+    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["followups", "live"], ["inbox", "live"], ["craft", "live"], ["review", "live"], ["steady", "preview"]]],
+    ["grp.soon", [["scout", "soon"], ["apply", "soon"], ["prepare", "soon"]]]
   ];
   var PHASE = { scout: "5", craft: "3", apply: "4", prepare: "3" };
 
   var state = {
     rows: [], head: [], handle: null, dirty: false, editing: null, selected: null,
     filter: "all", q: "", sortKey: "date_found", sortDir: -1, ref: new Date(), label: "",
-    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: [], rev: null, fu: { open: -1, lang: "", tone: "", text: "", edited: false }
+    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: [], rev: null, craft: { by: "cv_version", pick: -1 }, fu: { open: -1, lang: "", tone: "", text: "", edited: false }
   };
 
   function $(s) { return document.querySelector(s); }
@@ -196,6 +211,7 @@
     var head = state.head.slice();
     var used = state.rows.some(function (r) { return DIMS.some(function (d) { return r.raw[d]; }); });
     if (used) DIMS.forEach(function (d) { if (head.indexOf(d) < 0) head.push(d); });
+    EXTRA.forEach(function (x) { if (head.indexOf(x) < 0 && state.rows.some(function (r) { return r.raw[x]; })) head.push(x); });
     var lines = [head.join(",")];
     state.rows.forEach(function (r) { lines.push(head.map(function (h) { return csvCell(r.raw[h]); }).join(",")); });
     return lines.join("\n") + "\n";
@@ -317,6 +333,7 @@
     else if (v === "inbox") box.innerHTML = viewInbox();
     else if (v === "review") box.innerHTML = viewReview();
     else if (v === "followups") box.innerHTML = viewFollowups();
+    else if (v === "craft") box.innerHTML = viewCraft();
     else if (v === "steady") box.innerHTML = viewSteady();
     else box.innerHTML = viewSoon(v);
   }
@@ -502,6 +519,70 @@
     else { fuCopyOld(txt); done(); }
   }
   function fuCopyOld(txt) { var ta = $("#fuText"); if (ta) { ta.focus(); ta.select(); try { document.execCommand("copy"); } catch (e) { /* ignore */ } } }
+
+  /* ---------- Craft ---------- */
+  function craftGroups(by) {
+    var g = {}, untagged = 0;
+    state.rows.forEach(function (r) {
+      if (!r.applied) return;
+      var v = (r.raw[by] || "").trim();
+      if (!v) { untagged++; return; }
+      var o = g[v] || (g[v] = { v: v, n: 0, heard: 0, inter: 0, young: 0 });
+      o.n++;
+      var replied = r.outcome && r.outcome !== "no-response";
+      if (replied) o.heard++;
+      else if (!r.outcome && r.dApplied && days(r.dApplied, state.ref) < 21) o.young++;
+      if (r.stateKey === "interview") o.inter++;
+    });
+    var list = Object.keys(g).map(function (k) { return g[k]; }).sort(function (a, b) { return b.n - a.n; });
+    return { list: list, untagged: untagged };
+  }
+  function craftCandidates() {
+    var out = [];
+    state.rows.forEach(function (r, i) { if (!r.gated && !r.applied && !r.outcome && r.raw.status !== "skipped" && r.company) out.push({ r: r, i: i }); });
+    return out.slice(-30).reverse();
+  }
+  function craftPrompt(k) {
+    if (k === "cv") return tl("craft.t.cv");
+    if (k === "pf") return tl("craft.t.pf");
+    var c = state.rows[state.craft.pick];
+    return t("craft.t.tune", { co: c ? c.company : "[company]", role: c ? c.role : "[role]" });
+  }
+  function viewCraft() {
+    var by = state.craft.by, G = craftGroups(by);
+    var h = '<p class="muted" style="max-width:66ch;margin-bottom:18px">' + esc(tl("craft.intro")) + "</p>";
+    var seg = '<div class="seg" role="group" aria-label="' + esc(tl("craft.by")) + '">' + [["cv_version", "craft.by.cv"], ["portfolio_lead", "craft.by.pf"]].map(function (o) {
+      return '<button type="button" data-act="craft-by" data-v="' + o[0] + '" aria-pressed="' + (by === o[0]) + '">' + esc(tl(o[1])) + "</button>";
+    }).join("") + "</div>";
+    var body;
+    if (!G.list.length) body = '<p class="empty">' + esc(tl("craft.none")) + "</p>";
+    else {
+      body = '<div class="table-wrap"><table class="craft-table"><thead><tr><th>' + esc(tl("craft.th.v")) + '</th><th class="num">' + esc(tl("craft.th.n")) + '</th><th class="num">' + esc(tl("craft.th.w")) + '</th><th class="num">' + esc(tl("craft.th.r")) + '</th><th class="num">' + esc(tl("craft.th.i")) + "</th><th>" + esc(tl("craft.th.rate")) + "</th></tr></thead><tbody>" +
+        G.list.map(function (o) {
+          var rated = o.n - o.young, w = wilson(o.heard, rated), few = rated < 10;
+          var rate = rated ? Math.round(100 * o.heard / rated) : 0;
+          return "<tr><td>" + esc(o.v) + '</td><td class="num">' + o.n + '</td><td class="num">' + o.young + '</td><td class="num">' + o.heard + '</td><td class="num">' + o.inter + '</td><td><div class="rate"><span class="bar"><i style="width:' + rate + '%"></i></span><span class="num">' + rate + '%</span>' +
+            (few ? '<span class="tag">' + esc(tl("craft.few")) + "</span>" : '<small class="muted">' + esc(t("craft.range", { a: Math.round(w[0] * 100) + "%", b: Math.round(w[1] * 100) + "%" })) + "</small>") + "</div></td></tr>";
+        }).join("") + "</tbody></table></div>";
+    }
+    h += '<section class="card"><div class="card-head row-head"><h2>' + esc(tl(by === "cv_version" ? "craft.by.cv" : "craft.by.pf")) + "</h2>" + seg + "</div>" + body +
+      (G.untagged && G.list.length ? '<p class="muted" style="margin-top:14px">' + esc(t("craft.untagged", { n: G.untagged })) + "</p>" : "") +
+      '<p class="muted small-note">' + esc(tl("craft.caveat")) + "</p></section>";
+    var cand = craftCandidates();
+    var opts = '<option value="-1">' + esc(tl("craft.p.nopick")) + "</option>" + cand.map(function (c) { return '<option value="' + c.i + '"' + (state.craft.pick === c.i ? " selected" : "") + ">" + esc(c.r.company + " · " + c.r.role) + "</option>"; }).join("");
+    var card = function (k, extra) {
+      return '<div class="craft-prompt"><h3>' + esc(tl("craft.p." + k)) + "</h3>" + (extra || "") + '<div class="prompt-text" id="craftText-' + k + '">' + esc(craftPrompt(k)) + '</div><button class="btn" type="button" data-act="craft-copy" data-k="' + k + '">' + esc(tl("craft.copy")) + "</button></div>";
+    };
+    var pick = '<label class="craft-pick"><span class="label">' + esc(tl("craft.p.pick")) + '</span><select id="craftPick">' + opts + "</select></label>";
+    h += '<section class="card" style="margin-top:16px"><div class="card-head"><h2>' + esc(tl("craft.ask")) + "</h2><p>" + esc(tl("craft.ask.s")) + '</p></div><div class="craft-grid">' + card("cv") + card("pf") + card("tune", pick) + "</div></section>";
+    return h;
+  }
+  function craftCopy(k) {
+    var txt = craftPrompt(k);
+    var done = function () { toast(tl("craft.copied")); };
+    var old = function () { var ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) { /* ignore */ } ta.remove(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { old(); done(); }); else { old(); done(); }
+  }
 
   /* ---------- Tracker ---------- */
   var CHIPS = [["all", "ch.all"], ["applied", "ch.applied"], ["waiting", "ch.waiting"], ["interview", "ch.interview"], ["rejected", "ch.rejected"], ["silent", "ch.silent"], ["gated", "ch.gated"]];
@@ -832,7 +913,7 @@
   }
 
   /* ---------- Edit dialog ---------- */
-  var EDIT_ES = { Company: "Empresa", Role: "Puesto", Source: "Fuente", "Score (1 to 5)": "Puntuación (1 a 5)", Status: "Estado", Outcome: "Resultado", Found: "Encontrada", Applied: "Enviada", "Outcome date": "Fecha del resultado", "Gate result": "Filtro", Domain: "Ámbito", Skills: "Habilidades", Level: "Nivel", Evidence: "Evidencia", Terms: "Condiciones", Notes: "Notas" };
+  var EDIT_ES = { Company: "Empresa", Role: "Puesto", Source: "Fuente", "Score (1 to 5)": "Puntuación (1 a 5)", Status: "Estado", Outcome: "Resultado", Found: "Encontrada", Applied: "Enviada", "Outcome date": "Fecha del resultado", "Gate result": "Filtro", Domain: "Ámbito", Skills: "Habilidades", Level: "Nivel", Evidence: "Evidencia", Terms: "Condiciones", Notes: "Notas", "CV version": "Versión del CV", "Portfolio lead": "Portafolio principal" };
   function labelsLang() {
     document.querySelectorAll("#editForm label").forEach(function (l) {
       var n = l.firstChild; if (!n || n.nodeType !== 3) return;
@@ -851,14 +932,14 @@
     var form = $("#editForm");
     $("#editTitle").textContent = isNew ? tl("edit.new") : f.company;
     $("#editSub").textContent = isNew ? tl("edit.newsub") : f.role;
-    ["company", "role", "source", "date_found", "date_applied", "date_outcome", "gate_result", "score", "notes"].concat(DIMS).forEach(function (k) { if (form.elements[k]) form.elements[k].value = f[k] || ""; });
+    ["company", "role", "source", "date_found", "date_applied", "date_outcome", "gate_result", "score", "notes"].concat(DIMS, EXTRA).forEach(function (k) { if (form.elements[k]) form.elements[k].value = f[k] || ""; });
     fillSelect(form.elements.status, STATUSES, f.status || "found");
     fillSelect(form.elements.outcome, OUTCOMES, f.outcome || "");
     labelsLang(); $("#editor").showModal();
   }
   function saveEditor() {
     var form = $("#editForm"), raw = state.editing ? state.editing.raw : {}, isNew = !state.editing;
-    ["company", "role", "source", "date_found", "date_applied", "date_outcome", "gate_result", "score", "status", "outcome", "notes"].concat(DIMS).forEach(function (k) { if (form.elements[k]) raw[k] = form.elements[k].value.trim(); });
+    ["company", "role", "source", "date_found", "date_applied", "date_outcome", "gate_result", "score", "status", "outcome", "notes"].concat(DIMS, EXTRA).forEach(function (k) { if (form.elements[k]) raw[k] = form.elements[k].value.trim(); });
     if (raw.outcome && !raw.date_outcome && raw.outcome !== "no-response") raw.date_outcome = todayISO();
     if (raw.status === "applied" && !raw.date_applied) raw.date_applied = todayISO();
     if (isNew) { state.head.forEach(function (h) { if (raw[h] == null) raw[h] = ""; }); state.rows.push(normalise(raw)); }
@@ -926,6 +1007,8 @@
     else if (act === "rev-next") { revCapture(); state.rev.step++; render(); }
     else if (act === "rev-close") { var rr = state.rows[i]; rr.raw.outcome = "no-response"; rr.raw.date_outcome = ""; state.rows[i] = normalise(rr.raw); state.dirty = true; render(); persist(); }
     else if (act === "rev-focus") { state.rev.data.focus = el.dataset.v; render(); setTimeout(revFinish, 160); }
+    else if (act === "craft-by") { state.craft.by = el.dataset.v; render(); }
+    else if (act === "craft-copy") craftCopy(el.dataset.k);
     else if (act === "fu-open") { state.fu = { open: i, lang: "", tone: "", text: "", edited: false }; fuRefill(); render(); }
     else if (act === "fu-close") { state.fu.open = -1; render(); }
     else if (act === "fu-lang") { state.fu.lang = el.dataset.v; fuRefill(); render(); }
@@ -945,6 +1028,7 @@
   });
   document.addEventListener("input", function (e) {
     if (e.target.id === "q") { state.q = e.target.value; renderTableBody(); }
+    else if (e.target.id === "craftPick") { state.craft.pick = +e.target.value; var tx = $("#craftText-tune"); if (tx) tx.textContent = craftPrompt("tune"); }
     else if (e.target.id === "fuText") { state.fu.text = e.target.value; state.fu.edited = true; }
     else if (e.target.id === "fuName" || e.target.id === "fuLink") { store(e.target.id === "fuName" ? "jo.me.name" : "jo.me.link", e.target.value.trim()); if (!state.fu.edited) { fuRefill(); var ta = $("#fuText"); if (ta) ta.value = state.fu.text; } }
     else if (e.target.id === "wizQ") { state.wiz.q = e.target.value; $("#pickList").innerHTML = pickHTML(state.wiz); }
