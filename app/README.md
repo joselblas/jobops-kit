@@ -17,6 +17,7 @@ A full-screen, no-dependency dashboard for `tracker.csv`. Rounded cards, a left 
 | Overview | Live | Key numbers, funnel, odds of an interview, fit radar, score against outcome, waiting list, gates, sources |
 | Tracker | Live | Filter, search, sort and edit every listing, or add one |
 | Log an update | Live | One question per step: a reply arrived, I applied, an interview happened |
+| Proposed updates | Live | Load a `proposals.csv` from an email sweep. Each change shows the evidence. Accept or skip, one by one or all matched at once |
 | Steady | Preview | Your own odds in plain words, a pacing guard, one dry line after a rejection |
 | Scout, CV and portfolio, Apply, Interview prep | Coming | Placeholder pages showing what each will do and in which roadmap phase |
 
@@ -45,3 +46,9 @@ Use the switches at the bottom of the menu. Your choice is remembered in this br
 ## Privacy
 
 Your real tracker stays local and gitignored. The sample data is invented. The page makes no network requests and uses system fonts.
+
+## Proposed updates
+
+Columns: `kind` (`outcome` or `applied`), `company`, `role`, `outcome`, `date`, `evidence`, `source`. See `templates/proposals.example.csv` and `playbooks/inbox-sweep.md`. Proposals that match no tracker row cannot be accepted, so nothing is created by accident.
+
+![Proposed updates](../docs/screenshots/inbox.png)

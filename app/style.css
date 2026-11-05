@@ -242,3 +242,15 @@ body.dragging .main { outline: 2px dashed var(--accent); outline-offset: -8px; }
 .c4 .waiting li .tag { grid-column: 2; justify-self: start; }
 @media (max-width: 1100px) { .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* proposed updates */
+.prop-list { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); margin-top: 18px; }
+.prop { display: flex; flex-direction: column; gap: 6px; }
+.prop.done { opacity: .6; }
+.prop-head { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.prop-head h3 { margin: 0; font-family: var(--serif); font-size: 22px; font-weight: 400; }
+.prop .label { margin-top: 10px; }
+.prop-change { margin: 0; font-family: var(--serif); font-size: 19px; }
+.prop blockquote { margin: 0; padding: 12px 16px; border-radius: var(--r-md); background: var(--surface-sunken); color: var(--ink-muted); font-style: italic; }
+.prop .wiz-nav { margin-top: 14px; }
+.controls .tag { padding: 9px 16px; line-height: 1.2; }

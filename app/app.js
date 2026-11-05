@@ -11,7 +11,13 @@
   /* ---------- Language ---------- */
   var I = {
     "nav.overview": ["Overview", "Resumen"], "nav.tracker": ["Tracker", "Seguimiento"], "nav.log": ["Log an update", "Registrar novedad"],
-    "nav.steady": ["Steady", "Calma"], "nav.scout": ["Scout", "Buscar ofertas"], "nav.craft": ["CV and portfolio", "CV y portafolio"],
+    "nav.steady": ["Steady", "Calma"], "nav.inbox": ["Proposed updates", "Cambios propuestos"], "title.inbox": ["Proposed updates.", "Cambios propuestos."],
+    "inbox.lede": ["An agent reads your email and proposes changes with the evidence. You decide each one. Nothing changes until you accept.", "Un agente lee tu correo y propone cambios con la evidencia. Tú decides cada uno. Nada cambia hasta que aceptes."],
+    "inbox.load": ["Load proposals.csv", "Cargar proposals.csv"], "inbox.sample": ["Sample proposals", "Propuestas de ejemplo"], "inbox.acceptall": ["Accept all matched", "Aceptar todas las coincidentes"],
+    "inbox.accept": ["Accept", "Aceptar"], "inbox.skip": ["Skip", "Omitir"], "inbox.pending": ["{n} waiting for you", "{n} esperando tu decisión"], "inbox.empty": ["Nothing to review. Load a proposals file, or try the sample.", "Nada que revisar. Carga un archivo de propuestas o prueba el ejemplo."],
+    "inbox.accepted": ["Accepted", "Aceptada"], "inbox.skipped": ["Skipped", "Omitida"], "inbox.nomatch": ["No matching application in the tracker. Skip it, or add it with Log an update.", "No hay candidatura coincidente en el seguimiento. Omítela o añádela con Registrar novedad."],
+    "inbox.newapp": ["New application", "Candidatura nueva"], "inbox.change": ["Change", "Cambio"], "inbox.evidence": ["Evidence", "Evidencia"], "inbox.from": ["from", "desde"], "inbox.guess": ["Closest match, check the role.", "Coincidencia más cercana, comprueba el puesto."],
+    "inbox.done": ["{a} accepted, {s} skipped.", "{a} aceptadas, {s} omitidas."], "nav.scout": ["Scout", "Buscar ofertas"], "nav.craft": ["CV and portfolio", "CV y portafolio"],
     "nav.apply": ["Apply", "Candidaturas"], "nav.prepare": ["Interview prep", "Preparar entrevistas"],
     "grp.work": ["Your search", "Tu búsqueda"], "grp.soon": ["Coming", "Próximamente"],
     "tag.soon": ["Soon", "Pronto"], "tag.preview": ["Preview", "Avance"],
@@ -105,7 +111,7 @@
     "soon.prepare.b": [["A story bank: situation, action, result, and the claim each one proves.", "Practice questions for the stage you are about to face.", "A short debrief after each interview, saved to the tracker."], ["Un banco de historias: situación, acción, resultado y qué afirmación prueba cada una.", "Preguntas de práctica para la fase que vas a afrontar.", "Un breve repaso tras cada entrevista, guardado en el seguimiento."]]
   };
   var NAV = [
-    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["steady", "preview"]]],
+    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["inbox", "live"], ["steady", "preview"]]],
     ["grp.soon", [["scout", "soon"], ["craft", "soon"], ["apply", "soon"], ["prepare", "soon"]]]
   ];
   var PHASE = { scout: "5", craft: "3", apply: "4", prepare: "3" };
@@ -113,7 +119,7 @@
   var state = {
     rows: [], head: [], handle: null, dirty: false, editing: null, selected: null,
     filter: "all", q: "", sortKey: "date_found", sortDir: -1, ref: new Date(), label: "",
-    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null
+    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: []
   };
 
   function $(s) { return document.querySelector(s); }
@@ -234,7 +240,8 @@
     NAV.forEach(function (g) {
       h += '<p class="label nav-group">' + esc(tl(g[0])) + "</p>";
       g[1].forEach(function (it) {
-        var tag = it[1] === "soon" ? '<span class="tag">' + esc(tl("tag.soon")) + "</span>" : it[1] === "preview" ? '<span class="tag calm">' + esc(tl("tag.preview")) + "</span>" : "";
+        var pend = it[0] === "inbox" ? state.props.filter(function (p) { return p.status === "pending"; }).length : 0;
+        var tag = pend ? '<span class="tag accent">' + pend + "</span>" : it[1] === "soon" ? '<span class="tag">' + esc(tl("tag.soon")) + "</span>" : it[1] === "preview" ? '<span class="tag calm">' + esc(tl("tag.preview")) + "</span>" : "";
         h += '<a href="#' + it[0] + '"' + (state.view === it[0] ? ' aria-current="page"' : "") + ">" + esc(tl("nav." + it[0])) + tag + "</a>";
       });
     });
@@ -255,6 +262,10 @@
       a += '<label class="btn ghost" for="file">' + esc(tl("btn.load")) + "</label>";
       if (window.showOpenFilePicker) a += '<button class="btn" type="button" data-act="open">' + esc(tl("btn.open")) + "</button>";
     }
+    if (state.view === "inbox") {
+      a += '<button class="btn ghost" type="button" data-act="prop-sample">' + esc(tl("inbox.sample")) + "</button>";
+      a += '<label class="btn" for="pfile">' + esc(tl("inbox.load")) + "</label>";
+    }
     $("#actions").innerHTML = a;
     $("#foot").textContent = tl("foot");
     document.documentElement.lang = state.lang;
@@ -268,6 +279,7 @@
     if (v === "overview") box.innerHTML = viewOverview();
     else if (v === "tracker") { box.innerHTML = viewTracker(); renderTableBody(); }
     else if (v === "log") { box.innerHTML = viewLog(); }
+    else if (v === "inbox") box.innerHTML = viewInbox();
     else if (v === "steady") box.innerHTML = viewSteady();
     else box.innerHTML = viewSoon(v);
   }
@@ -438,6 +450,68 @@
     h += '<section class="card c6"><span class="label" style="color:var(--calm)">' + esc(tl("pace.s")) + '</span><div class="card-head" style="margin:6px 0 0"><h2>' + esc(tl("pace.k")) + '</h2></div><div class="dots" role="img" aria-label="' + a + " / " + L + '">' + dots + "</div><p>" + esc(msg) + '</p><p class="caveat">' + esc(tl("pace.note")) + "</p></section>";
     h += '<section class="card c6"><span class="label" style="color:var(--calm)">' + esc(tl("tag.soon")) + '</span><div class="card-head" style="margin:6px 0 0"><h2>' + esc(tl("conf.k")) + "</h2></div><p class=\"muted\">" + esc(tl("conf.t")) + "</p></section></div>";
     return h;
+  }
+
+
+  /* ---------- Proposed updates ---------- */
+  var OUT_KEY = { "rejected": "st.rejected", "rejected-auto": "st.auto", "interview": "st.interview", "offer": "st.offer", "withdrawn": "st.withdrawn", "no-response": "st.silent" };
+  function normName(s) { return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim(); }
+  function matchRow(p) {
+    var c = normName(p.company), pr = normName(p.role), best = -1, score = -1;
+    state.rows.forEach(function (r, i) {
+      if (normName(r.company) !== c) return;
+      var s = 0;
+      if (r.applied) s += 2;
+      if (r.applied && !r.outcome) s += 2;
+      if (pr && normName(r.role) === pr) s += 5;
+      else if (pr && (normName(r.role).indexOf(pr) >= 0 || pr.indexOf(normName(r.role)) >= 0)) s += 3;
+      if (s > score) { score = s; best = i; }
+    });
+    return best;
+  }
+  function loadProps(text) {
+    var keep = state.head.slice(), raw = parseCSV(text);
+    state.head = keep;
+    state.props = raw.filter(function (r) { return r.company; }).map(function (r, i) {
+      var p = { id: i, kind: (r.kind || r.type || "outcome").toLowerCase(), company: r.company, role: r.role || "", outcome: (r.outcome || "").toLowerCase(), date: r.date || "", evidence: r.evidence || "", source: r.source || "email", status: "pending" };
+      if (p.kind === "update") p.kind = "outcome";
+      p.match = p.kind === "applied" ? -1 : matchRow(p);
+      return p;
+    });
+    render();
+  }
+  function viewInbox() {
+    var list = state.props, pend = list.filter(function (p) { return p.status === "pending"; });
+    if (!list.length) return '<p class="muted" style="margin:0 0 18px">' + esc(tl("inbox.lede")) + '</p><div class="card"><p class="empty">' + esc(tl("inbox.empty")) + "</p></div>";
+    var acc = list.filter(function (p) { return p.status === "accepted"; }).length, sk = list.filter(function (p) { return p.status === "skipped"; }).length;
+    var h = '<p class="muted" style="margin:0 0 18px">' + esc(tl("inbox.lede")) + '</p><div class="controls"><span class="tag accent">' + esc(t("inbox.pending", { n: pend.length })) + "</span>" + (acc + sk ? '<span class="muted">' + esc(t("inbox.done", { a: acc, s: sk })) + "</span>" : "") + (pend.some(function (p) { return p.match >= 0 || p.kind === "applied"; }) ? '<button class="btn" type="button" data-act="prop-acceptall">' + esc(tl("inbox.acceptall")) + "</button>" : "") + '</div><div class="prop-list">';
+    list.forEach(function (p) {
+      var row = p.match >= 0 ? state.rows[p.match] : null, change;
+      if (p.kind === "applied") change = tl("inbox.newapp") + ": " + p.role + (p.date ? ", " + p.date : "");
+      else change = (row ? row.stateText : "?") + " → " + tl(OUT_KEY[p.outcome] || "st.other") + (p.date ? ", " + p.date : "");
+      var ok = p.kind === "applied" || row, done = p.status !== "pending";
+      h += '<article class="card prop' + (done ? " done" : "") + '"><div class="prop-head"><div><h3>' + esc(p.company) + '</h3><p class="fit-role">' + esc(row ? row.role : p.role) + "</p></div>" +
+        (done ? '<span class="tag ' + (p.status === "accepted" ? "calm" : "") + '">' + esc(tl(p.status === "accepted" ? "inbox.accepted" : "inbox.skipped")) + "</span>" : "") + "</div>" +
+        '<p class="label">' + esc(tl("inbox.change")) + '</p><p class="prop-change">' + esc(change) + "</p>" +
+        (p.evidence ? '<p class="label">' + esc(tl("inbox.evidence")) + " · " + esc(tl("inbox.from")) + " " + esc(p.source) + '</p><blockquote>' + esc(p.evidence) + "</blockquote>" : "") +
+        (!ok ? '<p class="caveat">' + esc(tl("inbox.nomatch")) + "</p>" : "") +
+        (done ? "" : '<div class="wiz-nav"><button class="btn ghost" type="button" data-act="prop-skip" data-i="' + p.id + '">' + esc(tl("inbox.skip")) + "</button>" + (ok ? '<button class="btn accent" type="button" data-act="prop-accept" data-i="' + p.id + '">' + esc(tl("inbox.accept")) + "</button>" : "") + "</div>") + "</article>";
+    });
+    return h + "</div>";
+  }
+  function applyProp(p) {
+    var date = p.date || todayISO();
+    if (p.kind === "applied") {
+      var raw = {}; state.head.forEach(function (h) { raw[h] = ""; });
+      raw.date_found = date; raw.company = p.company; raw.role = p.role; raw.source = p.source || "email"; raw.gate_result = "pass"; raw.status = "applied"; raw.date_applied = date;
+      state.rows.push(normalise(raw));
+    } else {
+      var row = state.rows[p.match]; if (!row) return false;
+      var rw = row.raw; rw.outcome = p.outcome; rw.date_outcome = p.outcome === "no-response" ? "" : date; if (!rw.status) rw.status = "applied";
+      state.rows[p.match] = normalise(rw);
+      if (state.selected === row) state.selected = state.rows[p.match];
+    }
+    p.status = "accepted"; state.dirty = true; return true;
   }
 
   /* ---------- Soon ---------- */
@@ -621,7 +695,7 @@
 
   /* ---------- Events ---------- */
   function route() {
-    var v = (location.hash || "#overview").slice(1), ok = ["overview", "tracker", "log", "steady", "scout", "craft", "apply", "prepare"];
+    var v = (location.hash || "#overview").slice(1), ok = ["overview", "tracker", "log", "inbox", "steady", "scout", "craft", "apply", "prepare"];
     state.view = ok.indexOf(v) >= 0 ? v : "overview";
     if (state.view !== "log") state.wiz = state.wiz && state.wiz.done ? null : state.wiz;
     render(); window.scrollTo(0, 0);
@@ -650,6 +724,10 @@
     else if (act === "wiz-opt") { var wz = state.wiz, st = FLOWS[wz.flow].steps[wz.step]; wz.data[st.key] = st.optional && wz.data[st.key] === el.dataset.v ? "" : el.dataset.v; if (st.optional) render(); else setTimeout(function () { wizNext(); }, 140); render(); }
     else if (act === "wiz-pick") { state.wiz.data.row = i; setTimeout(function () { wizNext(); }, 140); render(); }
     else if (act === "wiz-save") wizSave();
+    else if (act === "prop-accept") { if (applyProp(state.props[i])) { render(); persist(); } }
+    else if (act === "prop-skip") { state.props[i].status = "skipped"; render(); }
+    else if (act === "prop-acceptall") { var n = 0; state.props.forEach(function (p) { if (p.status === "pending" && (p.kind === "applied" || p.match >= 0) && applyProp(p)) n++; }); render(); if (n) persist(); }
+    else if (act === "prop-sample") loadProps(window.SAMPLE_PROPOSALS || "");
   });
   document.addEventListener("keydown", function (e) {
     var el = e.target;
@@ -661,6 +739,7 @@
     else if (e.target.id === "wizQ") { state.wiz.q = e.target.value; $("#pickList").innerHTML = pickHTML(state.wiz); }
   });
   $("#editForm").addEventListener("submit", function (e) { if (e.submitter && e.submitter.value === "cancel") return; e.preventDefault(); saveEditor(); $("#editor").close(); });
+  $("#pfile").addEventListener("change", function (e) { var f = e.target.files[0]; if (f) { var fr = new FileReader(); fr.onload = function () { loadProps(String(fr.result)); }; fr.readAsText(f); } e.target.value = ""; });
   $("#file").addEventListener("change", function (e) { readFile(e.target.files[0]); e.target.value = ""; });
   ["dragenter", "dragover"].forEach(function (ev) { document.addEventListener(ev, function (e) { e.preventDefault(); document.body.classList.add("dragging"); }); });
   ["dragleave", "drop"].forEach(function (ev) { document.addEventListener(ev, function (e) { e.preventDefault(); document.body.classList.remove("dragging"); }); });

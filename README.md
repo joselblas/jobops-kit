@@ -2,7 +2,7 @@
 
 A human-in-the-loop job search system for designers and other remote-first knowledge workers. Claude scouts and screens listings, tailors CVs from a verified fact file, fills application forms in your own browser, and stops before Submit. You stay in control of everything that leaves your hands.
 
-Built by [Jose L. Blas](https://portfolio.joselblas.com), a product designer, during a real search for remote roles from Spain. It is a set of plain markdown playbooks, three small scripts and a local dashboard. No framework, no server, no telemetry.
+Built by [Jose L. Blas](https://joselblas.com), a product designer, during a real search for remote roles from Spain. It is a set of plain markdown playbooks, three small scripts and a local dashboard. No framework, no server, no telemetry.
 
 ## What makes it different
 
@@ -34,6 +34,7 @@ scout -> gates -> fit score -> you pick -> tailor CV -> fact check
 | Open? Real? | `playbooks/liveness-and-legitimacy.md` | `scripts/liveness.py` |
 | Tailor CV | `playbooks/cv-tailor.md` | `scripts/cv_factcheck.py` |
 | Fill forms | `playbooks/apply.md` | |
+| Find replies in your email | `playbooks/inbox-sweep.md` | |
 | Learn what works | `playbooks/funnel-analytics.md` | `scripts/funnel.py` |
 | Interview prep | `playbooks/interview-story-bank.md` | |
 
@@ -66,6 +67,7 @@ A full-screen dashboard for your tracker, in `app/`. Rounded cards, a left menu,
 - **Overview**: funnel, odds of an interview in plain words, fit radar, score against outcome, waiting list.
 - **Tracker**: filter, search, sort and edit every listing. In Chrome or Edge it saves straight back to your file.
 - **Log an update**: one question per step. A reply arrived, I applied, an interview happened.
+- **Proposed updates**: an agent reads your email export and proposes changes with a quote as evidence. You accept or skip each one. See `playbooks/inbox-sweep.md`.
 - **Steady** (preview): your own base rate, a pacing guard, and one dry line after a rejection.
 - **Scout, CV and portfolio, Apply, Interview prep**: menu pages marked Soon, so you can see where it is going.
 
