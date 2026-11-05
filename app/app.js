@@ -40,6 +40,19 @@
     "inbox.fit": ["Fit profile", "Perfil de encaje"], "inbox.fitavg": ["average {a}", "media {a}"], "inbox.fitnow": ["current score {s}", "puntuación actual {s}"], "inbox.fitrep": ["Replaces the current profile.", "Sustituye al perfil actual."], "inbox.fitwhy": ["Why these ratings", "Por qué estas puntuaciones"], "inbox.fitbad": ["Ratings must be five numbers from 1 to 5.", "Las puntuaciones deben ser cinco números del 1 al 5."],
     "inbox.done": ["{a} accepted, {s} skipped.", "{a} aceptadas, {s} omitidas."], "nav.scout": ["Scout", "Buscar ofertas"], "nav.craft": ["CV and portfolio", "CV y portafolio"],
     "nav.apply": ["Apply", "Candidaturas"], "nav.prepare": ["Interview prep", "Preparar entrevistas"],
+    "nav.followups": ["Follow-ups", "Retomar contacto"], "title.followups": ["Follow up, calmly.", "Retomar contacto, con calma."],
+    "fu.intro": ["Applications with no reply after three weeks. A short note is normal and often useful. Nothing is sent from here: copy the draft and send it yourself.", "Candidaturas sin respuesta pasadas tres semanas. Una nota corta es normal y a menudo útil. Desde aquí no se envía nada: copia el borrador y envíalo tú."],
+    "fu.none": ["Nothing has waited 21 days or more. Good.", "Nada lleva esperando 21 días o más. Bien."],
+    "fu.days": ["days", "días"], "fu.draft": ["Draft a note", "Redactar nota"], "fu.hide": ["Hide", "Ocultar"],
+    "fu.lang": ["Language", "Idioma"], "fu.tone": ["Tone", "Tono"], "fu.t.check": ["Check in", "Preguntar"], "fu.t.close": ["Close the loop", "Cerrar el tema"],
+    "fu.name": ["Your name", "Tu nombre"], "fu.link": ["Portfolio link (optional)", "Enlace al portafolio (opcional)"],
+    "fu.copy": ["Copy draft", "Copiar borrador"], "fu.copied": ["Copied. Paste it into your own email or message.", "Copiado. Pégalo en tu propio correo o mensaje."],
+    "fu.sent": ["Mark as sent", "Marcar como enviado"], "fu.noreply": ["Close as no reply", "Cerrar sin respuesta"],
+    "fu.marked": ["Noted in the tracker.", "Anotado en el seguimiento."],
+    "fu.ago": ["Followed up {n} days ago", "Seguimiento hace {n} días"], "fu.agotoday": ["Followed up today", "Seguimiento hoy"],
+    "fu.wit": ["Silence is usually a queue, not a verdict.", "El silencio suele ser una cola, no un veredicto."],
+    "fu.draftlabel": ["Draft (edit freely)", "Borrador (edítalo)"], "fu.ph.name": ["[Your name]", "[Tu nombre]"],
+    "fu.link.line": ["Portfolio: ", "Portafolio: "],
     "grp.work": ["Your search", "Tu búsqueda"], "grp.soon": ["Coming", "Próximamente"],
     "tag.soon": ["Soon", "Pronto"], "tag.preview": ["Preview", "Avance"],
     "title.overview": ["The search, in numbers.", "La búsqueda, en números."], "title.tracker": ["Every listing.", "Cada oferta."],
@@ -132,7 +145,7 @@
     "soon.prepare.b": [["A story bank: situation, action, result, and the claim each one proves.", "Practice questions for the stage you are about to face.", "A short debrief after each interview, saved to the tracker."], ["Un banco de historias: situación, acción, resultado y qué afirmación prueba cada una.", "Preguntas de práctica para la fase que vas a afrontar.", "Un breve repaso tras cada entrevista, guardado en el seguimiento."]]
   };
   var NAV = [
-    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["inbox", "live"], ["review", "live"], ["steady", "preview"]]],
+    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["followups", "live"], ["inbox", "live"], ["review", "live"], ["steady", "preview"]]],
     ["grp.soon", [["scout", "soon"], ["craft", "soon"], ["apply", "soon"], ["prepare", "soon"]]]
   ];
   var PHASE = { scout: "5", craft: "3", apply: "4", prepare: "3" };
@@ -140,7 +153,7 @@
   var state = {
     rows: [], head: [], handle: null, dirty: false, editing: null, selected: null,
     filter: "all", q: "", sortKey: "date_found", sortDir: -1, ref: new Date(), label: "",
-    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: [], rev: null
+    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: [], rev: null, fu: { open: -1, lang: "", tone: "", text: "", edited: false }
   };
 
   function $(s) { return document.querySelector(s); }
@@ -261,7 +274,7 @@
     NAV.forEach(function (g) {
       h += '<p class="label nav-group">' + esc(tl(g[0])) + "</p>";
       g[1].forEach(function (it) {
-        var pend = it[0] === "inbox" ? state.props.filter(function (p) { return p.status === "pending"; }).length : 0;
+        var pend = it[0] === "inbox" ? state.props.filter(function (p) { return p.status === "pending"; }).length : it[0] === "followups" ? followList().length : 0;
         var tag = pend ? '<span class="tag accent">' + pend + "</span>" : it[1] === "soon" ? '<span class="tag">' + esc(tl("tag.soon")) + "</span>" : it[1] === "preview" ? '<span class="tag calm">' + esc(tl("tag.preview")) + "</span>" : "";
         h += '<a href="#' + it[0] + '"' + (state.view === it[0] ? ' aria-current="page"' : "") + ">" + esc(tl("nav." + it[0])) + tag + "</a>";
       });
@@ -303,6 +316,7 @@
     else if (v === "log") { box.innerHTML = viewLog(); }
     else if (v === "inbox") box.innerHTML = viewInbox();
     else if (v === "review") box.innerHTML = viewReview();
+    else if (v === "followups") box.innerHTML = viewFollowups();
     else if (v === "steady") box.innerHTML = viewSteady();
     else box.innerHTML = viewSoon(v);
   }
@@ -415,6 +429,79 @@
       return '<li><span class="d num">' + x.d + "<small>" + esc(tl("wait.days")) + "</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + "</span></span>" + (x.d >= 30 ? '<span class="tag accent">' + esc(tl("wait.follow")) + "</span>" : '<span class="tag">14+</span>') + "</li>";
     }).join("") + "</ul>" : '<p class="empty">' + esc(tl("wait.none")) + "</p>";
   }
+
+
+  /* ---------- Follow-ups ---------- */
+  function lastSent(r) {
+    var m, last = null, re = /\[(\d{4}-\d{2}-\d{2})\] Follow-up sent/g;
+    while ((m = re.exec(r.raw.notes || ""))) last = m[1];
+    return last ? toDate(last) : null;
+  }
+  function followList() {
+    var out = [];
+    state.rows.forEach(function (r, i) {
+      if (r.stateKey === "waiting" && r.dApplied) { var d = days(r.dApplied, state.ref); if (d >= 21) out.push({ r: r, i: i, d: d }); }
+    });
+    return out.sort(function (a, b) { return b.d - a.d; });
+  }
+  var FU = {
+    en: {
+      check: "Hello,\n\nI applied for the {role} role at {co} on {date} and wanted to check where things stand. I am still interested and happy to send anything else you need.\n\nThank you for your time.\n\n{sig}",
+      close: "Hello,\n\nI applied for the {role} role at {co} on {date} and have not heard back. If the role is still open, I would be glad to hear where it stands. If it has been filled, no problem, and thank you for considering me.\n\n{sig}"
+    },
+    es: {
+      check: "Hola,\n\nMe presenté al puesto de {role} en {co} el {date} y quería saber cómo va el proceso. Mantengo mi interés y puedo enviar lo que necesitéis.\n\nGracias por tu tiempo.\n\n{sig}",
+      close: "Hola,\n\nMe presenté al puesto de {role} en {co} el {date} y no he recibido respuesta. Si la vacante sigue abierta, me gustaría saber en qué punto está. Si ya está cubierta, sin problema, y gracias por tener en cuenta mi candidatura.\n\n{sig}"
+    }
+  };
+  function fuMe() { var n = fetchStore("jo.me.name") || "", l = fetchStore("jo.me.link") || ""; return { name: n, link: l }; }
+  function fuDraft(r, lang, tone) {
+    var me = fuMe(), d = r.dApplied;
+    var date = d.toLocaleDateString(lang === "es" ? "es-ES" : "en-GB", { day: "numeric", month: "long" });
+    var sig = me.name || I["fu.ph.name"][lang === "es" ? 1 : 0];
+    if (me.link) sig += "\n" + I["fu.link.line"][lang === "es" ? 1 : 0] + me.link;
+    return FU[lang][tone].split("{role}").join(r.role || "").split("{co}").join(r.company || "").split("{date}").join(date).split("{sig}").join(sig);
+  }
+  function fuCurrent() {
+    var f = state.fu, x = state.rows[f.open]; if (!x) return null;
+    var d = days(x.dApplied, state.ref);
+    return { r: x, lang: f.lang || state.lang, tone: f.tone || (d >= 45 ? "close" : "check") };
+  }
+  function fuRefill() {
+    var c = fuCurrent(); if (!c) return;
+    state.fu.text = fuDraft(c.r, c.lang, c.tone); state.fu.edited = false;
+  }
+  function viewFollowups() {
+    var list = followList();
+    var h = '<p class="muted" style="max-width:62ch;margin-bottom:18px">' + esc(tl("fu.intro")) + "</p>";
+    if (!list.length) return h + '<section class="card"><p class="empty">' + esc(tl("fu.none")) + "</p></section>";
+    h += '<div class="fu-list">' + list.map(function (x) {
+      var open = state.fu.open === x.i, sent = lastSent(x.r), tag = "";
+      if (sent) { var n = days(sent, state.ref); tag = '<span class="tag calm">' + esc(n <= 0 ? tl("fu.agotoday") : t("fu.ago", { n: n })) + "</span>"; }
+      var row = '<div class="fu-row"><span class="d num">' + x.d + "<small>" + esc(tl("fu.days")) + "</small></span><span class=\"fu-who\">" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + "</span></span>" + tag +
+        '<button class="btn ' + (open ? "ghost" : "") + '" type="button" data-act="' + (open ? "fu-close" : "fu-open") + '" data-i="' + x.i + '">' + esc(tl(open ? "fu.hide" : "fu.draft")) + "</button></div>";
+      return '<section class="card fu">' + row + (open ? fuPanel(x) : "") + "</section>";
+    }).join("") + "</div>";
+    return h + '<p class="steady wit" style="margin:18px 0 0;padding:16px 20px">' + esc(tl("fu.wit")) + "</p>";
+  }
+  function fuPanel(x) {
+    var c = fuCurrent(), me = fuMe();
+    var seg = function (act, cur, opts) {
+      return '<div class="seg" role="group">' + opts.map(function (o) { return '<button type="button" data-act="' + act + '" data-v="' + o[0] + '" aria-pressed="' + (cur === o[0]) + '">' + esc(o[1]) + "</button>"; }).join("") + "</div>";
+    };
+    return '<div class="fu-panel"><div class="fu-controls"><div><span class="label">' + esc(tl("fu.lang")) + "</span>" + seg("fu-lang", c.lang, [["en", "EN"], ["es", "ES"]]) + '</div><div><span class="label">' + esc(tl("fu.tone")) + "</span>" +
+      seg("fu-tone", c.tone, [["check", tl("fu.t.check")], ["close", tl("fu.t.close")]]) + "</div></div>" +
+      '<div class="fu-me"><label><span class="label">' + esc(tl("fu.name")) + '</span><input id="fuName" type="text" value="' + esc(me.name) + '" autocomplete="name"></label><label><span class="label">' + esc(tl("fu.link")) + '</span><input id="fuLink" type="url" value="' + esc(me.link) + '" placeholder="https://"></label></div>' +
+      '<label><span class="label">' + esc(tl("fu.draftlabel")) + '</span><textarea id="fuText" rows="9">' + esc(state.fu.text) + '</textarea></label>' +
+      '<div class="fu-actions"><button class="btn accent" type="button" data-act="fu-copy">' + esc(tl("fu.copy")) + '</button><button class="btn" type="button" data-act="fu-sent" data-i="' + x.i + '">' + esc(tl("fu.sent")) + '</button><button class="btn ghost" type="button" data-act="fu-noreply" data-i="' + x.i + '">' + esc(tl("fu.noreply")) + "</button></div></div>";
+  }
+  function fuCopy() {
+    var txt = $("#fuText") ? $("#fuText").value : state.fu.text;
+    var done = function () { toast(tl("fu.copied")); };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(done, function () { fuCopyOld(txt); done(); }); }
+    else { fuCopyOld(txt); done(); }
+  }
+  function fuCopyOld(txt) { var ta = $("#fuText"); if (ta) { ta.focus(); ta.select(); try { document.execCommand("copy"); } catch (e) { /* ignore */ } } }
 
   /* ---------- Tracker ---------- */
   var CHIPS = [["all", "ch.all"], ["applied", "ch.applied"], ["waiting", "ch.waiting"], ["interview", "ch.interview"], ["rejected", "ch.rejected"], ["silent", "ch.silent"], ["gated", "ch.gated"]];
@@ -804,7 +891,7 @@
 
   /* ---------- Events ---------- */
   function route() {
-    var v = (location.hash || "#overview").slice(1), ok = ["overview", "tracker", "log", "inbox", "review", "steady", "scout", "craft", "apply", "prepare"];
+    var v = (location.hash || "#overview").slice(1), ok = ["overview", "tracker", "log", "inbox", "review", "followups", "steady", "scout", "craft", "apply", "prepare"];
     state.view = ok.indexOf(v) >= 0 ? v : "overview";
     if (state.view !== "log") state.wiz = state.wiz && state.wiz.done ? null : state.wiz;
     render(); window.scrollTo(0, 0);
@@ -839,6 +926,13 @@
     else if (act === "rev-next") { revCapture(); state.rev.step++; render(); }
     else if (act === "rev-close") { var rr = state.rows[i]; rr.raw.outcome = "no-response"; rr.raw.date_outcome = ""; state.rows[i] = normalise(rr.raw); state.dirty = true; render(); persist(); }
     else if (act === "rev-focus") { state.rev.data.focus = el.dataset.v; render(); setTimeout(revFinish, 160); }
+    else if (act === "fu-open") { state.fu = { open: i, lang: "", tone: "", text: "", edited: false }; fuRefill(); render(); }
+    else if (act === "fu-close") { state.fu.open = -1; render(); }
+    else if (act === "fu-lang") { state.fu.lang = el.dataset.v; fuRefill(); render(); }
+    else if (act === "fu-tone") { state.fu.tone = el.dataset.v; fuRefill(); render(); }
+    else if (act === "fu-copy") fuCopy();
+    else if (act === "fu-sent") { var fr = state.rows[i]; fr.raw.notes = ((fr.raw.notes || "") + (fr.raw.notes ? " " : "") + "[" + todayISO() + "] Follow-up sent.").trim(); state.rows[i] = normalise(fr.raw); state.fu.open = -1; state.dirty = true; render(); persist(); }
+    else if (act === "fu-noreply") { var nr = state.rows[i]; nr.raw.outcome = "no-response"; nr.raw.date_outcome = ""; state.rows[i] = normalise(nr.raw); state.fu.open = -1; state.dirty = true; render(); persist(); }
     else if (act === "prop-accept") { if (applyProp(state.props[i])) { render(); persist(); } }
     else if (act === "prop-skip") { state.props[i].status = "skipped"; render(); }
     else if (act === "prop-acceptall") { var n = 0; state.props.forEach(function (p) { if (p.status === "pending" && (p.kind === "applied" || p.match >= 0) && !p.bad && applyProp(p)) n++; }); render(); if (n) persist(); }
@@ -851,6 +945,8 @@
   });
   document.addEventListener("input", function (e) {
     if (e.target.id === "q") { state.q = e.target.value; renderTableBody(); }
+    else if (e.target.id === "fuText") { state.fu.text = e.target.value; state.fu.edited = true; }
+    else if (e.target.id === "fuName" || e.target.id === "fuLink") { store(e.target.id === "fuName" ? "jo.me.name" : "jo.me.link", e.target.value.trim()); if (!state.fu.edited) { fuRefill(); var ta = $("#fuText"); if (ta) ta.value = state.fu.text; } }
     else if (e.target.id === "wizQ") { state.wiz.q = e.target.value; $("#pickList").innerHTML = pickHTML(state.wiz); }
   });
   $("#editForm").addEventListener("submit", function (e) { if (e.submitter && e.submitter.value === "cancel") return; e.preventDefault(); saveEditor(); $("#editor").close(); });
