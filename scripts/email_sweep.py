@@ -17,6 +17,10 @@ REJECT = [
     r"not (?:be )?(?:moving|move|going|proceeding|progressing|advancing) (?:forward|ahead|on|with)",
     r"decided (?:not )?to (?:move|go|proceed|continue) (?:forward )?with (?:other|another)",
     r"decided not to (?:move|proceed|progress|continue)",
+    r"decided to (?:move|go|proceed|continue)(?: forward)?(?: in the process)? with (?:other|another|candidates?|applicants?)",
+    r"(?:won't|will not|not) (?:be )?inviting you",
+    r"sorry to (?:let you know|inform you)",
+    r"might not be the answer you (?:wanted|hoped)",
     r"will not be (?:moving|advancing|proceeding|progressing)",
     r"(?:pursue|pursuing|proceed with|moving forward with) (?:other|another) (?:candidates?|applicants?)",
     r"(?:other|another) candidates? (?:whose|who|that|better|more closely)",
@@ -25,7 +29,7 @@ REJECT = [
     r"we regret to inform",
     r"(?:not|won't|will not) be (?:taking|taken) (?:your application|you) (?:any )?further",
     r"(?:no|not) (?:hemos|vamos a) (?:podido|continuar|seguir)",
-    r"hemos decidido (?:continuar|seguir|avanzar) con (?:otr[oa]s?|otra)",
+    r"(?:hemos )?decidido (?:continuar|seguir|avanzar)(?: el proceso)? con (?:otr[oa]s?|otra)",
     r"lamentamos (?:informarte|comunicarte)",
     r"no (?:continuaremos|seguiremos|avanzaremos) con tu",
 ]
@@ -89,6 +93,7 @@ def body_text(msg):
         txt = re.sub(r"(?is)<(script|style).*?</\1>", " ", txt)
         txt = re.sub(r"(?s)<[^>]+>", " ", txt)
         txt = re.sub(r"&nbsp;", " ", txt)
+    txt = txt.replace("\u2019", "'").replace("\u2018", "'")
     return re.sub(r"[ \t\r\f\v]+", " ", txt)[:6000]
 
 
