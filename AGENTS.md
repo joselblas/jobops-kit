@@ -15,7 +15,7 @@ You are helping one person run a job search. You work from files in this folder.
 
 scout -> gates -> fit score -> person picks -> tailor CV -> fact check -> person reviews -> apply (stop before submit) -> person submits -> tracker -> funnel review
 
-Playbooks: `scout.md`, `score-rubric.md`, `liveness-and-legitimacy.md`, `craft.md`, `cv-tailor.md`, `apply.md`, `funnel-analytics.md`, `interview-story-bank.md`.
+Playbooks: `scout.md`, `score-rubric.md`, `liveness-and-legitimacy.md`, `craft.md`, `vault.md`, `hooks.md`, `portfolio-formats.md`, `cv-tailor.md`, `apply.md`, `funnel-analytics.md`, `interview-story-bank.md`.
 
 ## Standing rules
 
