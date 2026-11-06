@@ -179,11 +179,42 @@
   ];
   var PHASE = { scout: "5", craft: "3", apply: "4", prepare: "3" };
 
+
+  var I2 = {
+    "fd.title": ["Your folder", "Tu carpeta"],
+    "fd.lede": ["Pick the folder that holds tracker.csv. The dashboard reads it and saves your changes straight back. Nothing is uploaded.", "Elige la carpeta con tracker.csv. El panel la lee y guarda tus cambios directamente. No se sube nada."],
+    "fd.sample": ["You are looking at sample data.", "Estás viendo datos de ejemplo."],
+    "fd.connect": ["Connect folder", "Conectar carpeta"],
+    "fd.needs": ["One click and you are back where you left off.", "Un clic y vuelves donde lo dejaste."],
+    "fd.reconnect": ["Reconnect {n}", "Reconectar {n}"],
+    "fd.refresh": ["Refresh", "Actualizar"], "fd.disconnect": ["Disconnect", "Desconectar"],
+    "fd.checked": ["Checked {t}", "Revisado {t}"],
+    "fd.now": ["just now", "ahora mismo"], "fd.min": ["{n} min ago", "hace {n} min"], "fd.hour": ["{n} h ago", "hace {n} h"],
+    "fd.nobrowser": ["This browser cannot open folders. Chrome or Edge can. You can still load files by hand.", "Este navegador no puede abrir carpetas. Chrome o Edge sí. Aún puedes cargar archivos a mano."],
+    "fd.notracker": ["No tracker.csv in this folder yet.", "Aún no hay tracker.csv en esta carpeta."],
+    "fd.create": ["Create tracker.csv here", "Crear tracker.csv aquí"],
+    "fd.stale": ["Changed on disk", "Cambió en el disco"], "fd.reload": ["Load it", "Cargarlo"],
+    "fd.optional": ["optional", "opcional"],
+    "toast.connected": ["Connected to {d}. Read: {f}.", "Conectado a {d}. Leído: {f}."],
+    "toast.refreshed": ["Updated from your folder: {f}.", "Actualizado desde tu carpeta: {f}."],
+    "toast.created": ["Created tracker.csv in {d}.", "Creado tracker.csv en {d}."],
+    "toast.lost": ["Cannot reach the folder. Reconnect it to carry on.", "No se puede acceder a la carpeta. Reconéctala para seguir."],
+    "cf.title": ["This file changed while you were working", "Este archivo cambió mientras trabajabas"],
+    "cf.body": ["{f} was changed outside the dashboard, probably by Claude or a script. Your last edit is not saved yet.", "{f} se cambió fuera del panel, probablemente por Claude o un script. Tu última edición aún no se guardó."],
+    "cf.reload": ["Load the new file and drop my last edit", "Cargar el archivo nuevo y descartar mi última edición"],
+    "cf.keep": ["Save my version over it", "Guardar mi versión encima"],
+    "cf.note": ["If you save over it, the file on disk is copied first, so nothing is lost.", "Si guardas encima, antes se copia el archivo del disco, así no se pierde nada."],
+    "inbox.empty2": ["Nothing waiting. When Claude writes proposals.csv or fit-proposals.csv in your folder, it shows up here by itself.", "Nada pendiente. Cuando Claude escriba proposals.csv o fit-proposals.csv en tu carpeta, aparecerá aquí solo."]
+  };
+  for (var i2k in I2) I[i2k] = I2[i2k];
+
   var state = {
     rows: [], head: [], handle: null, dirty: false, editing: null, selected: null,
     filter: "all", q: "", sortKey: "date_found", sortDir: -1, ref: new Date(), label: "",
     view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: [], rev: null, craft: { by: "cv_version", pick: -1 }, fu: { open: -1, lang: "", tone: "", text: "", edited: false }, fb: null, proof: { hooks: null, vault: null, hl: "", vl: "" }
   };
+
+  state.dir = null; state.dirName = ""; state.dirState = "none"; state.fstat = {}; state.stale = false; state.trackerMtime = 0; state.backed = ""; state.lastScan = 0; state.scanning = false;
 
   function $(s) { return document.querySelector(s); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -313,6 +344,7 @@
     $("#nav").innerHTML = h;
     $("#themeSeg").innerHTML = ["light", "dark"].map(function (m) { return '<button type="button" data-theme-set="' + m + '" aria-pressed="' + (state.theme === m) + '">' + (m === "light" ? (state.lang === "es" ? "Claro" : "Light") : (state.lang === "es" ? "Oscuro" : "Dark")) + "</button>"; }).join("");
     $("#langSeg").innerHTML = ["en", "es"].map(function (m) { return '<button type="button" data-lang-set="' + m + '" aria-pressed="' + (state.lang === m) + '">' + m.toUpperCase() + "</button>"; }).join("");
+    renderFolder();
   }
   function renderTop() {
     var s = stats();
@@ -320,21 +352,29 @@
       (state.dirty ? "  ·  " + tl("meta.unsaved") : state.handle ? "  ·  " + tl("meta.saved") : "");
     $("#title").textContent = tl("title." + state.view);
     var a = "";
+    var ready = state.dirState === "ready";
     if (state.view === "overview" || state.view === "tracker") {
       if (state.view === "tracker") a += '<button class="btn accent" type="button" data-act="add">' + esc(tl("btn.add")) + "</button>";
-      a += '<button class="btn ghost" type="button" data-act="sample">' + esc(tl("btn.sample")) + "</button>";
-      a += '<button class="btn ghost" type="button" data-act="download">' + esc(tl("btn.download")) + "</button>";
-      a += '<label class="btn ghost" for="file">' + esc(tl("btn.load")) + "</label>";
-      if (window.showOpenFilePicker) a += '<button class="btn" type="button" data-act="open">' + esc(tl("btn.open")) + "</button>";
+      if (ready) a += '<button class="btn ghost" type="button" data-act="fd-refresh">' + esc(tl("fd.refresh")) + "</button>";
+      else {
+        a += '<button class="btn ghost" type="button" data-act="sample">' + esc(tl("btn.sample")) + "</button>";
+        a += '<button class="btn ghost" type="button" data-act="download">' + esc(tl("btn.download")) + "</button>";
+        a += '<label class="btn ghost" for="file">' + esc(tl("btn.load")) + "</label>";
+        if (!canDir && window.showOpenFilePicker) a += '<button class="btn" type="button" data-act="open">' + esc(tl("btn.open")) + "</button>";
+      }
     }
     if (state.view === "inbox") {
-      a += '<button class="btn ghost" type="button" data-act="prop-sample">' + esc(tl("inbox.sample")) + "</button>";
-      a += '<label class="btn" for="pfile">' + esc(tl("inbox.load")) + "</label>";
+      if (!ready) {
+        a += '<button class="btn ghost" type="button" data-act="prop-sample">' + esc(tl("inbox.sample")) + "</button>";
+        a += '<label class="btn" for="pfile">' + esc(tl("inbox.load")) + "</label>";
+      }
     }
     if (state.view === "proof") {
       a += '<button class="btn ghost" type="button" data-act="proof-sample">' + esc(tl("btn.psample")) + "</button>";
-      a += '<label class="btn ghost" for="vfile">' + esc(tl("btn.vault")) + "</label>";
-      a += '<label class="btn" for="hfile">' + esc(tl("btn.hooks")) + "</label>";
+      if (!ready) {
+        a += '<label class="btn ghost" for="vfile">' + esc(tl("btn.vault")) + "</label>";
+        a += '<label class="btn" for="hfile">' + esc(tl("btn.hooks")) + "</label>";
+      }
     }
     $("#actions").innerHTML = a;
     $("#foot").textContent = tl("foot");
@@ -795,8 +835,12 @@
     });
     return best;
   }
-  function loadProps(text) {
-    var keep = state.head.slice(), raw = parseCSV(text);
+  function propKey(p) { return [p.kind, p.company, p.role, p.outcome, p.date, (p.dims || []).join("")].join("|").toLowerCase(); }
+  function propMem() { try { return JSON.parse(fetchStore("jo.props.done") || "{}") || {}; } catch (e) { return {}; } }
+  function propRemember() { var m = propMem(); state.props.forEach(function (p) { if (p.status !== "pending" && !p.sample) m[propKey(p)] = p.status; }); store("jo.props.done", JSON.stringify(m)); }
+  function loadProps(text, sample) { loadPropsRaw(parseCSV(text), sample); }
+  function loadPropsRaw(raw, sample) {
+    var keep = state.head.slice(), mem = sample ? {} : propMem();
     state.head = keep;
     state.props = raw.filter(function (r) { return r.company; }).map(function (r, i) {
       var p = { id: i, kind: (r.kind || r.type || "outcome").toLowerCase(), company: r.company, role: r.role || "", outcome: (r.outcome || "").toLowerCase(), date: r.date || "", evidence: r.evidence || "", source: r.source || "email", status: "pending" };
@@ -806,6 +850,7 @@
         p.bad = p.dims.some(function (x) { return isNaN(x) || x < 1 || x > 5; });
         p.reason = r.reason || ""; p.evidence = p.reason;
       }
+      p.sample = !!sample; var remembered = mem[propKey(p)]; if (remembered) p.status = remembered;
       p.match = p.kind === "applied" ? -1 : matchRow(p);
       return p;
     });
@@ -813,7 +858,7 @@
   }
   function viewInbox() {
     var list = state.props, pend = list.filter(function (p) { return p.status === "pending"; });
-    if (!list.length) return '<p class="muted" style="margin:0 0 18px">' + esc(tl("inbox.lede")) + '</p><div class="card"><p class="empty">' + esc(tl("inbox.empty")) + "</p></div>";
+    if (!list.length) return '<p class="muted" style="margin:0 0 18px">' + esc(tl("inbox.lede")) + '</p><div class="card"><p class="empty">' + esc(tl(state.dirState === "ready" ? "inbox.empty2" : "inbox.empty")) + "</p></div>";
     var acc = list.filter(function (p) { return p.status === "accepted"; }).length, sk = list.filter(function (p) { return p.status === "skipped"; }).length;
     var h = '<p class="muted" style="margin:0 0 18px">' + esc(tl("inbox.lede")) + '</p><div class="controls"><span class="tag accent">' + esc(t("inbox.pending", { n: pend.length })) + "</span>" + (acc + sk ? '<span class="muted">' + esc(t("inbox.done", { a: acc, s: sk })) + "</span>" : "") + (pend.some(function (p) { return (p.match >= 0 || p.kind === "applied") && !p.bad; }) ? '<button class="btn" type="button" data-act="prop-acceptall">' + esc(tl("inbox.acceptall")) + "</button>" : "") + '</div><div class="prop-list">';
     list.forEach(function (p) {
@@ -1084,12 +1129,43 @@
 
   /* ---------- Files ---------- */
   function toast(msg) { var el = $("#toast"); el.textContent = msg; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { el.hidden = true; }, 4200); }
+  function writeTo(h, text) { return h.createWritable().then(function (w) { return w.write(text).then(function () { return w.close(); }); }); }
+  function askConflict(name) {
+    return new Promise(function (res) {
+      state.cfResolve = res;
+      $("#cfTitle").textContent = tl("cf.title"); $("#cfBody").textContent = t("cf.body", { f: name });
+      $("#cfReload").textContent = tl("cf.reload"); $("#cfKeep").textContent = tl("cf.keep"); $("#cfNote").textContent = tl("cf.note");
+      $("#conflict").showModal();
+    });
+  }
+  function backupOnce(h) {
+    var day = todayISO();
+    if (!state.dir || state.backed === day) return Promise.resolve();
+    return h.getFile().then(function (f) { return f.text(); }).then(function (old) {
+      return state.dir.getFileHandle("tracker.before-dashboard-" + day + ".csv", { create: true }).then(function (bh) { return writeTo(bh, old); });
+    }).then(function () { state.backed = day; });
+  }
+  function afterWrite(h) {
+    return h.getFile().then(function (f) {
+      state.trackerMtime = f.lastModified; state.fstat[h.name] = { found: true, mtime: f.lastModified };
+      state.dirty = false; state.stale = false; renderTop(); renderFolder(); toast(t("toast.saved", { f: h.name }));
+    });
+  }
+  function reloadTracker(h) {
+    return h.getFile().then(function (f) { return f.text().then(function (txt) {
+      state.handle = h; load(txt, h.name, true); state.trackerMtime = f.lastModified; state.fstat[h.name] = { found: true, mtime: f.lastModified }; state.stale = false; renderFolder();
+    }); });
+  }
   function persist() {
-    if (state.handle) {
-      state.handle.createWritable().then(function (w) { return w.write(serialise()).then(function () { return w.close(); }); })
-        .then(function () { state.dirty = false; renderTop(); toast(t("toast.saved", { f: state.handle.name })); })
-        .catch(function (err) { toast(t("toast.fail", { e: err.message })); });
-    } else { toast(tl("toast.pagecopy")); }
+    if (!state.handle) { toast(tl("toast.pagecopy")); return Promise.resolve(); }
+    var h = state.handle;
+    return h.getFile().then(function (f) {
+      if (state.trackerMtime && f.lastModified !== state.trackerMtime) return askConflict(h.name);
+      return "keep";
+    }).then(function (choice) {
+      if (choice === "reload") { toast(t("toast.refreshed", { f: h.name })); return reloadTracker(h); }
+      return backupOnce(h).then(function () { return writeTo(h, serialise()); }).then(function () { return afterWrite(h); });
+    }).catch(function (err) { if (err && err.name === "NotAllowedError" && state.dir) { state.dirState = "needs"; renderFolder(); toast(tl("toast.lost")); } else toast(t("toast.fail", { e: err && err.message })); });
   }
   function download() {
     var blob = new Blob([serialise()], { type: "text/csv" }), a = document.createElement("a");
@@ -1100,10 +1176,118 @@
   function openWithHandle() {
     window.showOpenFilePicker({ types: [{ description: "Tracker CSV", accept: { "text/csv": [".csv"] } }] }).then(function (hs) {
       var h = hs[0];
-      return h.getFile().then(function (file) { return file.text(); }).then(function (text) { state.handle = h; load(text, h.name, true); toast(t("toast.editing", { f: h.name })); });
+      return h.getFile().then(function (file) { return file.text().then(function (text) { state.handle = h; load(text, h.name, true); state.trackerMtime = file.lastModified; toast(t("toast.editing", { f: h.name })); }); });
     }).catch(function (e) { if (e && e.name !== "AbortError") toast(e.message); });
   }
   function readFile(file) { if (!file) return; var fr = new FileReader(); fr.onload = function () { load(String(fr.result), file.name); }; fr.readAsText(file); }
+
+
+  /* ---------- Folder ---------- */
+  var FILES = [["tracker.csv", "tracker"], ["proposals.csv", "props"], ["fit-proposals.csv", "props"], ["career-vault.md", "vault"], ["hooks.csv", "hooks"]];
+  var OPTIONAL = { "fit-proposals.csv": 1, "hooks.csv": 1 };
+  var canDir = typeof window.showDirectoryPicker === "function";
+  function idb(mode, fn) {
+    return new Promise(function (res, rej) {
+      var rq; try { rq = indexedDB.open("jobops", 1); } catch (e) { rej(e); return; }
+      rq.onupgradeneeded = function () { rq.result.createObjectStore("kv"); };
+      rq.onerror = function () { rej(rq.error); };
+      rq.onsuccess = function () {
+        var db = rq.result, tx = db.transaction("kv", mode), r = fn(tx.objectStore("kv"));
+        tx.oncomplete = function () { db.close(); res(r && r.result); };
+        tx.onerror = function () { rej(tx.error); };
+      };
+    });
+  }
+  function idbGet(k) { return idb("readonly", function (st) { return st.get(k); }); }
+  function idbSet(k, v) { return idb("readwrite", function (st) { return st.put(v, k); }); }
+  function idbDel(k) { return idb("readwrite", function (st) { return st["delete"](k); }); }
+  function ago(ms) {
+    var m = Math.floor((Date.now() - ms) / 60000);
+    return !ms || m < 1 ? tl("fd.now") : m < 60 ? t("fd.min", { n: m }) : t("fd.hour", { n: Math.floor(m / 60) });
+  }
+  function getNamed(name) {
+    return state.dir.getFileHandle(name).then(function (h) { return h.getFile().then(function (f) { return { h: h, f: f }; }); }, function (e) { if (e && e.name === "NotFoundError") return null; throw e; });
+  }
+  function scanFolder(force) {
+    if (!state.dir || state.scanning) return Promise.resolve();
+    state.scanning = true;
+    var first = !Object.keys(state.fstat).length;
+    return Promise.all(FILES.map(function (d) { return getNamed(d[0]).then(function (r) { return { d: d, r: r }; }); })).then(function (list) {
+      var todo = [], missingTracker = false;
+      list.forEach(function (x) {
+        var name = x.d[0], prev = state.fstat[name];
+        if (!x.r) { state.fstat[name] = { found: false }; if (x.d[1] === "tracker") { missingTracker = true; state.handle = null; } return; }
+        var mt = x.r.f.lastModified;
+        if (force || !prev || !prev.found || prev.mtime !== mt) {
+          if (x.d[1] === "tracker" && !force && prev && prev.found && (state.dirty || (state.wiz && !state.wiz.done))) { state.stale = true; return; }
+          todo.push(x);
+        } else state.fstat[name] = prev;
+      });
+      return Promise.all(todo.map(function (x) { return x.r.f.text().then(function (txt) { x.text = txt; return x; }); })).then(function (done) {
+        var propsChanged = false, names = [];
+        done.forEach(function (x) {
+          var name = x.d[0], role = x.d[1], mt = x.r.f.lastModified;
+          state.fstat[name] = { found: true, mtime: mt }; names.push(name);
+          if (role === "tracker") { state.handle = x.r.h; load(x.text, name, true); state.trackerMtime = mt; state.stale = false; }
+          else if (role === "vault") loadVault(x.text, name);
+          else if (role === "hooks") loadHooks(x.text, name);
+          else propsChanged = true;
+        });
+        if (propsChanged) {
+          var need = list.filter(function (x) { return x.d[1] === "props" && x.r; });
+          return Promise.all(need.map(function (x) { return x.r.f.text(); })).then(function (texts) {
+            var all = []; texts.forEach(function (tx) { all = all.concat(parseCSV(tx)); });
+            loadPropsRaw(all, false);
+          }).then(function () { return names; });
+        }
+        return names;
+      }).then(function (names) {
+        state.lastScan = Date.now();
+        if (names.length) {
+          if (first) toast(t("toast.connected", { d: state.dirName, f: names.join(", ") }));
+          else toast(t("toast.refreshed", { f: names.join(", ") }));
+        }
+        renderNav(); renderTop();
+      });
+    }).catch(function (e) {
+      if (e && (e.name === "NotAllowedError" || e.name === "NotFoundError" || e.name === "SecurityError")) { state.dirState = "needs"; toast(tl("toast.lost")); renderFolder(); }
+      else toast(e && e.message ? e.message : String(e));
+    }).then(function () { state.scanning = false; renderFolder(); });
+  }
+  function setDir(h) { state.dir = h; state.dirName = h.name; state.dirState = "ready"; state.fstat = {}; idbSet("dir", h).catch(function () {}); return scanFolder(true); }
+  function connectDir() { window.showDirectoryPicker({ id: "jobops", mode: "readwrite" }).then(setDir).catch(function (e) { if (e && e.name !== "AbortError") toast(e.message); }); }
+  function reconnectDir() {
+    state.dir.requestPermission({ mode: "readwrite" }).then(function (p) { if (p === "granted") { state.dirState = "ready"; state.fstat = {}; return scanFolder(true); } toast(tl("toast.lost")); }).catch(function () { toast(tl("toast.lost")); });
+  }
+  function disconnectDir() { state.dir = null; state.dirName = ""; state.dirState = "none"; state.fstat = {}; state.stale = false; idbDel("dir").catch(function () {}); renderNav(); renderTop(); }
+  function createTracker() {
+    var head = "date_found,company,role,source,score,gate_result,status,date_applied,date_outcome,outcome,notes,domain,skill,level,evidence,terms,cv_version,portfolio_lead\n";
+    state.dir.getFileHandle("tracker.csv", { create: true }).then(function (h) { return writeTo(h, head); }).then(function () { toast(t("toast.created", { d: state.dirName })); return scanFolder(true); }).catch(function (e) { toast(e.message); });
+  }
+  function autoScan() { if (state.dirState === "ready" && !document.hidden) scanFolder(false); }
+  function renderFolder() {
+    var el = $("#folder"); if (!el) return;
+    var h = '<p class="label">' + esc(tl("fd.title")) + "</p>";
+    if (state.dirState === "ready") {
+      h += '<p class="fd-name"><span class="dot"></span><span>' + esc(state.dirName) + "</span></p><ul class=\"fd-files\">";
+      FILES.forEach(function (d) {
+        var st = state.fstat[d[0]], on = st && st.found;
+        if (!on && OPTIONAL[d[0]] && d[0] === "fit-proposals.csv") return;
+        h += '<li class="' + (on ? "on" : "off") + '"><span aria-hidden="true">' + (on ? "✓" : "–") + "</span><span>" + esc(d[0]) + (!on && OPTIONAL[d[0]] ? ' <em>' + esc(tl("fd.optional")) + "</em>" : "") + "</span></li>";
+      });
+      h += "</ul>";
+      if (state.fstat["tracker.csv"] && !state.fstat["tracker.csv"].found) h += '<p class="fd-note">' + esc(tl("fd.notracker")) + '</p><button class="btn" type="button" data-act="fd-create">' + esc(tl("fd.create")) + "</button>";
+      if (state.stale) h += '<p class="fd-note"><span class="tag warn">' + esc(tl("fd.stale")) + '</span></p><button class="btn" type="button" data-act="fd-refresh-force">' + esc(tl("fd.reload")) + "</button>";
+      h += '<p class="fd-note muted">' + esc(t("fd.checked", { t: ago(state.lastScan) })) + '</p><div class="fd-actions"><button class="btn ghost" type="button" data-act="fd-refresh">' + esc(tl("fd.refresh")) + '</button><button class="btn ghost" type="button" data-act="fd-off">' + esc(tl("fd.disconnect")) + "</button></div>";
+    } else if (state.dirState === "needs") {
+      h += '<p class="fd-name"><span class="dot off"></span><span>' + esc(state.dirName) + '</span></p><p class="fd-note">' + esc(tl("fd.needs")) + '</p><button class="btn accent" type="button" data-act="fd-reconnect">' + esc(t("fd.reconnect", { n: state.dirName })) + '</button><div class="fd-actions"><button class="btn ghost" type="button" data-act="fd-off">' + esc(tl("fd.disconnect")) + "</button></div>";
+    } else if (canDir) {
+      h += '<p class="fd-note">' + esc(tl("fd.lede")) + "</p>" + (/sample/i.test(state.label || "") ? '<p class="fd-note"><span class="tag calm">' + esc(tl("fd.sample")) + "</span></p>" : "") + '<button class="btn accent" type="button" data-act="fd-connect">' + esc(tl("fd.connect")) + "</button>";
+    } else {
+      h += '<p class="fd-note">' + esc(tl("fd.nobrowser")) + "</p>";
+    }
+    el.innerHTML = h;
+  }
 
   /* ---------- Events ---------- */
   function route() {
@@ -1127,6 +1311,13 @@
     else if (act === "sample") load(window.SAMPLE_CSV, "Sample data (fictional)");
     else if (act === "download") download();
     else if (act === "open") openWithHandle();
+    else if (act === "fd-connect") connectDir();
+    else if (act === "fd-reconnect") reconnectDir();
+    else if (act === "fd-off") disconnectDir();
+    else if (act === "fd-create") createTracker();
+    else if (act === "fd-refresh") scanFolder(false).then(function () { toast(t("fd.checked", { t: ago(state.lastScan) })); });
+    else if (act === "fd-refresh-force") scanFolder(true);
+    else if (act === "cf-keep" || act === "cf-reload") { $("#conflict").close(); var rs = state.cfResolve; state.cfResolve = null; if (rs) rs(act === "cf-keep" ? "keep" : "reload"); }
     else if (act === "filter") { state.filter = el.dataset.f; render(); }
     else if (act === "sort") { var k = el.dataset.sort; if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = (k === "score" || k === "date_found") ? -1 : 1; } render(); }
     else if (act === "wiz-start") { state.wiz = { flow: el.dataset.flow, step: 0, data: {}, q: "", done: false }; render(); focusWiz(); }
@@ -1158,10 +1349,10 @@
     else if (act === "fb-copy") fbCopy();
     else if (act === "fu-sent") { var fr = state.rows[i]; fr.raw.notes = ((fr.raw.notes || "") + (fr.raw.notes ? " " : "") + "[" + todayISO() + "] Follow-up sent.").trim(); state.rows[i] = normalise(fr.raw); state.fu.open = -1; state.dirty = true; render(); persist(); }
     else if (act === "fu-noreply") { var nr = state.rows[i]; nr.raw.outcome = "no-response"; nr.raw.date_outcome = ""; state.rows[i] = normalise(nr.raw); state.fu.open = -1; state.dirty = true; render(); persist(); }
-    else if (act === "prop-accept") { if (applyProp(state.props[i])) { render(); persist(); } }
-    else if (act === "prop-skip") { state.props[i].status = "skipped"; render(); }
-    else if (act === "prop-acceptall") { var n = 0; state.props.forEach(function (p) { if (p.status === "pending" && (p.kind === "applied" || p.match >= 0) && !p.bad && applyProp(p)) n++; }); render(); if (n) persist(); }
-    else if (act === "prop-sample") loadProps(window.SAMPLE_PROPOSALS || "");
+    else if (act === "prop-accept") { if (applyProp(state.props[i])) { render(); propRemember(); persist(); } }
+    else if (act === "prop-skip") { state.props[i].status = "skipped"; propRemember(); render(); }
+    else if (act === "prop-acceptall") { var n = 0; state.props.forEach(function (p) { if (p.status === "pending" && (p.kind === "applied" || p.match >= 0) && !p.bad && applyProp(p)) n++; }); render(); propRemember(); if (n) persist(); }
+    else if (act === "prop-sample") loadProps(window.SAMPLE_PROPOSALS || "", true);
   });
   document.addEventListener("keydown", function (e) {
     var el = e.target;
@@ -1195,4 +1386,15 @@
   state.view = (location.hash || "#overview").slice(1);
   load(window.SAMPLE_CSV || "", "Sample data (fictional)");
   route();
+  window.addEventListener("focus", autoScan);
+  document.addEventListener("visibilitychange", autoScan);
+  setInterval(autoScan, 15000);
+  if (canDir) idbGet("dir").then(function (h) {
+    if (!h) return;
+    state.dir = h; state.dirName = h.name;
+    return h.queryPermission({ mode: "readwrite" }).then(function (pm) {
+      if (pm === "granted") { state.dirState = "ready"; return scanFolder(true); }
+      state.dirState = "needs"; renderNav();
+    });
+  }).catch(function () { /* no stored folder */ });
 })();

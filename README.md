@@ -27,7 +27,7 @@ They share one file, `tracker.csv`. The assistant writes proposals. You accept t
 
 - **I want the assistant.** Follow [docs/setup.md](docs/setup.md), parts 1 to 4. Install four skills, make a Claude Project, no code.
 - **I use Claude Code.** Same guide, "Using Claude Code instead".
-- **I only want the dashboard.** Open the [demo](https://joselblas.github.io/jobops-kit/app/), or open `app/index.html` and load your own CSV (columns in `app/README.md`).
+- **I only want the dashboard.** Open the [demo](https://joselblas.github.io/jobops-kit/app/), or open `app/index.html` in Chrome or Edge and press **Connect folder** (columns in `app/README.md`).
 
 ## Principles
 

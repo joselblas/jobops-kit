@@ -7,8 +7,9 @@ A full-screen, no-dependency dashboard for `tracker.csv`. Rounded cards, a left 
 ## Use
 
 1. Open `index.html` in a browser (double click works, no server needed), or use the live demo.
-2. Press **Open and edit** (Chrome or Edge) to edit your file in place, or **Load tracker.csv** or drop the file on the page.
-3. First load shows fictional sample data (`sample-tracker.csv`).
+2. In Chrome or Edge, press **Connect folder** in the left menu and pick the folder that holds your `tracker.csv`. That is the only step. Your files load by themselves and the page remembers the folder.
+3. First load shows fictional sample data (`sample-tracker.csv`) until you connect.
+4. Other browsers: **Load tracker.csv**, or drop the file on the page.
 
 ## Menu
 
@@ -33,7 +34,25 @@ One question at a time, big choices that move on when you pick them, Enter to co
 
 ## Saving
 
-In Chrome or Edge, **Open and edit** writes changes straight back to your file. In other browsers use **Download CSV**. The page warns you before closing with unsaved changes.
+## Your folder
+
+Connect the folder once (Chrome or Edge). The dashboard then does the carrying for you.
+
+- **Reads on its own:** `tracker.csv`, `proposals.csv`, `fit-proposals.csv` (optional), `career-vault.md` and `hooks.csv` (optional). No loading, no importing.
+- **Stays current:** it checks the folder when you come back to the tab and every 15 seconds. If Claude or a script changed a file, the page updates and tells you which.
+- **Saves straight back:** every change you make is written to `tracker.csv`. Before the first write each day, the old file is copied to `tracker.before-dashboard-YYYY-MM-DD.csv`.
+- **Never overwrites silently:** if `tracker.csv` changed on disk while you were editing, you choose between loading the new file and saving yours over it.
+- **Remembers decisions:** proposals you accepted or skipped do not come back as pending when the file is read again.
+- **Reconnects in one click:** after a restart the browser asks you to confirm access once.
+- **Private:** the folder handle stays in your browser. Nothing is uploaded.
+
+![Your folder](../docs/screenshots/folder.png)
+
+No folder yet? Connect an empty one and press **Create tracker.csv here**.
+
+## Saving
+
+With a folder connected, saving is automatic. Without one, use **Download CSV** or, in Chrome and Edge, open the file. The page warns you before closing with unsaved changes.
 
 ## Columns
 

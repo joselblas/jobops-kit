@@ -12,6 +12,7 @@
   <aside class="side" id="side">
     <a class="brand" href="#overview"><span class="mark" aria-hidden="true"></span><span>Jobops</span></a>
     <nav id="nav" aria-label="Main"></nav>
+    <section class="folder" id="folder" aria-label="Your folder"></section>
     <div class="side-foot">
       <div class="seg" role="group" aria-label="Theme" id="themeSeg"></div>
       <div class="seg" role="group" aria-label="Language" id="langSeg"></div>
@@ -62,6 +63,17 @@
     <div class="row-actions">
       <button class="btn ghost" value="cancel" formnovalidate id="editCancel"></button>
       <button class="btn" value="save" id="editSave"></button>
+    </div>
+  </form>
+</dialog>
+<dialog id="conflict" aria-labelledby="cfTitle">
+  <form method="dialog" onsubmit="return false">
+    <h2 id="cfTitle"></h2>
+    <p class="sub" id="cfBody"></p>
+    <p class="sub" id="cfNote"></p>
+    <div class="row-actions">
+      <button class="btn ghost" type="button" data-act="cf-reload" id="cfReload"></button>
+      <button class="btn" type="button" data-act="cf-keep" id="cfKeep"></button>
     </div>
   </form>
 </dialog>
