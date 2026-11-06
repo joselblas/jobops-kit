@@ -54,6 +54,10 @@ No folder yet? Connect an empty one and press **Create tracker.csv here**.
 
 With a folder connected, saving is automatic. Without one, use **Download CSV** or, in Chrome and Edge, open the file. The page warns you before closing with unsaved changes.
 
+## Accessibility
+
+Checked against WCAG 2.1 AA: no automated violations on any page, full keyboard use, contrast calculated for both themes, no sideways scroll at 320 px. Screen readers are not tested yet. See [`docs/accessibility.md`](../docs/accessibility.md) for the method, the fixes and how to re-run the check.
+
 ## Columns
 
 The base columns are the same as `templates/tracker.example.csv`. Outcome values: `rejected`, `rejected-auto`, `interview`, `offer`, `withdrawn`, `no-response`. For the fit profile, add five optional columns with values from 1 to 5, matching `playbooks/score-rubric.md`:

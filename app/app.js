@@ -206,7 +206,13 @@
     "cf.note": ["If you save over it, the file on disk is copied first, so nothing is lost.", "Si guardas encima, antes se copia el archivo del disco, así no se pierde nada."],
     "inbox.empty2": ["Nothing waiting. When Claude writes proposals.csv or fit-proposals.csv in your folder, it shows up here by itself.", "Nada pendiente. Cuando Claude escriba proposals.csv o fit-proposals.csv en tu carpeta, aparecerá aquí solo."]
   };
+  var I3 = {
+    "a11y.skip": ["Skip to content", "Saltar al contenido"],
+    "a11y.list": ["Scrollable list", "Lista con desplazamiento"],
+    "a11y.fit": ["Listings by score. Choose one to see its fit.", "Ofertas por puntuación. Elige una para ver su encaje."]
+  };
   for (var i2k in I2) I[i2k] = I2[i2k];
+  for (var i3k in I3) I[i3k] = I3[i3k];
 
   var state = {
     rows: [], head: [], handle: null, dirty: false, editing: null, selected: null,
@@ -377,7 +383,7 @@
       }
     }
     $("#actions").innerHTML = a;
-    $("#foot").textContent = tl("foot");
+    $("#foot").textContent = tl("foot"); var sk = $("#skip"); if (sk) sk.textContent = tl("a11y.skip");
     document.documentElement.lang = state.lang;
     document.title = "Jobops · " + tl("nav." + state.view);
   }
@@ -442,9 +448,9 @@
   function fitHTML() {
     var scored = state.rows.filter(function (r) { return r.score != null; }).sort(function (a, b) { return b.score - a.score; });
     if (!scored.length) return '<p class="empty">' + esc(tl("fit.none")) + "</p>";
-    var list = '<ol class="fit-list" role="listbox">' + scored.map(function (r) {
-      return '<li class="fit-item" tabindex="0" role="option" aria-selected="' + (r === state.selected) + '" data-act="select" data-i="' + state.rows.indexOf(r) + '"><span class="fit-score">' + r.score.toFixed(1) + '</span><span><span>' + esc(r.company) + '</span><br><span class="fit-role">' + esc(r.role) + "</span></span>" + tagFor(r) + "</li>";
-    }).join("") + "</ol>";
+    var list = '<ul class="fit-list" aria-label="' + esc(tl("a11y.fit")) + '" tabindex="0">' + scored.map(function (r) {
+      return '<li><button type="button" class="fit-item" aria-pressed="' + (r === state.selected) + '" data-act="select" data-i="' + state.rows.indexOf(r) + '"><span class="fit-score">' + r.score.toFixed(1) + '</span><span><span>' + esc(r.company) + '</span><br><span class="fit-role">' + esc(r.role) + "</span></span>" + tagFor(r) + "</button></li>";
+    }).join("") + "</ul>";
     return '<div class="fit">' + list + '<div class="radar" aria-live="polite">' + radarHTML() + "</div></div>";
   }
   function pt(cx, cy, r, k, n) { var a = -Math.PI / 2 + (2 * Math.PI * k) / n; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
@@ -502,7 +508,7 @@
   }
   function waitingHTML() {
     var list = state.rows.filter(function (r) { return r.stateKey === "waiting" && r.dApplied; }).map(function (r) { return { r: r, d: days(r.dApplied, state.ref) }; }).filter(function (x) { return x.d >= 14; }).sort(function (a, b) { return b.d - a.d; });
-    return list.length ? '<ul class="waiting">' + list.map(function (x) {
+    return list.length ? '<ul class="waiting" tabindex="0" aria-label="' + esc(tl("a11y.list")) + '">' + list.map(function (x) {
       return '<li><span class="d num">' + x.d + "<small>" + esc(tl("wait.days")) + "</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + "</span></span>" + (x.d >= 30 ? '<span class="tag accent">' + esc(tl("wait.follow")) + "</span>" : '<span class="tag">14+</span>') + "</li>";
     }).join("") + "</ul>" : '<p class="empty">' + esc(tl("wait.none")) + "</p>";
   }
@@ -733,7 +739,7 @@
     return '<section class="card"><div class="controls"><div class="chips" role="group" aria-label="Filter">' + CHIPS.map(function (c) {
       return '<button class="chip" type="button" data-act="filter" data-f="' + c[0] + '" aria-pressed="' + (state.filter === c[0]) + '">' + esc(tl(c[1])) + "</button>";
     }).join("") + '</div><input type="search" id="q" placeholder="' + esc(tl("search")) + '" aria-label="' + esc(tl("search")) + '" value="' + esc(state.q) + '"></div><p class="muted" id="count" style="margin-bottom:10px"></p><div class="table-wrap"><table id="table"><thead><tr>' +
-      th.map(function (h) { return '<th data-act="sort" data-sort="' + h[0] + '" tabindex="0" class="' + (h[2] || "") + '"' + (state.sortKey === h[0] ? ' aria-sort="' + (state.sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + esc(tl(h[1])) + "</th>"; }).join("") + '<th aria-label="' + esc(tl("btn.edit")) + '"></th></tr></thead><tbody id="tbody"></tbody></table></div></section>';
+      th.map(function (h) { return '<th class="' + (h[2] || "") + '"' + (state.sortKey === h[0] ? ' aria-sort="' + (state.sortDir > 0 ? "ascending" : "descending") + '"' : "") + '><button type="button" class="th-btn" data-act="sort" data-sort="' + h[0] + '">' + esc(tl(h[1])) + "</button></th>"; }).join("") + '<th><span class="sr">' + esc(tl("btn.edit")) + '</span></th></tr></thead><tbody id="tbody"></tbody></table></div></section>';
   }
   function visibleRows() {
     var q = state.q.toLowerCase();
@@ -871,7 +877,7 @@
       } else if (p.kind === "applied") change = tl("inbox.newapp") + ": " + p.role + (p.date ? ", " + p.date : "");
       else change = (row ? row.stateText : "?") + " → " + tl(OUT_KEY[p.outcome] || "st.other") + (p.date ? ", " + p.date : "");
       var ok = p.kind === "applied" || (row && !p.bad), done = p.status !== "pending";
-      h += '<article class="card prop' + (done ? " done" : "") + '"><div class="prop-head"><div><h3>' + esc(p.company) + '</h3><p class="fit-role">' + esc(row ? row.role : p.role) + "</p></div>" +
+      h += '<article class="card prop' + (done ? " done" : "") + '"><div class="prop-head"><div><h2>' + esc(p.company) + '</h2><p class="fit-role">' + esc(row ? row.role : p.role) + "</p></div>" +
         (done ? '<span class="tag ' + (p.status === "accepted" ? "calm" : "") + '">' + esc(tl(p.status === "accepted" ? "inbox.accepted" : "inbox.skipped")) + "</span>" : "") + "</div>" +
         '<p class="label">' + esc(tl("inbox.change")) + '</p><p class="prop-change">' + esc(change) + "</p>" + dimsHTML +
         (p.evidence ? '<p class="label">' + esc(p.kind === "fit" ? tl("inbox.fitwhy") : tl("inbox.evidence")) + " · " + esc(tl("inbox.from")) + " " + esc(p.source) + '</p><blockquote>' + esc(p.evidence) + "</blockquote>" : "") +
@@ -950,7 +956,7 @@
       var wait = state.rows.filter(function (r) { return r.stateKey === "waiting" && r.dApplied; }).map(function (r) { return { r: r, d: days(r.dApplied, state.ref) }; });
       var fresh = wait.filter(function (x) { return x.d < 14; }).length, mid = wait.filter(function (x) { return x.d >= 14 && x.d < 30; }).length, old = wait.filter(function (x) { return x.d >= 30; }).sort(function (a, b) { return b.d - a.d; });
       h += '<p class="hint">' + esc(tl("rev.h2")) + '</p><p class="muted" style="margin:0 0 12px">' + esc(t("rev.fresh", { n: fresh })) + " " + esc(t("rev.midn", { n: mid })) + "</p>";
-      h += old.length ? '<ul class="waiting" style="max-height:340px">' + old.slice(0, 40).map(function (x) {
+      h += old.length ? '<ul class="waiting" style="max-height:340px" tabindex="0" aria-label="' + esc(tl("a11y.list")) + '">' + old.slice(0, 40).map(function (x) {
         return '<li><span class="d num">' + x.d + "<small>" + esc(tl("wait.days")) + "</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + '</span></span><button type="button" class="btn ghost" data-act="rev-close" data-i="' + state.rows.indexOf(x.r) + '">' + esc(tl("rev.close")) + "</button></li>";
       }).join("") + "</ul>" : '<p class="empty">' + esc(tl("rev.none30")) + "</p>";
     } else if (i === 2) {
@@ -1002,7 +1008,7 @@
   function viewLog() {
     var w = state.wiz;
     if (!w) return '<p class="muted" style="margin:0 0 18px">' + esc(tl("log.lede")) + '</p><div class="start-grid">' + ["reply", "apply", "interview"].map(function (f) {
-      return '<button class="start" type="button" data-act="wiz-start" data-flow="' + f + '"><h3>' + esc(tl("flow." + f)) + "</h3><p>" + esc(tl("flow." + f + ".d")) + "</p></button>";
+      return '<button class="start" type="button" data-act="wiz-start" data-flow="' + f + '"><strong class="start-t">' + esc(tl("flow." + f)) + "</strong><p>" + esc(tl("flow." + f + ".d")) + "</p></button>";
     }).join("") + "</div>";
     if (w.done) return '<div class="wiz-wrap"><div class="wiz"><span class="label">' + esc(tl("done.sub")) + "</span><h2>" + esc(tl("done.title")) + "</h2>" + (w.steady ? w.steady : "") + '<div class="wiz-nav"><button class="btn ghost" type="button" data-act="wiz-again">' + esc(tl("btn.another")) + '</button><a class="btn" href="#tracker">' + esc(tl("btn.totracker")) + "</a></div></div></div>";
     var steps = FLOWS[w.flow].steps, n = steps.length, i = w.step, h = '<div class="wiz-wrap"><div class="wiz" role="group" aria-live="polite">';
@@ -1296,7 +1302,7 @@
     if (state.view !== "log") state.wiz = state.wiz && state.wiz.done ? null : state.wiz;
     render(); window.scrollTo(0, 0);
   }
-  window.addEventListener("hashchange", route);
+  window.addEventListener("hashchange", function () { route(); var h1 = $("#title"); h1.setAttribute("tabindex", "-1"); h1.focus({ preventScroll: true }); });
 
   document.addEventListener("click", function (e) {
     var th = e.target.closest("[data-theme-set]");
@@ -1305,7 +1311,7 @@
     if (lg) { state.lang = lg.dataset.langSet; store("jo.lang", state.lang); renorm(); render(); return; }
     var el = e.target.closest("[data-act]"); if (!el) return;
     var act = el.dataset.act, i = +el.dataset.i;
-    if (act === "select") { state.selected = state.rows[i]; $("#view").innerHTML = viewOverview(); }
+    if (act === "select") { state.selected = state.rows[i]; $("#view").innerHTML = viewOverview(); var sb = $('.fit-item[data-i="' + i + '"]'); if (sb) sb.focus({ preventScroll: true }); }
     else if (act === "edit") openEditor(i);
     else if (act === "add") openEditor(-1);
     else if (act === "sample") load(window.SAMPLE_CSV, "Sample data (fictional)");
@@ -1319,7 +1325,7 @@
     else if (act === "fd-refresh-force") scanFolder(true);
     else if (act === "cf-keep" || act === "cf-reload") { $("#conflict").close(); var rs = state.cfResolve; state.cfResolve = null; if (rs) rs(act === "cf-keep" ? "keep" : "reload"); }
     else if (act === "filter") { state.filter = el.dataset.f; render(); }
-    else if (act === "sort") { var k = el.dataset.sort; if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = (k === "score" || k === "date_found") ? -1 : 1; } render(); }
+    else if (act === "sort") { var k = el.dataset.sort; if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = (k === "score" || k === "date_found") ? -1 : 1; } render(); var tb2 = $('.th-btn[data-sort="' + k + '"]'); if (tb2) tb2.focus({ preventScroll: true }); }
     else if (act === "wiz-start") { state.wiz = { flow: el.dataset.flow, step: 0, data: {}, q: "", done: false }; render(); focusWiz(); }
     else if (act === "wiz-again") { state.wiz = null; render(); }
     else if (act === "wiz-back") { var w = state.wiz; if (w.step === 0) state.wiz = null; else { if (w.step < FLOWS[w.flow].steps.length) wizCapture(); w.step--; } render(); focusWiz(); }
@@ -1356,7 +1362,7 @@
   });
   document.addEventListener("keydown", function (e) {
     var el = e.target;
-    if ((e.key === "Enter" || e.key === " ") && el.matches && el.matches("th[data-sort], .fit-item")) { e.preventDefault(); el.click(); return; }
+    if ((e.key === "Enter" || e.key === " ") && el.matches && el.matches("th[data-sort]")) { e.preventDefault(); el.click(); return; }
     if (e.key === "Enter" && state.view === "log" && state.wiz && !state.wiz.done && el.id === "wizIn" && (el.tagName !== "TEXTAREA" || e.metaKey || e.ctrlKey)) { e.preventDefault(); wizNext(); }
   });
   document.addEventListener("input", function (e) {
