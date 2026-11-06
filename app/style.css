@@ -277,16 +277,19 @@ body.dragging .main { outline: 2px dashed var(--accent); outline-offset: -8px; }
 .fu-me { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .fu-panel label { display: block; }
 .fu-panel .label { display: block; margin-bottom: 6px; }
-.fu-panel input, .fu-panel textarea { width: 100%; font: inherit; font-size: 14px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--raised); color: var(--ink); }
+.fu-panel input, .fu-panel textarea { width: 100%; font: inherit; font-size: 14px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--surface-raised); color: var(--ink); }
 .fu-panel textarea { line-height: 1.55; resize: vertical; }
 .fu-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.fb { margin-top: 18px; display: grid; gap: 12px; }
+.fb-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+.fb-auto { font-size: 14px; }
 @media (max-width: 720px) { .fu-row { grid-template-columns: 64px minmax(0, 1fr); } .fu-row .tag, .fu-row .btn { grid-column: 2; justify-self: start; } .fu-me { grid-template-columns: 1fr; } }
 
 /* Craft */
 .row-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .row-head .seg { grid-auto-columns: auto; }
 .craft-table { width: 100%; border-collapse: collapse; }
-.craft-table th { text-align: left; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-muted); font-weight: 500; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); }
+.craft-table th { text-align: left; font-size: 13px; color: var(--ink-muted); font-weight: 500; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); }
 .craft-table td { padding: 14px 12px 14px 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
 .craft-table .num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 22px; }
 .craft-table th.num { text-align: right; padding-right: 22px; }
@@ -301,3 +304,25 @@ body.dragging .main { outline: 2px dashed var(--accent); outline-offset: -8px; }
 .craft-pick select { width: 100%; font: inherit; font-size: 14px; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--surface-raised); color: var(--ink); }
 .craft-pick .label { display: block; margin-bottom: 6px; }
 @media (max-width: 980px) { .craft-grid { grid-template-columns: 1fr; } }
+.card .seg button[aria-pressed="true"] { background: var(--accent-soft); box-shadow: none; }
+
+/* Proof */
+.proof-big { font-family: var(--display); font-weight: 300; font-size: clamp(2.6rem, 4.4vw, 3.6rem); line-height: 1; letter-spacing: -.02em; margin: 0 0 18px; }
+.chk { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.chk li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 12px; align-items: center; font-size: 14px; }
+.chk i { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line-strong); display: grid; place-items: center; font-style: normal; font-size: 11px; }
+.chk li.ok i { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.chk li.ok > span { color: var(--ink-muted); }
+.chk .btn { padding: 4px 12px; min-height: 0; }
+.chk select { font: inherit; font-size: 13px; color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--r-pill); padding: 6px 12px; max-width: 220px; }
+.stepper { display: inline-flex; gap: 6px; }
+.small { font-size: 13px; }
+.grades { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 10px; }
+.gr { background: var(--surface-sunken); border-radius: var(--r-sm); padding: 12px 14px; display: grid; }
+.gr b { font-family: var(--display); font-weight: 300; font-size: 2rem; line-height: 1; }
+.gr span { font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+.gr-M b { color: var(--accent); } .gr-E b, .gr-Q b { color: var(--closed); }
+.sub-h { font-size: 18px; margin: 18px 0 4px; }
+.unlock { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; font-size: 14px; }
+.tag.warn { color: var(--closed); background: var(--closed-soft); border-color: transparent; white-space: normal; }
+@media (max-width: 720px) { .grades { grid-template-columns: repeat(2, minmax(0, 1fr)); } .chk li { grid-template-columns: 22px minmax(0, 1fr); } .chk li > :last-child { grid-column: 2; justify-self: start; } }

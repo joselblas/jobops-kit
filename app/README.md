@@ -21,7 +21,8 @@ A full-screen, no-dependency dashboard for `tracker.csv`. Rounded cards, a left 
 | Follow-ups | Live | Applications silent for 21 days or more. Each has an editable draft in English or Spanish, a check-in or close-the-loop tone, and your name and portfolio link (kept in this browser only). Copy it and send it yourself. Mark as sent adds a dated note to the row, or close it as no reply |
 | Proposed updates | Live | Load a `proposals.csv` from an email sweep. Each change shows the evidence. Accept or skip, one by one or all matched at once |
 | Weekly review | Live | Four steps: the week in numbers, what is still waiting (close old ones as no reply), one thing that went well, next week's focus. Wins show in Steady, stored in this browser only |
-| Steady | Preview | Your own odds in plain words, a pacing guard, one dry line after a rejection |
+| Proof | Live | A six-point checklist, your career vault by evidence grade with the high-relevance facts to firm up first, and your hook ledger with checks (placed on an unconfirmed fact, strength under 4, no story, fact missing or graded differently in the vault, too many plants). Load `career-vault.md` and `hooks.csv`. Your ticks are kept in this browser only |
+| Steady | Preview | Your own odds in plain words, a pacing guard, a dated trail and one dry line after a rejection, and a feedback request draft you copy and send yourself |
 | Scout, Apply, Interview prep | Coming | Placeholder pages showing what each will do and in which roadmap phase |
 
 ## Log an update

@@ -1,4 +1,4 @@
 id,hook,kind,atom,grade,story,invites,placed_in,role_fit,score,status
-h1,"Games degree, now designing clinical software",pair,Education + Corvid Health,R,Why games thinking changed the onboarding design,"How did games shape your clinical work?",CV summary,health SaaS,5,placed
-h2,"Shipped the first release with no developer for six weeks",constraint,Corvid Health release 1,Q,How I kept the team unblocked,"How did you ship without a developer?",portfolio strip,startup,3,idea
-h3,"Cut onboarding from 40 minutes to 12",number,Corvid Health onboarding,M,The usability tests,"How did you measure it?",portfolio strip + CV bullet,B2B SaaS,5,drafted
+h1,"Games degree, now designing clinical software",pair,A11,R,Why games thinking changed the onboarding design,"How did games shape your clinical work?",CV summary,health SaaS,5,placed
+h2,"Shipped the first release with no developer for six weeks",constraint,A12,Q,How I kept the team unblocked,"How did you ship without a developer?",portfolio strip,startup,3,idea
+h3,"Cut onboarding from 40 minutes to 12",number,A03,M,The usability tests,"How did you measure it?",portfolio strip and CV bullet,B2B SaaS,5,drafted

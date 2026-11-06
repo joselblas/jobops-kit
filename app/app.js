@@ -12,6 +12,20 @@
   /* ---------- Language ---------- */
   var I = {
     "nav.overview": ["Overview", "Resumen"], "nav.tracker": ["Tracker", "Seguimiento"], "nav.log": ["Log an update", "Registrar novedad"],
+    "nav.proof": ["Proof", "Pruebas"], "title.proof": ["What a recruiter can see.", "Lo que ve un reclutador."],
+    "proof.intro": ["The evidence behind your CV and portfolio, read from your own files. Nothing leaves your browser, and nothing here is saved except your ticks.", "La evidencia detrás de tu CV y tu portafolio, leída de tus propios archivos. Nada sale de tu navegador, y aquí solo se guardan tus marcas."],
+    "proof.of": ["{n} of {t}", "{n} de {t}"], "proof.k": ["Proof", "Pruebas"], "proof.sub": ["Six things a recruiter can find without asking you.", "Seis cosas que un reclutador puede encontrar sin preguntarte."],
+    "pr.pos": ["Positioning sentence written", "Frase de posicionamiento escrita"], "pr.sig": ["Six-second signal check done", "Prueba de los seis segundos hecha"], "pr.fmt": ["Portfolio format chosen", "Formato de portafolio elegido"],
+    "pr.cases": ["Case studies ready", "Casos de estudio listos"], "pr.plants": ["Hooks placed on a confirmed fact", "Ganchos colocados sobre un hecho confirmado"], "pr.stories": ["A story ready for each placed hook", "Una historia lista para cada gancho colocado"],
+    "pr.fmt.none": ["Choose one", "Elige uno"], "pr.fmt.web": ["Own website", "Web propia"], "pr.fmt.design": ["Figma, Canva or slides", "Figma, Canva o diapositivas"], "pr.fmt.pdf": ["PDF", "PDF"], "pr.fmt.platform": ["Notion, Read.cv, Behance or LinkedIn", "Notion, Read.cv, Behance o LinkedIn"], "pr.fmt.nowhere": ["Nowhere yet", "Todavía en ningún sitio"],
+    "pr.needhooks": ["Load hooks.csv to check this.", "Carga hooks.csv para comprobarlo."], "pr.more": ["more", "más"], "pr.less": ["fewer", "menos"],
+    "vault.k": ["Career vault", "Archivo de carrera"], "vault.sub": ["How solid the facts behind your CV are.", "Lo sólidas que son las bases de tu CV."], "vault.none": ["Load career-vault.md to see how solid your evidence is.", "Carga career-vault.md para ver lo sólida que es tu evidencia."],
+    "g.M": ["Measured", "Medido"], "g.R": ["Remembered", "Recordado"], "g.E": ["Estimated", "Estimado"], "g.Q": ["Open question", "Pregunta abierta"], "vault.parked": ["{n} parked", "{n} aparcados"],
+    "vault.unlock": ["Unlock first", "Desbloquea primero"], "vault.unlock.sub": ["High-relevance facts that are still estimates or open questions. One answer each upgrades them.", "Hechos de alta relevancia que aún son estimaciones o preguntas. Una respuesta para cada uno los mejora."], "vault.allgood": ["Nothing to unlock. Every high-relevance fact is measured or remembered.", "Nada que desbloquear. Todo hecho de alta relevancia está medido o recordado."],
+    "led.k": ["Hook ledger", "Registro de ganchos"], "led.sub": ["True details that make a recruiter ask. Each points to a fact.", "Detalles ciertos que hacen que un reclutador pregunte. Cada uno apunta a un hecho."], "led.none": ["Load hooks.csv to see your hooks.", "Carga hooks.csv para ver tus ganchos."],
+    "led.sum": ["{p} placed, {c} to look at.", "{p} colocados, {c} por revisar."], "led.th.h": ["Hook", "Gancho"], "led.th.k": ["Kind", "Tipo"], "led.th.a": ["Fact", "Hecho"], "led.th.g": ["Grade", "Grado"], "led.th.s": ["Strength", "Fuerza"], "led.th.p": ["Placed in", "Colocado en"], "led.th.st": ["Status", "Estado"], "led.th.c": ["Check", "Revisión"], "led.ok": ["Fine", "Bien"],
+    "w.eq": ["Placed on an unconfirmed fact", "Colocado sobre un hecho sin confirmar"], "w.low": ["Strength under 4", "Fuerza menor de 4"], "w.story": ["No story yet", "Aún sin historia"], "w.missing": ["Fact not in the vault", "Hecho no está en el archivo"], "w.grade": ["Grade differs from the vault", "El grado difiere del archivo"], "w.cap": ["More than 3 plants in one place", "Más de 3 plantas en un mismo sitio"],
+    "btn.hooks": ["Load hooks.csv", "Cargar hooks.csv"], "btn.vault": ["Load career-vault.md", "Cargar career-vault.md"], "btn.psample": ["Sample data", "Datos de ejemplo"],
     "nav.steady": ["Steady", "Calma"], "nav.review": ["Weekly review", "Revisión semanal"], "title.review": ["Weekly review.", "Revisión semanal."],
     "rev.lede": ["Five calm minutes, once a week. See the week, tidy what is waiting, name one thing that went well, and pick a focus.", "Cinco minutos de calma, una vez por semana. Mira la semana, ordena lo que espera, nombra algo que fue bien y elige un enfoque."],
     "rev.start": ["Start the review", "Empezar la revisión"], "rev.last": ["Last review: {d}. Focus: {f}.", "Última revisión: {d}. Enfoque: {f}."],
@@ -47,7 +61,7 @@
     "fu.days": ["days", "días"], "fu.draft": ["Draft a note", "Redactar nota"], "fu.hide": ["Hide", "Ocultar"],
     "fu.lang": ["Language", "Idioma"], "fu.tone": ["Tone", "Tono"], "fu.t.check": ["Check in", "Preguntar"], "fu.t.close": ["Close the loop", "Cerrar el tema"],
     "fu.name": ["Your name", "Tu nombre"], "fu.link": ["Portfolio link (optional)", "Enlace al portafolio (opcional)"],
-    "fu.copy": ["Copy draft", "Copiar borrador"], "fu.copied": ["Copied. Paste it into your own email or message.", "Copiado. Pégalo en tu propio correo o mensaje."],
+    "fb.draft": ["Draft a feedback request", "Redactar una petición de comentarios"], "fb.hide": ["Hide the draft", "Ocultar el borrador"], "fb.learn": ["Note what I learned", "Anotar lo que he aprendido"], "fb.note": ["Replies are rare, and that is normal. A short, polite ask costs nothing and you can skip it.", "Las respuestas son raras, y es normal. Una petición breve y amable no cuesta nada y puedes saltártela."], "fb.auto": ["This looks like a filter, so there is probably nobody to ask.", "Parece un filtro, así que probablemente no hay nadie a quien preguntar."], "fu.copy": ["Copy draft", "Copiar borrador"], "fu.copied": ["Copied. Paste it into your own email or message.", "Copiado. Pégalo en tu propio correo o mensaje."],
     "fu.sent": ["Mark as sent", "Marcar como enviado"], "fu.noreply": ["Close as no reply", "Cerrar sin respuesta"],
     "fu.marked": ["Noted in the tracker.", "Anotado en el seguimiento."],
     "fu.ago": ["Followed up {n} days ago", "Seguimiento hace {n} días"], "fu.agotoday": ["Followed up today", "Seguimiento hoy"],
@@ -160,7 +174,7 @@
     "soon.prepare.b": [["A story bank: situation, action, result, and the claim each one proves.", "Practice questions for the stage you are about to face.", "A short debrief after each interview, saved to the tracker."], ["Un banco de historias: situación, acción, resultado y qué afirmación prueba cada una.", "Preguntas de práctica para la fase que vas a afrontar.", "Un breve repaso tras cada entrevista, guardado en el seguimiento."]]
   };
   var NAV = [
-    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["followups", "live"], ["inbox", "live"], ["craft", "live"], ["review", "live"], ["steady", "preview"]]],
+    ["grp.work", [["overview", "live"], ["tracker", "live"], ["log", "live"], ["followups", "live"], ["inbox", "live"], ["craft", "live"], ["proof", "live"], ["review", "live"], ["steady", "preview"]]],
     ["grp.soon", [["scout", "soon"], ["apply", "soon"], ["prepare", "soon"]]]
   ];
   var PHASE = { scout: "5", craft: "3", apply: "4", prepare: "3" };
@@ -168,7 +182,7 @@
   var state = {
     rows: [], head: [], handle: null, dirty: false, editing: null, selected: null,
     filter: "all", q: "", sortKey: "date_found", sortDir: -1, ref: new Date(), label: "",
-    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: [], rev: null, craft: { by: "cv_version", pick: -1 }, fu: { open: -1, lang: "", tone: "", text: "", edited: false }
+    view: "overview", lang: "en", theme: "light", limit: 3, wiz: null, props: [], rev: null, craft: { by: "cv_version", pick: -1 }, fu: { open: -1, lang: "", tone: "", text: "", edited: false }, fb: null, proof: { hooks: null, vault: null, hl: "", vl: "" }
   };
 
   function $(s) { return document.querySelector(s); }
@@ -317,6 +331,11 @@
       a += '<button class="btn ghost" type="button" data-act="prop-sample">' + esc(tl("inbox.sample")) + "</button>";
       a += '<label class="btn" for="pfile">' + esc(tl("inbox.load")) + "</label>";
     }
+    if (state.view === "proof") {
+      a += '<button class="btn ghost" type="button" data-act="proof-sample">' + esc(tl("btn.psample")) + "</button>";
+      a += '<label class="btn ghost" for="vfile">' + esc(tl("btn.vault")) + "</label>";
+      a += '<label class="btn" for="hfile">' + esc(tl("btn.hooks")) + "</label>";
+    }
     $("#actions").innerHTML = a;
     $("#foot").textContent = tl("foot");
     document.documentElement.lang = state.lang;
@@ -334,6 +353,7 @@
     else if (v === "review") box.innerHTML = viewReview();
     else if (v === "followups") box.innerHTML = viewFollowups();
     else if (v === "craft") box.innerHTML = viewCraft();
+    else if (v === "proof") box.innerHTML = viewProof();
     else if (v === "steady") box.innerHTML = viewSteady();
     else box.innerHTML = viewSoon(v);
   }
@@ -520,6 +540,88 @@
   }
   function fuCopyOld(txt) { var ta = $("#fuText"); if (ta) { ta.focus(); ta.select(); try { document.execCommand("copy"); } catch (e) { /* ignore */ } } }
 
+  /* ---------- Proof ---------- */
+  var PR_FORMATS = [["", "pr.fmt.none"], ["web", "pr.fmt.web"], ["design", "pr.fmt.design"], ["pdf", "pr.fmt.pdf"], ["platform", "pr.fmt.platform"], ["nowhere", "pr.fmt.nowhere"]];
+  function prManual() {
+    var m = {}; try { m = JSON.parse(fetchStore("jo.proof") || "{}") || {}; } catch (e) { m = {}; }
+    return { pos: !!m.pos, sig: !!m.sig, fmt: m.fmt || "", cases: Math.max(0, Math.min(3, +m.cases || 0)) };
+  }
+  function prSave(m) { store("jo.proof", JSON.stringify(m)); }
+  function toObjs(text) {
+    return parseCSV(text).map(function (r) { var o = {}; Object.keys(r).forEach(function (k) { o[k.trim()] = String(r[k] || "").trim(); }); return o; }).filter(function (o) { return o.hook; });
+  }
+  function parseVault(text) {
+    var atoms = [], sec = "";
+    String(text).split(/\r?\n/).forEach(function (ln) {
+      var h = /^#{2,3}\s+(.*)$/.exec(ln); if (h) { sec = h[1].trim(); return; }
+      var m = /^\s*-\s*\[([A-Za-z]\d+)\]\[([MREQmreq])\](\[NDA\])?\s*(.*)$/.exec(ln); if (!m) return;
+      var txt = m[4], rel = /\(rel:\s*(high|some|low)\)\s*$/i.exec(txt);
+      if (rel) txt = txt.slice(0, rel.index).trim();
+      atoms.push({ id: m[1].toUpperCase(), grade: m[2].toUpperCase(), nda: !!m[3], text: txt, rel: rel ? rel[1].toLowerCase() : "", sec: sec, parked: /^parked/i.test(sec), retired: /^retired/i.test(sec) });
+    });
+    return atoms;
+  }
+  function prChecks(hooks, vault) {
+    var byId = {}; (vault || []).forEach(function (a) { byId[a.id] = a; });
+    var perDoc = {}; hooks.forEach(function (h) { if (h.status === "placed" && h.kind === "plant") perDoc[h.placed_in] = (perDoc[h.placed_in] || 0) + 1; });
+    return hooks.map(function (h) {
+      var w = [], g = (h.grade || "").toUpperCase(), sc = parseFloat(h.score), placed = h.status === "placed", live = placed || h.status === "drafted";
+      if (placed && (g === "E" || g === "Q")) w.push("w.eq");
+      if (live && !isNaN(sc) && sc < 4) w.push("w.low");
+      if (placed && !h.story) w.push("w.story");
+      if (vault) { var a = byId[(h.atom || "").toUpperCase()]; if (!a) w.push("w.missing"); else if (a.grade !== g) w.push("w.grade"); }
+      if (placed && h.kind === "plant" && perDoc[h.placed_in] > 3) w.push("w.cap");
+      return w;
+    });
+  }
+  function viewProof() {
+    var P = state.proof, m = prManual(), hooks = P.hooks, vault = P.vault, chk = hooks ? prChecks(hooks, vault) : [];
+    var placed = hooks ? hooks.filter(function (h) { return h.status === "placed"; }) : [];
+    var plantsOK = !!hooks && placed.length > 0 && !placed.some(function (h, i) { var g = (h.grade || "").toUpperCase(); return g === "E" || g === "Q"; });
+    var storiesOK = !!hooks && placed.length > 0 && placed.every(function (h) { return !!h.story; });
+    var items = [
+      ["pos", m.pos, tl("pr.pos"), '<button class="btn ghost" type="button" data-act="proof-tick" data-k="pos">' + esc(m.pos ? "✓" : "○") + "</button>"],
+      ["sig", m.sig, tl("pr.sig"), '<button class="btn ghost" type="button" data-act="proof-tick" data-k="sig">' + esc(m.sig ? "✓" : "○") + "</button>"],
+      ["fmt", !!m.fmt, tl("pr.fmt"), '<select id="proofFmt" aria-label="' + esc(tl("pr.fmt")) + '">' + PR_FORMATS.map(function (f) { return '<option value="' + f[0] + '"' + (m.fmt === f[0] ? " selected" : "") + ">" + esc(tl(f[1])) + "</option>"; }).join("") + "</select>"],
+      ["cases", m.cases >= 3, tl("pr.cases") + ": " + m.cases + " / 3", '<span class="stepper"><button class="btn ghost" type="button" data-act="proof-cases" data-d="-1" aria-label="' + esc(tl("pr.less")) + '">−</button><button class="btn ghost" type="button" data-act="proof-cases" data-d="1" aria-label="' + esc(tl("pr.more")) + '">+</button></span>'],
+      ["plants", plantsOK, tl("pr.plants"), hooks ? "" : '<span class="muted small">' + esc(tl("pr.needhooks")) + "</span>"],
+      ["stories", storiesOK, tl("pr.stories"), hooks ? "" : '<span class="muted small">' + esc(tl("pr.needhooks")) + "</span>"]
+    ];
+    var done = items.filter(function (x) { return x[1]; }).length;
+    var list = '<ul class="chk">' + items.map(function (x) { return '<li class="' + (x[1] ? "ok" : "") + '"><i aria-hidden="true">' + (x[1] ? "✓" : "") + "</i><span>" + esc(x[2]) + "</span>" + x[3] + "</li>"; }).join("") + "</ul>";
+    var h = '<p class="muted" style="max-width:66ch;margin-bottom:18px">' + esc(tl("proof.intro")) + "</p><div class=\"grid12\">";
+    h += '<section class="card c5"><div class="card-head"><h2>' + esc(tl("proof.k")) + '</h2><p>' + esc(tl("proof.sub")) + '</p></div><p class="proof-big">' + esc(t("proof.of", { n: done, t: items.length })) + "</p>" + list + "</section>";
+    // vault card
+    var vb;
+    if (!vault) vb = '<p class="empty">' + esc(tl("vault.none")) + "</p>";
+    else {
+      var live = vault.filter(function (a) { return !a.parked && !a.retired; }), cnt = { M: 0, R: 0, E: 0, Q: 0 }; live.forEach(function (a) { cnt[a.grade]++; });
+      var parked = vault.filter(function (a) { return a.parked; }).length;
+      var unlock = live.filter(function (a) { return (a.grade === "E" || a.grade === "Q") && a.rel === "high"; });
+      vb = '<div class="grades">' + ["M", "R", "E", "Q"].map(function (g) { return '<div class="gr gr-' + g + '"><b class="num">' + cnt[g] + "</b><span>" + esc(tl("g." + g)) + "</span></div>"; }).join("") + "</div>" +
+        '<p class="muted small">' + esc(t("vault.parked", { n: parked })) + "</p>" +
+        '<h3 class="sub-h">' + esc(tl("vault.unlock")) + '</h3><p class="muted small">' + esc(tl("vault.unlock.sub")) + "</p>" +
+        (unlock.length ? '<ul class="unlock">' + unlock.slice(0, 8).map(function (a) { return "<li><span class=\"tag\">" + esc(a.id) + " " + esc(a.grade) + "</span> " + esc(a.text) + "</li>"; }).join("") + "</ul>" : '<p class="empty">' + esc(tl("vault.allgood")) + "</p>");
+    }
+    h += '<section class="card c7"><div class="card-head"><h2>' + esc(tl("vault.k")) + "</h2><p>" + esc(P.vl ? P.vl : tl("vault.sub")) + "</p></div>" + vb + "</section>";
+    // ledger
+    var lb;
+    if (!hooks) lb = '<p class="empty">' + esc(tl("led.none")) + "</p>";
+    else {
+      var look = chk.filter(function (w) { return w.length; }).length;
+      lb = '<p class="muted small" style="margin-bottom:12px">' + esc(t("led.sum", { p: placed.length, c: look })) + '</p><div class="table-wrap"><table class="craft-table"><thead><tr><th>' + ["led.th.h", "led.th.k", "led.th.a", "led.th.g", "led.th.s", "led.th.p", "led.th.st", "led.th.c"].map(function (k) { return esc(tl(k)); }).join("</th><th>") + "</th></tr></thead><tbody>" +
+        hooks.map(function (x, i) {
+          var w = chk[i];
+          return "<tr><td>" + esc(x.hook) + "</td><td class=\"muted\">" + esc(x.kind) + "</td><td class=\"muted\">" + esc(x.atom) + "</td><td>" + esc((x.grade || "").toUpperCase()) + "</td><td class=\"num\">" + esc(x.score) + "</td><td class=\"muted\">" + esc(x.placed_in) + "</td><td>" + esc(x.status) + "</td><td>" +
+            (w.length ? w.map(function (k) { return '<span class="tag warn">' + esc(tl(k)) + "</span>"; }).join(" ") : '<span class="muted">' + esc(tl("led.ok")) + "</span>") + "</td></tr>";
+        }).join("") + "</tbody></table></div>";
+    }
+    h += '<section class="card c12"><div class="card-head"><h2>' + esc(tl("led.k")) + "</h2><p>" + esc(P.hl ? P.hl : tl("led.sub")) + "</p></div>" + lb + "</section></div>";
+    return h;
+  }
+  function loadHooks(text, label) { state.proof.hooks = toObjs(text); state.proof.hl = label || ""; render(); }
+  function loadVault(text, label) { state.proof.vault = parseVault(text); state.proof.vl = label || ""; render(); }
+
   /* ---------- Craft ---------- */
   function craftGroups(by) {
     var g = {}, untagged = 0;
@@ -621,6 +723,37 @@
   }
 
   /* ---------- Steady ---------- */
+  var FB = {
+    en: "Hello,\n\nThank you for letting me know about the {role} role at {co}. If you have a minute, I would value any short feedback on my application, even one line, on what would have made it stronger. I understand if that is not possible.\n\nThank you for your time.\n\n{sig}",
+    es: "Hola,\n\nGracias por avisarme sobre el puesto de {role} en {co}. Si tienes un minuto, agradecería cualquier comentario breve sobre mi candidatura, aunque sea una línea, sobre qué la habría mejorado. Entiendo que no sea posible.\n\nGracias por tu tiempo.\n\n{sig}"
+  };
+  function fbDraft(r, lang) {
+    var me = fuMe(), sig = me.name || I["fu.ph.name"][lang === "es" ? 1 : 0];
+    if (me.link) sig += "\n" + I["fu.link.line"][lang === "es" ? 1 : 0] + me.link;
+    return FB[lang].split("{role}").join(r.role || "").split("{co}").join(r.company || "").split("{sig}").join(sig);
+  }
+  function fbRefill() { var f = state.fb, r = f && state.rows[f.i]; if (r) { f.text = fbDraft(r, f.lang || state.lang); f.edited = false; } }
+  function fbActions(r) {
+    var i = state.rows.indexOf(r); if (i < 0) return "";
+    var open = state.fb && state.fb.i === i, h = '<div class="fb">';
+    if (r.outcome === "rejected-auto") h += '<p class="muted fb-auto">' + esc(tl("fb.auto")) + "</p>";
+    h += '<div class="fb-btns">';
+    if (r.outcome !== "rejected-auto") h += '<button class="btn accent" type="button" data-act="' + (open ? "fb-close" : "fb-open") + '" data-i="' + i + '">' + esc(tl(open ? "fb.hide" : "fb.draft")) + "</button>";
+    h += '<button class="btn ghost" type="button" data-act="edit" data-i="' + i + '">' + esc(tl("fb.learn")) + "</button></div>";
+    if (open) {
+      var me = fuMe(), lang = state.fb.lang || state.lang;
+      h += '<div class="fu-panel"><p class="muted">' + esc(tl("fb.note")) + '</p><div class="fu-controls"><div><span class="label">' + esc(tl("fu.lang")) + '</span><div class="seg" role="group">' + [["en", "EN"], ["es", "ES"]].map(function (o) { return '<button type="button" data-act="fb-lang" data-v="' + o[0] + '" aria-pressed="' + (lang === o[0]) + '">' + o[1] + "</button>"; }).join("") + "</div></div></div>" +
+        '<div class="fu-me"><label><span class="label">' + esc(tl("fu.name")) + '</span><input id="fbName" type="text" value="' + esc(me.name) + '" autocomplete="name"></label><label><span class="label">' + esc(tl("fu.link")) + '</span><input id="fbLink" type="url" value="' + esc(me.link) + '" placeholder="https://"></label></div>' +
+        '<label><span class="label">' + esc(tl("fu.draftlabel")) + '</span><textarea id="fbText" rows="9">' + esc(state.fb.text) + '</textarea></label><div class="fu-actions"><button class="btn accent" type="button" data-act="fb-copy">' + esc(tl("fu.copy")) + "</button></div></div>";
+    }
+    return h + "</div>";
+  }
+  function fbCopy() {
+    var ta = $("#fbText"), txt = ta ? ta.value : (state.fb ? state.fb.text : "");
+    var done = function () { toast(tl("fu.copied")); };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(done, function () { if (ta) { ta.focus(); ta.select(); try { document.execCommand("copy"); } catch (e) { /* ignore */ } } done(); }); }
+    else { if (ta) { ta.focus(); ta.select(); try { document.execCommand("copy"); } catch (e) { /* ignore */ } } done(); }
+  }
   function steadyCardFor(r, extra) {
     var s = stats(), n = s.applied.length, k = s.inter.length, p = n ? Math.round(100 * (n - k) / n) : 0;
     var lines = I.wit[state.lang === "es" ? 1 : 0], h = 0, name = r.company || "";
@@ -628,7 +761,7 @@
     var wit = r.outcome === "rejected-auto" ? tl("wit.auto") : lines[h % lines.length];
     var loc = state.lang === "es" ? "es-ES" : "en-GB", fd = function (d) { return d.toLocaleDateString(loc, { day: "numeric", month: "short" }); }, trail = "", when = "";
     if (r.dApplied && r.dOutcome && r.dOutcome >= r.dApplied) { var nd = Math.round((r.dOutcome - r.dApplied) / 86400000); when = '<span class="when">' + esc(t("steady.days", { n: nd })) + "</span>"; trail = '<div class="trail"><div><b>' + esc(tl("steady.applied")) + "</b>" + esc(fd(r.dApplied)) + "</div><div><b>" + esc(tl("steady.closedOn")) + "</b>" + esc(fd(r.dOutcome)) + "</div></div>"; }
-    return '<section class="steady"><span class="label k">' + esc(tl("steady.reject")) + "</span>" + when + trail + '<p class="big">' + esc(t("steady.big", { p: p })) + "</p><p>" + esc(t("steady.body", { k: k, n: n, co: r.company, role: r.role })) + '</p><div class="row"><span class="label">' + esc(tl("steady.hands")) + "</span><p>" + esc(tl("steady.hands.t")) + '</p></div><div class="row"><span class="label">' + esc(tl("steady.not")) + "</span><p>" + esc(tl("steady.not.t")) + '</p></div><p class="wit">' + esc(wit) + "</p>" + (extra || "") + "</section>";
+    return '<section class="steady"><span class="label k">' + esc(tl("steady.reject")) + "</span>" + when + trail + '<p class="big">' + esc(t("steady.big", { p: p })) + "</p><p>" + esc(t("steady.body", { k: k, n: n, co: r.company, role: r.role })) + '</p><div class="row"><span class="label">' + esc(tl("steady.hands")) + "</span><p>" + esc(tl("steady.hands.t")) + '</p></div><div class="row"><span class="label">' + esc(tl("steady.not")) + "</span><p>" + esc(tl("steady.not.t")) + '</p></div><p class="wit">' + esc(wit) + "</p>" + fbActions(r) + (extra || "") + "</section>";
   }
   function lastRejection() {
     return state.rows.filter(function (r) { return r.stateKey === "rejected" && r.outcome.indexOf("rejected") === 0; }).sort(function (a, b) { return (b.dOutcome ? b.dOutcome.getTime() : 0) - (a.dOutcome ? a.dOutcome.getTime() : 0); })[0];
@@ -974,7 +1107,7 @@
 
   /* ---------- Events ---------- */
   function route() {
-    var v = (location.hash || "#overview").slice(1), ok = ["overview", "tracker", "log", "inbox", "review", "followups", "steady", "scout", "craft", "apply", "prepare"];
+    var v = (location.hash || "#overview").slice(1), ok = ["overview", "tracker", "log", "inbox", "review", "followups", "steady", "scout", "craft", "proof", "apply", "prepare"];
     state.view = ok.indexOf(v) >= 0 ? v : "overview";
     if (state.view !== "log") state.wiz = state.wiz && state.wiz.done ? null : state.wiz;
     render(); window.scrollTo(0, 0);
@@ -1016,6 +1149,13 @@
     else if (act === "fu-lang") { state.fu.lang = el.dataset.v; fuRefill(); render(); }
     else if (act === "fu-tone") { state.fu.tone = el.dataset.v; fuRefill(); render(); }
     else if (act === "fu-copy") fuCopy();
+    else if (act === "proof-tick") { var pm = prManual(); pm[el.dataset.k] = !pm[el.dataset.k]; prSave(pm); render(); }
+    else if (act === "proof-cases") { var pc = prManual(); pc.cases = Math.max(0, Math.min(3, pc.cases + (+el.dataset.d))); prSave(pc); render(); }
+    else if (act === "proof-sample") { loadHooks(window.SAMPLE_HOOKS || "", "Sample data (fictional)"); loadVault(window.SAMPLE_VAULT || "", "Sample data (fictional)"); }
+    else if (act === "fb-open") { state.fb = { i: i, lang: "", text: "", edited: false }; fbRefill(); render(); }
+    else if (act === "fb-close") { state.fb = null; render(); }
+    else if (act === "fb-lang") { state.fb.lang = el.dataset.v; fbRefill(); render(); }
+    else if (act === "fb-copy") fbCopy();
     else if (act === "fu-sent") { var fr = state.rows[i]; fr.raw.notes = ((fr.raw.notes || "") + (fr.raw.notes ? " " : "") + "[" + todayISO() + "] Follow-up sent.").trim(); state.rows[i] = normalise(fr.raw); state.fu.open = -1; state.dirty = true; render(); persist(); }
     else if (act === "fu-noreply") { var nr = state.rows[i]; nr.raw.outcome = "no-response"; nr.raw.date_outcome = ""; state.rows[i] = normalise(nr.raw); state.fu.open = -1; state.dirty = true; render(); persist(); }
     else if (act === "prop-accept") { if (applyProp(state.props[i])) { render(); persist(); } }
@@ -1033,9 +1173,14 @@
     else if (e.target.id === "craftPick") { state.craft.pick = +e.target.value; var tx = $("#craftText-tune"); if (tx) tx.textContent = craftPrompt("tune"); }
     else if (e.target.id === "fuText") { state.fu.text = e.target.value; state.fu.edited = true; }
     else if (e.target.id === "fuName" || e.target.id === "fuLink") { store(e.target.id === "fuName" ? "jo.me.name" : "jo.me.link", e.target.value.trim()); if (!state.fu.edited) { fuRefill(); var ta = $("#fuText"); if (ta) ta.value = state.fu.text; } }
+    else if (e.target.id === "fbText") { state.fb.text = e.target.value; state.fb.edited = true; }
+    else if (e.target.id === "fbName" || e.target.id === "fbLink") { store(e.target.id === "fbName" ? "jo.me.name" : "jo.me.link", e.target.value.trim()); if (state.fb && !state.fb.edited) { fbRefill(); var tb = $("#fbText"); if (tb) tb.value = state.fb.text; } }
     else if (e.target.id === "wizQ") { state.wiz.q = e.target.value; $("#pickList").innerHTML = pickHTML(state.wiz); }
   });
   $("#editForm").addEventListener("submit", function (e) { if (e.submitter && e.submitter.value === "cancel") return; e.preventDefault(); saveEditor(); $("#editor").close(); });
+  $("#hfile").addEventListener("change", function (e) { var f = e.target.files[0]; if (f) { var fr = new FileReader(); fr.onload = function () { loadHooks(String(fr.result), f.name); }; fr.readAsText(f); } e.target.value = ""; });
+  $("#vfile").addEventListener("change", function (e) { var f = e.target.files[0]; if (f) { var fr = new FileReader(); fr.onload = function () { loadVault(String(fr.result), f.name); }; fr.readAsText(f); } e.target.value = ""; });
+  document.addEventListener("change", function (e) { if (e.target.id === "proofFmt") { var pm = prManual(); pm.fmt = e.target.value; prSave(pm); render(); } });
   $("#pfile").addEventListener("change", function (e) { var f = e.target.files[0]; if (f) { var fr = new FileReader(); fr.onload = function () { loadProps(String(fr.result)); }; fr.readAsText(f); } e.target.value = ""; });
   $("#file").addEventListener("change", function (e) { readFile(e.target.files[0]); e.target.value = ""; });
   ["dragenter", "dragover"].forEach(function (ev) { document.addEventListener(ev, function (e) { e.preventDefault(); document.body.classList.add("dragging"); }); });

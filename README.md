@@ -46,6 +46,8 @@ They share one file, `tracker.csv`. The assistant writes proposals. You accept t
 | `jobops-apply` | Tailor the CV, fact check, fill the form, stop before Submit |
 | `jobops-review` | Funnel review, email sweep, fit ratings, interview story bank |
 
+Three newer skills, `jobops-vault` (the excavation interview), `jobops-hooks` (hooks, positioning, portfolio formats) and `jobops-cv` (CV built from graded facts), are in `skills/` and are still being tested. Their playbooks are `vault.md`, `hooks.md`, `portfolio-formats.md` and `cv-builder.md`.
+
 They are condensed copies of the playbooks and work without the scripts. The playbooks stay the full reference and the path for Claude Code. To check the skills behave, run the test in [docs/testing-skills.md](docs/testing-skills.md). Fit ratings use the anchors in [docs/score-anchors.md](docs/score-anchors.md).
 
 ## How it flows
@@ -82,7 +84,8 @@ Rounded cards, a left menu, light by default with a dark option, English and Spa
 - **Proposed updates**: the assistant reads your email export and proposes changes with a quote as evidence. You accept or skip each one. It can also propose fit ratings for unrated listings.
 - **CV and portfolio**: tag each application with the CV version and portfolio lead you used and see which gets replies, with the small-sample caveat. Also copy-ready prompts for the `jobops-craft` skill.
 - **Weekly review**: five calm minutes. The week against the one before, a chance to close dead applications, one thing you did well, a focus for next week.
-- **Steady** (preview): your own base rate and one dry line after a rejection.
+- **Proof**: a six-point checklist of what a recruiter can find about you, plus your career vault (how many facts are measured, remembered, estimated or open, and which high-relevance ones to firm up first) and your hook ledger with plain-language checks. Load `career-vault.md` and `hooks.csv` from your private folder. Nothing leaves the browser.
+- **Steady** (preview): your own base rate and one dry line after a rejection. After a rejection it shows a dated trail and offers a short, polite feedback request you copy and send yourself.
 - **Scout, Apply, Interview prep**: menu pages marked Soon.
 
 | Log an update | Steady | Dark |
