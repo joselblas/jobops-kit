@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JobOps design directions</title>
+<meta name="description" content="Three alternative visual directions for the JobOps dashboard, with a redesigned closed-application card.">
+<style>
+:root{color-scheme:light dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#e9eaee;color:#14161c;line-height:1.5;font-size:16px}
+.bar{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between;padding:14px clamp(16px,3vw,32px);background:#14161c;color:#f1f2f5}
+.bar h1{font-size:17px;margin:0;font-weight:600}
+.seg{display:inline-flex;gap:4px;padding:4px;border-radius:999px;background:#262a35}
+.seg button{font:inherit;font-size:14px;border:0;background:transparent;color:#c9cdd8;padding:8px 14px;border-radius:999px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed="true"]{background:#f1f2f5;color:#14161c;font-weight:600}
+.seg button:focus-visible,.stage button:focus-visible{outline:2px solid #7f93ff;outline-offset:2px}
+.ctrls{display:flex;flex-wrap:wrap;gap:12px}
+.wrap{max-width:1320px;margin:0 auto;padding:24px clamp(12px,3vw,32px) 64px}
+.lead{max-width:62ch;margin:8px 0 24px;color:#3b4050}
+
+/* ---------- tokens per direction ---------- */
+.stage{--bg:#f6f7f9;--raised:#fff;--sunk:#eceef2;--ink:#0e1116;--muted:#586070;--line:#dde1e7;--accent:#2b46ff;--accent-soft:#e7eaff;--on-accent:#fff;--closed:#4b5563;--closed-soft:#eef0f3;--mark:#e7eaff;--r:6px;--rl:8px;--fd:system-ui,-apple-system,"Segoe UI","Helvetica Neue",sans-serif;--wd:600;--kpi:34px;--shadow:none;--bd:1px solid var(--line)}
+.stage[data-dir="a"][data-theme="dark"]{--bg:#0d1016;--raised:#151a22;--sunk:#0a0d12;--ink:#eef1f5;--muted:#9aa4b4;--line:#262d38;--accent:#8497ff;--accent-soft:#1c2340;--on-accent:#0d1016;--closed:#aab3c2;--closed-soft:#1b212b;--mark:#1c2340}
+.stage[data-dir="b"]{--bg:#fbfbfa;--raised:#fff;--sunk:#f1eff9;--ink:#111;--muted:#4d4d55;--line:#111;--accent:#e8196a;--accent-soft:#ffe1ee;--on-accent:#fff;--closed:#111;--closed-soft:#fff;--mark:#ffe34a;--r:14px;--rl:20px;--fd:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;--wd:800;--kpi:54px;--shadow:4px 4px 0 var(--ink);--bd:2px solid var(--ink)}
+.stage[data-dir="b"][data-theme="dark"]{--bg:#151515;--raised:#1e1e1e;--sunk:#262236;--ink:#f6f6f4;--muted:#c3c3c8;--line:#f6f6f4;--accent:#ff6fa8;--accent-soft:#3a1b2a;--on-accent:#151515;--closed-soft:#1e1e1e;--closed:#f6f6f4;--mark:#ffe34a;--shadow:4px 4px 0 #f6f6f4}
+.stage[data-dir="c"]{--bg:#f1f2fb;--raised:#fff;--sunk:#e6e8f6;--ink:#1a1d3a;--muted:#555a82;--line:#e0e3f4;--accent:#4652d8;--accent-soft:#e4e7ff;--on-accent:#fff;--closed:#4a4f7a;--closed-soft:#eceefb;--mark:#d7f4f3;--r:14px;--rl:22px;--fd:"Avenir Next","Century Gothic",Futura,"Trebuchet MS",system-ui,sans-serif;--wd:500;--kpi:46px;--shadow:0 1px 0 rgba(26,29,58,.04),0 10px 30px -12px rgba(46,52,120,.25);--bd:0 solid transparent;--aqua:#0d8c92}
+.stage[data-dir="c"][data-theme="dark"]{--bg:#11132a;--raised:#1a1d3c;--sunk:#0d0f22;--ink:#e9ebff;--muted:#a0a6d4;--line:#2a2e5a;--accent:#9aa7ff;--accent-soft:#262b57;--on-accent:#11132a;--closed:#b7bce6;--closed-soft:#161936;--mark:#12363a;--shadow:0 10px 30px -14px rgba(0,0,0,.7);--aqua:#6fe3e1}
+.stage[data-dir="c"]{--aqua:#0d8c92}
+
+/* ---------- shell ---------- */
+.stage{background:var(--bg);color:var(--ink);font-family:var(--fd);border-radius:var(--rl);overflow:hidden;display:grid;grid-template-columns:220px minmax(0,1fr);border:var(--bd);min-height:820px}
+.stage[data-dir="c"]{border:0;box-shadow:var(--shadow)}
+.side{padding:22px 16px;display:flex;flex-direction:column;gap:22px;border-right:1px solid var(--line)}
+.stage[data-dir="b"] .side{border-right:2px solid var(--ink);background:var(--sunk)}
+.stage[data-dir="c"] .side{border-right:0;background:var(--sunk)}
+.brand{font-weight:var(--wd);font-size:20px;letter-spacing:-.02em;display:flex;align-items:center;gap:10px;padding:0 8px}
+.dot{width:18px;height:18px;border-radius:50%;background:var(--accent);flex:none}
+.stage[data-dir="a"] .dot{border-radius:4px}
+.stage[data-dir="b"] .dot{border:2px solid var(--ink);background:var(--mark)}
+.nav{display:grid;gap:2px}
+.nav a{display:flex;justify-content:space-between;align-items:center;color:var(--muted);text-decoration:none;font-size:15px;padding:9px 12px;border-radius:var(--r)}
+.nav a[aria-current]{color:var(--ink);font-weight:600}
+.stage[data-dir="a"] .nav a[aria-current]{background:var(--accent-soft);color:var(--accent);box-shadow:inset 2px 0 0 var(--accent);border-radius:0 var(--r) var(--r) 0}
+.stage[data-dir="b"] .nav a[aria-current]{background:var(--mark);color:#111;border:2px solid var(--ink)}
+.stage[data-dir="c"] .nav a[aria-current]{background:var(--accent-soft);color:var(--ink);border-radius:999px}
+.nav small{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--muted)}
+.main{padding:26px clamp(16px,2.5vw,32px) 32px;display:grid;gap:18px;align-content:start;min-width:0}
+.hd{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end;justify-content:space-between}
+.hd h2{margin:0;font-size:clamp(26px,3.4vw,40px);line-height:1.1;letter-spacing:-.025em;font-weight:var(--wd)}
+.hd p{margin:6px 0 0;color:var(--muted);font-size:14px}
+.btn{font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:var(--ink);background:var(--raised);border:1px solid var(--line);border-radius:var(--r);padding:9px 14px;min-height:40px}
+.stage[data-dir="b"] .btn{border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);border-radius:999px}
+.stage[data-dir="c"] .btn{border:0;box-shadow:var(--shadow);border-radius:999px}
+.btn.pri{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.ghost{background:transparent;box-shadow:none}
+.stage[data-dir="b"] .btn.ghost{box-shadow:none;border-style:dashed}
+.stage[data-dir="c"] .btn.ghost{box-shadow:inset 0 0 0 1px var(--line)}
+
+.panel{background:var(--raised);border:var(--bd);border-radius:var(--rl);padding:20px;box-shadow:var(--shadow)}
+.stage[data-dir="a"] .panel{border-radius:var(--r)}
+.panel h3{margin:0 0 4px;font-size:18px;font-weight:var(--wd);letter-spacing:-.01em}
+.sub{margin:0 0 14px;color:var(--muted);font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{padding:16px 18px}
+.kpi b{display:block;font-size:var(--kpi);line-height:1;font-weight:var(--wd);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stage[data-dir="c"] .kpi b{font-weight:300}
+.kpi span{display:block;margin-top:8px;color:var(--muted);font-size:14px}
+.kpi.hot b{color:var(--accent)}
+.stage[data-dir="b"] .kpi.hot{background:var(--mark);color:#111}
+.stage[data-dir="b"] .kpi.hot b,.stage[data-dir="b"] .kpi.hot span{color:#111}
+.row2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+
+/* funnel */
+.fun{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.fun li{display:grid;grid-template-columns:104px minmax(0,1fr) 36px;gap:12px;align-items:center;font-size:14px}
+.fun .t{height:10px;border-radius:99px;background:var(--sunk);position:relative;overflow:hidden}
+.stage[data-dir="a"] .fun .t{height:6px;border-radius:2px}
+.stage[data-dir="b"] .fun .t{height:16px;border:2px solid var(--ink);background:var(--raised)}
+.fun .t i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:inherit}
+.stage[data-dir="c"] .fun .t i{background:linear-gradient(90deg,var(--accent),var(--aqua))}
+.fun b{text-align:right;font-variant-numeric:tabular-nums}
+
+/* closed card: the redesign */
+.closed{display:grid;gap:12px;background:var(--closed-soft);border:1px solid var(--line);border-radius:var(--rl);padding:18px 20px;box-shadow:var(--shadow)}
+.stage[data-dir="a"] .closed{border-radius:var(--r);border-left:3px solid var(--closed);background:var(--raised)}
+.stage[data-dir="b"] .closed{border:2px solid var(--ink);background:var(--raised)}
+.stage[data-dir="c"] .closed{border:0;background:var(--raised)}
+.c-top{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px;color:var(--muted)}
+.c-state{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--closed);font-size:13px;letter-spacing:.01em}
+.c-state::before{content:"";width:10px;height:10px;border-radius:50%;border:2px solid var(--closed)}
+.stage[data-dir="a"] .c-state::before{border-radius:2px;background:var(--closed);border:0}
+.stage[data-dir="b"] .c-state{background:var(--ink);color:var(--raised);padding:3px 10px;border-radius:999px}
+.stage[data-dir="b"] .c-state::before{display:none}
+.stage[data-dir="c"] .c-state::before{border:0;background:var(--aqua);box-shadow:0 0 0 4px color-mix(in srgb,var(--aqua) 22%,transparent)}
+.closed h4{margin:0;font-size:21px;font-weight:var(--wd);letter-spacing:-.02em}
+.c-role{margin:0;color:var(--muted);font-size:14px}
+.trail{list-style:none;margin:2px 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.trail li{font-size:13px;color:var(--muted);padding-top:10px;border-top:3px solid var(--line);display:grid}
+.trail li b{color:var(--ink);font-weight:600;font-size:14px}
+.trail li.on{border-top-color:var(--accent)}
+.trail li.end{border-top-color:var(--closed)}
+.stage[data-dir="b"] .trail li{border-top:6px solid var(--line)}
+.stage[data-dir="b"] .trail li.on{border-top-color:var(--accent)}
+.stage[data-dir="b"] .trail li.end{border-top-color:var(--ink)}
+.c-note{margin:0;font-size:15px}
+.c-note mark{background:var(--mark);color:inherit;padding:1px 4px;border-radius:3px;font-weight:600}
+.stage[data-dir="b"] .c-note mark{color:#111;background:linear-gradient(transparent 38%,var(--mark) 38%);padding:0 2px;border-radius:0}
+.stage[data-dir="c"] .c-note mark{box-shadow:inset 0 -2px 0 var(--aqua);background:transparent;padding:0;border-radius:0}
+.c-actions{display:flex;flex-wrap:wrap;gap:10px}
+
+/* tracker */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:13px;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:11px 10px;border-bottom:1px solid var(--line)}
+.stage[data-dir="b"] th,.stage[data-dir="b"] td{border-bottom:2px solid var(--ink)}
+.stage[data-dir="c"] th,.stage[data-dir="c"] td{border-bottom:1px solid var(--line)}
+td.n{font-variant-numeric:tabular-nums;font-weight:600}
+.pill{display:inline-block;font-size:13px;padding:2px 10px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.pill.w{border-color:var(--accent);color:var(--accent)}
+.pill.i{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.pill.c{background:var(--closed-soft);color:var(--closed)}
+.stage[data-dir="b"] .pill{border:2px solid var(--ink);color:var(--ink)}
+.stage[data-dir="b"] .pill.i{background:var(--accent);color:#fff;border-color:var(--ink)}
+.stage[data-dir="b"] .pill.c{background:var(--ink);color:var(--raised)}
+.stage[data-dir="b"] .pill.w{color:var(--ink);background:var(--mark)}
+
+/* proof */
+.proof{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:18px;align-items:center}
+.big{font-size:var(--kpi);font-weight:var(--wd);line-height:1;letter-spacing:-.03em}
+.chk{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14px}
+.chk li{display:flex;gap:10px;align-items:center}
+.chk i{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center;font-style:normal;font-size:11px}
+.stage[data-dir="a"] .chk i{border-radius:4px}
+.chk li.ok i{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.chk li.ok span{color:var(--muted)}
+.tag{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:1px 9px;color:var(--muted);margin-left:8px;font-weight:500}
+
+/* notes */
+.notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:22px}
+.note{background:#fff;border-radius:14px;padding:18px 20px;border:1px solid #d6d8df}
+.note.cur{outline:3px solid #14161c}
+.note h3{margin:0 0 6px;font-size:18px}
+.note p{margin:6px 0;color:#3b4050;font-size:15px}
+.sw{display:flex;gap:6px;margin:10px 0}
+.sw i{width:34px;height:34px;border-radius:8px;border:1px solid rgba(0,0,0,.15)}
+@media (max-width:1000px){.stage{grid-template-columns:1fr}.side{border-right:0!important;border-bottom:1px solid var(--line);flex-direction:row;flex-wrap:wrap;align-items:center}.nav{grid-auto-flow:column;overflow-x:auto}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.row2,.proof,.notes{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){.stage,.panel,.closed{transition:background-color .25s,color .25s}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <h1>JobOps design directions</h1>
+  <div class="ctrls">
+    <div class="seg" role="group" aria-label="Direction">
+      <button data-dir="a" aria-pressed="true">A Index</button>
+      <button data-dir="b" aria-pressed="false">B Highlighter</button>
+      <button data-dir="c" aria-pressed="false">C Night shift</button>
+    </div>
+    <div class="seg" role="group" aria-label="Theme">
+      <button data-theme="light" aria-pressed="true">Light</button>
+      <button data-theme="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+  <p class="lead">Same screen, three directions. Sample data is fictional. The closed card replaces the old rejection card: no red, no alarm, and it tells you what the no is worth.</p>
+
+  <div class="stage" id="stage" data-dir="a" data-theme="light">
+    <aside class="side">
+      <div class="brand"><span class="dot"></span>JobOps</div>
+      <nav class="nav" aria-label="Sample navigation">
+        <a href="#" aria-current="page">Overview</a><a href="#">Tracker</a><a href="#">Follow-ups</a><a href="#">Proof <small>new</small></a><a href="#">Review</a><a href="#">Steady</a>
+      </nav>
+    </aside>
+    <div class="main">
+      <div class="hd">
+        <div><h2>The search, in numbers.</h2><p>Sample data, 34 listings, as of 2026-03-18</p></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn">Load tracker.csv</button><button class="btn pri">Add listing</button></div>
+      </div>
+
+      <div class="kpis">
+        <div class="panel kpi"><b>34</b><span>listings logged</span></div>
+        <div class="panel kpi"><b>26</b><span>applied</span></div>
+        <div class="panel kpi"><b>13</b><span>replied</span></div>
+        <div class="panel kpi hot"><b>2</b><span>reached an interview</span></div>
+      </div>
+
+      <div class="row2">
+        <section class="panel">
+          <h3>Where the effort goes</h3>
+          <p class="sub">Only 26 applications, so read these as hints.</p>
+          <ul class="fun">
+            <li><span>Logged</span><span class="t"><i style="width:100%"></i></span><b>34</b></li>
+            <li><span>Applied</span><span class="t"><i style="width:76%"></i></span><b>26</b></li>
+            <li><span>Heard back</span><span class="t"><i style="width:38%"></i></span><b>13</b></li>
+            <li><span>Interview</span><span class="t"><i style="width:6%"></i></span><b>2</b></li>
+          </ul>
+        </section>
+
+        <article class="closed" aria-label="Closed application">
+          <div class="c-top"><span class="c-state">Closed</span><span>9 days after you applied</span></div>
+          <div><h4>Corvid Health</h4><p class="c-role">Senior Product Designer, CV v3</p></div>
+          <ol class="trail"><li class="on"><b>Applied</b>14 Oct</li><li class="on"><b>Heard back</b>23 Oct</li><li class="end"><b>Closed</b>23 Oct</li></ol>
+          <p class="c-note"><mark>A template reply, no feedback offered.</mark> 7 of your last 10 closed replies read the same way. That says little about your work.</p>
+          <div class="c-actions"><button class="btn pri">Draft a feedback request</button><button class="btn ghost">Note what I learned</button></div>
+        </article>
+      </div>
+
+      <section class="panel tw">
+        <h3>Recent listings</h3>
+        <table>
+          <thead><tr><th>Company</th><th>Role</th><th>Fit</th><th>State</th></tr></thead>
+          <tbody>
+            <tr><td>Redwood Signal</td><td>Product Designer</td><td class="n">4.3</td><td><span class="pill w">Waiting</span></td></tr>
+            <tr><td>Granite Loop</td><td>Design Systems Lead</td><td class="n">4.7</td><td><span class="pill i">Interview</span></td></tr>
+            <tr><td>Corvid Health</td><td>Senior Product Designer</td><td class="n">4.1</td><td><span class="pill c">Closed</span></td></tr>
+            <tr><td>Oakhaven</td><td>Design Systems Lead</td><td class="n">n/a</td><td><span class="pill">Gated: closed</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="panel proof">
+        <div><h3>Proof <span class="tag">preview</span></h3><p class="sub">What a recruiter can see about you.</p><div class="big">3 of 6</div></div>
+        <ul class="chk">
+          <li class="ok"><i>✓</i><span>Positioning sentence written</span></li>
+          <li class="ok"><i>✓</i><span>Six-second signal check done</span></li>
+          <li class="ok"><i>✓</i><span>Portfolio format chosen: website</span></li>
+          <li><i></i><span>Case studies ready: 1 of 3</span></li>
+          <li><i></i><span>Hooks placed: 0 of 3 plants</span></li>
+          <li><i></i><span>Interview story for each hook</span></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="notes" id="notes"></div>
+</div>
+<script>
+(function(){
+  var stage=document.getElementById('stage'),notes=document.getElementById('notes');
+  var D={
+    a:{n:'A Index',t:'Precise and quiet. Cool white, graphite, one cobalt that only ever means "active". Square-ish corners, 1px lines, one grotesque family at two weights.',sw:['#f6f7f9','#0e1116','#2b46ff','#4b5563'],c:'Closed gets a slate edge and a three-step trail. The only emphasis is the highlighted sentence about what the no is worth.',f:'Best for: people who want a work tool, not a mood.'},
+    b:{n:'B Highlighter',t:'Human and a bit playful. Hard ink outlines, offset shadows, heavy rounded type. Pink is for the next action, marker yellow is for what matters, like a CV someone has marked up.',sw:['#fbfbfa','#111111','#e8196a','#ffe34a'],c:'Closed is an ink-black label, no colour of loss. The useful sentence is highlighted like a note in the margin.',f:'Best for: creatives who want the tool to feel like theirs.'},
+    c:{n:'C Night shift',t:'Calm and soft. Deep indigo and tonal layers, no borders, periwinkle and aqua as the only colours. Light weights, big numbers, gentle glow.',sw:['#11132a','#e9ebff','#9aa7ff','#6fe3e1'],c:'Closed is a quiet aqua dot and an underlined sentence. It looks put away, not struck out.',f:'Best for: the 11pm check, when you need the numbers without the sting.'}
+  };
+  function render(k){
+    var h='';['a','b','c'].forEach(function(x){var d=D[x];h+='<div class="note'+(x===k?' cur':'')+'"><h3>'+d.n+'</h3><div class="sw">'+d.sw.map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</div><p>'+d.t+'</p><p><strong>Closed card.</strong> '+d.c+'</p><p>'+d.f+'</p></div>'});
+    notes.innerHTML=h;
+  }
+  function set(attr,val){stage.setAttribute('data-'+attr,val);document.querySelectorAll('.seg [data-'+attr+']').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-'+attr)===val))});if(attr==='dir')render(val)}
+  document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){var a=b.hasAttribute('data-dir')?'dir':'theme';set(a,b.getAttribute('data-'+a))})});
+  render('a');
+})();
+</script>
+</body>
+</html>
