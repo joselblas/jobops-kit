@@ -93,16 +93,16 @@
     "dim.domain": ["Domain", "Ámbito"], "dim.skill": ["Skills", "Habilidades"], "dim.level": ["Level", "Nivel"], "dim.evidence": ["Evidence", "Evidencia"], "dim.terms": ["Terms", "Condiciones"],
     "card.swarm": ["Score against outcome", "Puntuación y resultado"], "card.swarm.s": ["Does the fit score predict anything? Each dot is one application.", "¿Predice algo la puntuación? Cada punto es una candidatura."],
     "swarm.none": ["No scored applications yet.", "Aún no hay candidaturas puntuadas."], "swarm.rec": ["Recommend", "Recomendado"],
-    "lg.int": ["Interview or better", "Entrevista o más"], "lg.rej": ["Rejected", "Rechazada"], "lg.wait": ["Waiting", "En espera"],
+    "lg.int": ["Interview or better", "Entrevista o más"], "lg.rej": ["Closed", "Cerrada"], "lg.wait": ["Waiting", "En espera"],
     "swarm.n": ["{n} scored applications. Too few to say the score predicts anything.", "{n} candidaturas puntuadas. Pocas para decir que la puntuación predice algo."],
     "swarm.n2": ["{n} scored applications. Read the pattern as a hint.", "{n} candidaturas puntuadas. Lee el patrón como una pista."],
     "card.gates": ["Gates", "Filtros"], "card.gates.s": ["Listings stopped before any CV work.", "Ofertas frenadas antes de tocar el CV."], "none": ["None logged.", "Nada registrado."],
     "card.sources": ["Sources", "Fuentes"], "card.sources.s": ["Applied / heard back / interview or better.", "Enviadas / con respuesta / entrevista o más."], "noapps": ["No applications yet.", "Aún no hay candidaturas."],
     "card.waiting": ["Waiting", "En espera"], "card.waiting.s": ["Applied, no outcome after two weeks or more.", "Enviadas, sin resultado tras dos semanas o más."],
     "wait.none": ["Nothing waiting 14 days or more.", "Nada esperando 14 días o más."], "wait.days": ["DAYS", "DÍAS"], "wait.follow": ["30+ follow up", "30+ seguimiento"],
-    "st.waiting": ["Waiting", "En espera"], "st.interview": ["Interview", "Entrevista"], "st.offer": ["Offer", "Oferta"], "st.rejected": ["Rejected", "Rechazada"], "st.auto": ["Rejected, auto", "Rechazo automático"],
+    "st.waiting": ["Waiting", "En espera"], "st.interview": ["Interview", "Entrevista"], "st.offer": ["Offer", "Oferta"], "st.rejected": ["Closed", "Cerrada"], "st.auto": ["Closed, auto", "Cerrada, automático"],
     "st.withdrawn": ["Withdrawn", "Retirada"], "st.silent": ["No reply", "Sin respuesta"], "st.gated": ["Gated", "Filtrada"], "st.other": ["Logged", "Registrada"],
-    "ch.all": ["All", "Todas"], "ch.applied": ["Applied", "Enviadas"], "ch.waiting": ["Waiting", "En espera"], "ch.interview": ["Interview", "Entrevista"], "ch.rejected": ["Rejected", "Rechazadas"], "ch.silent": ["No reply", "Sin respuesta"], "ch.gated": ["Gated", "Filtradas"],
+    "ch.all": ["All", "Todas"], "ch.applied": ["Applied", "Enviadas"], "ch.waiting": ["Waiting", "En espera"], "ch.interview": ["Interview", "Entrevista"], "ch.rejected": ["Closed", "Cerradas"], "ch.silent": ["No reply", "Sin respuesta"], "ch.gated": ["Gated", "Filtradas"],
     "th.found": ["Found", "Encontrada"], "th.company": ["Company", "Empresa"], "th.role": ["Role", "Puesto"], "th.source": ["Source", "Fuente"], "th.score": ["Score", "Puntuación"], "th.state": ["State", "Estado"],
     "search": ["Search company, role, note", "Buscar empresa, puesto, nota"], "count": ["{a} of {b} listings", "{a} de {b} ofertas"], "nomatch": ["No listings match.", "Ninguna oferta coincide."],
     "edit.new": ["New listing", "Nueva oferta"], "edit.newsub": ["Log a listing by hand.", "Registra una oferta a mano."], "edit.legend": ["Fit profile, 1 to 5 each. Leave all blank if unrated.", "Perfil de encaje, del 1 al 5. Déjalo en blanco si no lo has puntuado."],
@@ -130,7 +130,7 @@
     "q.date.int": ["When was the interview?", "¿Cuándo fue la entrevista?"], "q.note.int": ["How did it go?", "¿Cómo fue?"], "h.note.int": ["Optional. What they asked, what landed, what you would change, what happens next.", "Opcional. Qué preguntaron, qué funcionó, qué cambiarías, qué sigue."],
     "r.application": ["Application", "Candidatura"], "r.reply": ["Reply", "Respuesta"], "r.date": ["Date", "Fecha"], "r.note": ["Note", "Nota"], "r.company": ["Company", "Empresa"], "r.role": ["Role", "Puesto"], "r.source": ["Source", "Fuente"], "r.score": ["Score", "Puntuación"], "r.stage": ["Stage", "Fase"],
     "done.title": ["Logged.", "Registrado."], "done.sub": ["The tracker is updated.", "El seguimiento está actualizado."],
-    "steady.k": ["Steady", "Calma"], "steady.reject": ["Rejected", "Rechazada"],
+    "steady.k": ["Steady", "Calma"], "steady.reject": ["Closed", "Cerrada"], "steady.days": ["{n} days after you applied", "{n} días después de enviar"], "steady.applied": ["Applied", "Enviada"], "steady.closedOn": ["Closed", "Cerrada"],
     "steady.big": ["A rejection is the usual result: about {p} in 100 applications.", "Un rechazo es lo habitual: unas {p} de cada 100 candidaturas."],
     "steady.body": ["{k} of {n} applications led to an interview so far. {co}, {role}.", "{k} de {n} candidaturas llegaron a entrevista hasta ahora. {co}, {role}."],
     "steady.hands": ["In your hands", "En tus manos"], "steady.hands.t": ["The next application, and the story you tell about this one.", "La próxima candidatura y la historia que cuentas sobre esta."],
@@ -340,7 +340,7 @@
 
   /* ---------- Shared pieces ---------- */
   function tagFor(r) {
-    var cls = r.stateKey === "interview" ? "accent" : r.stateKey === "rejected" ? "rust" : "";
+    var cls = r.stateKey === "interview" ? "accent" : r.stateKey === "rejected" ? "closed" : "";
     return '<span class="tag ' + cls + '">' + esc(r.stateText) + "</span>";
   }
   function card(cls, title, sub, body) {
@@ -626,7 +626,9 @@
     var lines = I.wit[state.lang === "es" ? 1 : 0], h = 0, name = r.company || "";
     for (var i = 0; i < name.length; i++) h = (h + name.charCodeAt(i)) % 997;
     var wit = r.outcome === "rejected-auto" ? tl("wit.auto") : lines[h % lines.length];
-    return '<section class="steady"><span class="label k">' + esc(tl("steady.reject")) + '</span><p class="big">' + esc(t("steady.big", { p: p })) + "</p><p>" + esc(t("steady.body", { k: k, n: n, co: r.company, role: r.role })) + '</p><div class="row"><span class="label">' + esc(tl("steady.hands")) + "</span><p>" + esc(tl("steady.hands.t")) + '</p></div><div class="row"><span class="label">' + esc(tl("steady.not")) + "</span><p>" + esc(tl("steady.not.t")) + '</p></div><p class="wit">' + esc(wit) + "</p>" + (extra || "") + "</section>";
+    var loc = state.lang === "es" ? "es-ES" : "en-GB", fd = function (d) { return d.toLocaleDateString(loc, { day: "numeric", month: "short" }); }, trail = "", when = "";
+    if (r.dApplied && r.dOutcome && r.dOutcome >= r.dApplied) { var nd = Math.round((r.dOutcome - r.dApplied) / 86400000); when = '<span class="when">' + esc(t("steady.days", { n: nd })) + "</span>"; trail = '<div class="trail"><div><b>' + esc(tl("steady.applied")) + "</b>" + esc(fd(r.dApplied)) + "</div><div><b>" + esc(tl("steady.closedOn")) + "</b>" + esc(fd(r.dOutcome)) + "</div></div>"; }
+    return '<section class="steady"><span class="label k">' + esc(tl("steady.reject")) + "</span>" + when + trail + '<p class="big">' + esc(t("steady.big", { p: p })) + "</p><p>" + esc(t("steady.body", { k: k, n: n, co: r.company, role: r.role })) + '</p><div class="row"><span class="label">' + esc(tl("steady.hands")) + "</span><p>" + esc(tl("steady.hands.t")) + '</p></div><div class="row"><span class="label">' + esc(tl("steady.not")) + "</span><p>" + esc(tl("steady.not.t")) + '</p></div><p class="wit">' + esc(wit) + "</p>" + (extra || "") + "</section>";
   }
   function lastRejection() {
     return state.rows.filter(function (r) { return r.stateKey === "rejected" && r.outcome.indexOf("rejected") === 0; }).sort(function (a, b) { return (b.dOutcome ? b.dOutcome.getTime() : 0) - (a.dOutcome ? a.dOutcome.getTime() : 0); })[0];
