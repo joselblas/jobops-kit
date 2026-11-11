@@ -31,6 +31,14 @@ Notes from running this on a real remote search. They are the reason the playboo
 - Automatic rejections within a day are a filter, not a verdict on you. Keep them separate in the data.
 - Small samples mislead. Say so in every report.
 
+## Automated search tools
+
+- Aggregators and tools re-surface what you already handled. Dedupe against the tracker first.
+- "Worldwide" location tags are often wrong. Verify on the employer's page.
+- Keep gates as fixed rules. A model that decides pass or fail is not stable from run to run, and its scores drift upward.
+- Tool-written cover letters are drafts to fact-check, not to send.
+- Measure cost before scheduling. A single afternoon of building and testing used the whole trial allowance.
+
 ## Before publishing a fork (checklist)
 
 Keep these out of any public repo:

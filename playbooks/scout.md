@@ -31,6 +31,16 @@ A dated scout note `logs/scout-YYYY-MM-DD.md`:
 
 Keep it short. The person should be able to decide in two minutes.
 
+## Automated search tools and workflow builders
+
+Hosted workflow tools can run a daily search, but they have limits that were measured in a trial:
+
+- They do not know your tracker. In one export, 14 of 32 results were jobs already applied to, rejected, skipped or known to fail a gate. Dedupe the export against `tracker.csv` before reading it.
+- Let the tool collect and extract facts. Keep pass or fail gates as fixed rules. When a model decided the gates, the same job got different verdicts on different runs, and fit scores crept up over three rounds.
+- Cover letters or answers written by the tool are unverified drafts. Run the fact check against `career-context.md` before any use.
+- Credits run out fast and permission prompts can stall an unattended run for an hour. Check the cost of one run before scheduling it.
+- Do not publish a report page that holds tracker or personal data.
+
 ## Do not
 
 - Apply, message, or create accounts.

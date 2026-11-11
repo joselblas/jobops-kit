@@ -35,3 +35,4 @@ In the tracker, `gate_result` includes `legit:pass`, `legit:unclear` or `fail:cl
 
 - Re-check liveness again right before filling the form, not only at scouting time.
 - A listing that is gone on the real page is closed, even if it still shows on three aggregators.
+- "Anywhere in the world" and "multiple countries" tags on aggregators are not evidence. Several roles carrying that tag were limited to one country on the employer's page. Read the location on the employer's posting.
