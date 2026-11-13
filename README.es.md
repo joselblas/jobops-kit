@@ -105,3 +105,7 @@ Tarjetas redondeadas, menú a la izquierda, tema claro por defecto con opción o
 Inspirado en el proyecto de código abierto [career-ops](https://github.com/career-ops-hq/career-ops), que sigue un enfoque parecido de markdown y línea de comandos, con un escáner mayor y un flujo de PDF. Este kit es un trabajo más pequeño e independiente con otro foco: filtros primero, comprobación geográfica para quien no vive en EE. UU. y verificación de datos del CV.
 
 Licencia MIT. Mira `LICENSE`.
+
+## Comunidad
+
+[Cómo contribuir](CONTRIBUTING.md) · [Código de conducta](CODE_OF_CONDUCT.md) · [Política de seguridad](SECURITY.md) · [Declaración de accesibilidad](ACCESSIBILITY.md) (en inglés)

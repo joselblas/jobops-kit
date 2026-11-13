@@ -137,3 +137,7 @@ The full picture is in [docs/privacy.md](docs/privacy.md). In short: your files 
 Inspired by the open-source [career-ops](https://github.com/career-ops-hq/career-ops) project, which takes a similar markdown-and-CLI approach with a larger scanner and PDF pipeline. This kit is a smaller, independent work with a different focus: gate-first screening, geography checks for non-US applicants, and a fact check on CVs.
 
 MIT license. See `LICENSE`.
+
+## Community
+
+[Contributing](CONTRIBUTING.md) · [Code of conduct](CODE_OF_CONDUCT.md) · [Security policy](SECURITY.md) · [Accessibility statement](ACCESSIBILITY.md)

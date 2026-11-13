@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 PHONE = re.compile(r"(?<!\d)(\+?\d[\d\s().-]{8,}\d)(?!\d)")
-OK_EMAIL = ("example.com", "example.org", "noreply")
+OK_EMAIL = ("example.com", "example.org", "noreply", "ux@joselblas.com")
 
 
 def files():
