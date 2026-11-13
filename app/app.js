@@ -13,9 +13,9 @@
   var I = {
     "nav.overview": ["Overview", "Resumen"], "nav.tracker": ["Tracker", "Seguimiento"], "nav.log": ["Log an update", "Registrar novedad"],
     "nav.proof": ["Proof", "Pruebas"], "title.proof": ["What a recruiter can see.", "Lo que ve un reclutador."],
-    "proof.intro": ["The evidence behind your CV and portfolio, read from your own files. Nothing leaves your browser, and nothing here is saved except your ticks.", "La evidencia detrás de tu CV y tu portafolio, leída de tus propios archivos. Nada sale de tu navegador, y aquí solo se guardan tus marcas."],
+    "btn.more": ["More", "Más"], "welcome.k": ["New here?", "¿Primera vez?"], "welcome.t": ["Set up your own search in about 15 minutes.", "Prepara tu propia búsqueda en unos 15 minutos."], "welcome.s": ["You are looking at sample data. Setup is a short chat with Claude, and your files stay on your computer.", "Estás viendo datos de ejemplo. La configuración es una conversación corta con Claude, y tus archivos se quedan en tu ordenador."], "welcome.go": ["Open the setup guide", "Abrir la guía de instalación"], "welcome.no": ["Dismiss", "Descartar"], "src.read": ["{a} applied, {h} heard back, {i} interview or better", "{a} enviadas, {h} con respuesta, {i} entrevista o más"], "proof.empty": ["Nothing loaded yet. Try the sample data to see how it works, or load your own files.", "Aún no hay nada cargado. Prueba los datos de ejemplo para ver cómo funciona, o carga tus propios archivos."], "proof.intro": ["The evidence behind your CV and portfolio, read from your own files. Nothing leaves your browser, and nothing here is saved except your ticks.", "La evidencia detrás de tu CV y tu portafolio, leída de tus propios archivos. Nada sale de tu navegador, y aquí solo se guardan tus marcas."],
     "proof.of": ["{n} of {t}", "{n} de {t}"], "proof.k": ["Proof", "Pruebas"], "proof.sub": ["Six things a recruiter can find without asking you.", "Seis cosas que un reclutador puede encontrar sin preguntarte."],
-    "pr.pos": ["Positioning sentence written", "Frase de posicionamiento escrita"], "pr.sig": ["Six-second signal check done", "Prueba de los seis segundos hecha"], "pr.fmt": ["Portfolio format chosen", "Formato de portafolio elegido"],
+    "pr.mark": ["Mark done", "Marcar hecho"], "pr.done": ["Done", "Hecho"], "pr.pos": ["Positioning sentence written", "Frase de posicionamiento escrita"], "pr.sig": ["Six-second signal check done", "Prueba de los seis segundos hecha"], "pr.fmt": ["Portfolio format chosen", "Formato de portafolio elegido"],
     "pr.cases": ["Case studies ready", "Casos de estudio listos"], "pr.plants": ["Hooks placed on a confirmed fact", "Ganchos colocados sobre un hecho confirmado"], "pr.stories": ["A story ready for each placed hook", "Una historia lista para cada gancho colocado"],
     "pr.fmt.none": ["Choose one", "Elige uno"], "pr.fmt.web": ["Own website", "Web propia"], "pr.fmt.design": ["Figma, Canva or slides", "Figma, Canva o diapositivas"], "pr.fmt.pdf": ["PDF", "PDF"], "pr.fmt.platform": ["Notion, Read.cv, Behance or LinkedIn", "Notion, Read.cv, Behance o LinkedIn"], "pr.fmt.nowhere": ["Nowhere yet", "Todavía en ningún sitio"],
     "pr.needhooks": ["Load hooks.csv to check this.", "Carga hooks.csv para comprobarlo."], "pr.more": ["more", "más"], "pr.less": ["fewer", "menos"],
@@ -115,7 +115,7 @@
     "card.waiting": ["Waiting", "En espera"], "card.waiting.s": ["Applied, no outcome after two weeks or more.", "Enviadas, sin resultado tras dos semanas o más."],
     "wait.none": ["Nothing waiting 14 days or more.", "Nada esperando 14 días o más."], "wait.days": ["DAYS", "DÍAS"], "wait.follow": ["30+ follow up", "30+ seguimiento"],
     "st.waiting": ["Waiting", "En espera"], "st.interview": ["Interview", "Entrevista"], "st.offer": ["Offer", "Oferta"], "st.rejected": ["Closed", "Cerrada"], "st.auto": ["Closed, auto", "Cerrada, automático"],
-    "st.withdrawn": ["Withdrawn", "Retirada"], "st.silent": ["No reply", "Sin respuesta"], "st.gated": ["Gated", "Filtrada"], "st.other": ["Logged", "Registrada"],
+    "st.withdrawn": ["Withdrawn", "Retirada"], "st.silent": ["No reply", "Sin respuesta"], "st.gated": ["Gated", "Filtrada"], "st.other": ["Logged", "Registrada"], "st.found": ["Found", "Encontrada"], "st.tailored": ["CV tailored", "CV adaptado"],
     "ch.all": ["All", "Todas"], "ch.applied": ["Applied", "Enviadas"], "ch.waiting": ["Waiting", "En espera"], "ch.interview": ["Interview", "Entrevista"], "ch.rejected": ["Closed", "Cerradas"], "ch.silent": ["No reply", "Sin respuesta"], "ch.gated": ["Gated", "Filtradas"],
     "th.found": ["Found", "Encontrada"], "th.company": ["Company", "Empresa"], "th.role": ["Role", "Puesto"], "th.source": ["Source", "Fuente"], "th.score": ["Score", "Puntuación"], "th.state": ["State", "Estado"],
     "search": ["Search company, role, note", "Buscar empresa, puesto, nota"], "count": ["{a} of {b} listings", "{a} de {b} ofertas"], "nomatch": ["No listings match.", "Ninguna oferta coincide."],
@@ -163,7 +163,8 @@
     "pace.note": ["The limit is yours to set. The tool only reminds.", "El límite lo pones tú. La herramienta solo recuerda."],
     "last.none": ["No rejections logged yet. When one arrives, it will land here with the odds and one line to carry.", "Aún no hay rechazos registrados. Cuando llegue uno, aparecerá aquí con las probabilidades y una frase para llevarte."],
     "conf.k": ["Confidence bank", "Banco de confianza"], "conf.t": ["Your proven strengths, with the evidence behind each. They will appear here from your career record.", "Tus fortalezas probadas, con la evidencia detrás de cada una. Aparecerán aquí a partir de tu historial."],
-    "soon.phase": ["Planned", "Previsto"], "soon.status": ["Not built yet", "Aún no construido"],
+    "soon.phase": ["Planned", "Previsto"], "soon.status": ["Works in Claude today", "Ya funciona en Claude"], "soon.dash": ["Dashboard version coming", "Versión en el panel próximamente"], "soon.try": ["Copy this into your Claude Project:", "Copia esto en tu Proyecto de Claude:"], "soon.copy": ["Copy prompt", "Copiar prompt"],
+    "soon.p.scout": ["Scout today's listings and run the gates.", "Scout today's listings and run the gates."], "soon.p.apply": ["Tailor my CV for this listing, fact-check it, fill the form and stop before Submit. Listing link: ", "Tailor my CV for this listing, fact-check it, fill the form and stop before Submit. Listing link: "], "soon.p.prepare": ["Build my interview story bank from my career context and tracker, and prepare me for the next stage.", "Build my interview story bank from my career context and tracker, and prepare me for the next stage."],
     "soon.scout.l": ["Search for free, from new sources, or check a link.", "Busca libremente, desde nuevas fuentes o comprueba un enlace."],
     "soon.scout.b": [["Free search with the gates applied before you see a result.", "New sources added without touching code.", "Paste a link and get the fit, the gates and what is missing."], ["Búsqueda libre con los filtros aplicados antes de ver el resultado.", "Nuevas fuentes sin tocar código.", "Pega un enlace y obtén el encaje, los filtros y lo que falta."]],
     "soon.craft.l": ["Create and improve your CV and portfolio from facts you have confirmed.", "Crea y mejora tu CV y tu portafolio a partir de datos que has confirmado."],
@@ -297,7 +298,7 @@
     else if (o.outcome.indexOf("rejected") === 0) { o.stateKey = "rejected"; o.stateText = tl(o.outcome === "rejected-auto" ? "st.auto" : "st.rejected"); }
     else if (o.outcome === "no-response") { o.stateKey = "silent"; o.stateText = tl("st.silent"); }
     else if (o.outcome === "withdrawn") { o.stateKey = "rejected"; o.stateText = tl("st.withdrawn"); }
-    else { o.stateKey = "other"; o.stateText = r.status || tl("st.other"); }
+    else { o.stateKey = "other"; var sk = (r.status || "").toLowerCase(); o.stateText = I["st." + sk] ? tl("st." + sk) : (r.status ? r.status.charAt(0).toUpperCase() + r.status.slice(1) : tl("st.other")); }
     return o;
   }
   function renorm() { state.rows = state.rows.map(function (r) { return normalise(r.raw); }); if (state.selected) { var i = 0; } }
@@ -360,13 +361,16 @@
     var a = "";
     var ready = state.dirState === "ready";
     if (state.view === "overview" || state.view === "tracker") {
+      var more = "";
       if (state.view === "tracker") a += '<button class="btn accent" type="button" data-act="add">' + esc(tl("btn.add")) + "</button>";
       if (ready) a += '<button class="btn ghost" type="button" data-act="fd-refresh">' + esc(tl("fd.refresh")) + "</button>";
       else {
-        a += '<button class="btn ghost" type="button" data-act="sample">' + esc(tl("btn.sample")) + "</button>";
-        a += '<button class="btn ghost" type="button" data-act="download">' + esc(tl("btn.download")) + "</button>";
-        a += '<button type="button" class="btn ghost" data-act="pick-file" data-target="file">' + esc(tl("btn.load")) + "</button>";
-        if (!canDir && window.showOpenFilePicker) a += '<button class="btn" type="button" data-act="open">' + esc(tl("btn.open")) + "</button>";
+        if (state.view === "overview") a += '<button type="button" class="btn" data-act="pick-file" data-target="file">' + esc(tl("btn.load")) + "</button>";
+        else more += '<button type="button" class="btn ghost" data-act="pick-file" data-target="file">' + esc(tl("btn.load")) + "</button>";
+        more += '<button class="btn ghost" type="button" data-act="sample">' + esc(tl("btn.sample")) + "</button>";
+        more += '<button class="btn ghost" type="button" data-act="download">' + esc(tl("btn.download")) + "</button>";
+        if (!canDir && window.showOpenFilePicker) more += '<button class="btn ghost" type="button" data-act="open">' + esc(tl("btn.open")) + "</button>";
+        a += '<details class="more"><summary class="btn ghost">' + esc(tl("btn.more")) + '</summary><div class="more-menu">' + more + "</div></details>";
       }
     }
     if (state.view === "inbox") {
@@ -376,10 +380,11 @@
       }
     }
     if (state.view === "proof") {
-      a += '<button class="btn ghost" type="button" data-act="proof-sample">' + esc(tl("btn.psample")) + "</button>";
+      var empty = !state.proof.hooks && !state.proof.vault;
+      a += '<button class="btn ' + (empty ? "accent" : "ghost") + '" type="button" data-act="proof-sample">' + esc(tl("btn.psample")) + "</button>";
       if (!ready) {
         a += '<button type="button" class="btn ghost" data-act="pick-file" data-target="vfile">' + esc(tl("btn.vault")) + "</button>";
-        a += '<button type="button" class="btn" data-act="pick-file" data-target="hfile">' + esc(tl("btn.hooks")) + "</button>";
+        a += '<button type="button" class="btn ghost" data-act="pick-file" data-target="hfile">' + esc(tl("btn.hooks")) + "</button>";
       }
     }
     $("#actions").innerHTML = a;
@@ -417,7 +422,7 @@
   function viewOverview() {
     var s = stats();
     var k = [[s.rows.length, "kpi.logged", ""], [s.gated.length, "kpi.gated", ""], [s.applied.length, "kpi.applied", ""], [pct(s.heard.length, s.applied.length), "kpi.heard", ""], [s.inter.length, "kpi.inter", "accent"]];
-    var h = '<div class="grid12"><div class="c12"><div class="kpis">' + k.map(function (i) {
+    var h = welcomeHTML() + '<div class="grid12"><div class="c12"><div class="kpis">' + k.map(function (i) {
       return '<div class="card kpi ' + i[2] + '"><div class="n">' + esc(i[0]) + '</div><div class="label">' + esc(tl(i[1])) + "</div></div>";
     }).join("") + "</div></div>";
     h += card("c7", tl("card.funnel"), tl("card.funnel.s"), funnelHTML(s));
@@ -429,13 +434,17 @@
     h += card("c6", tl("card.sources"), tl("card.sources.s"), sourcesHTML());
     return h + "</div>";
   }
+  function welcomeHTML() {
+    if (state.dirState === "ready" || state.welcomeOff || fetchStore("jo.welcome") === "off") return "";
+    return '<section class="card welcome" aria-labelledby="welcomeT"><div><span class="label">' + esc(tl("welcome.k")) + '</span><h2 id="welcomeT">' + esc(tl("welcome.t")) + "</h2><p>" + esc(tl("welcome.s")) + '</p></div><div class="welcome-act"><a class="btn accent" href="../setup/index.html">' + esc(tl("welcome.go")) + '</a><button class="btn ghost" type="button" data-act="welcome-off">' + esc(tl("welcome.no")) + "</button></div></section>";
+  }
   function funnelHTML(s) {
     var steps = [["f.logged", s.rows.length], ["f.passed", s.rows.length - s.gated.length], ["f.applied", s.applied.length], ["f.heard", s.heard.length], ["f.inter", s.inter.length]];
     var top = steps[0][1] || 1, n = s.applied.length;
-    return '<div class="funnel">' + steps.map(function (st, i) {
+    return '<ol class="funnel">' + steps.map(function (st, i) {
       var of = i ? steps[i - 1][1] : 0, sub = i ? pct(st[1], of) + " " + tl("f.prev") : "";
-      return '<div class="f-row"><div class="f-label">' + esc(tl(st[0])) + '</div><div class="f-track"><div class="f-bar" style="width:' + (100 * st[1] / top) + '%"></div></div><div class="f-val">' + st[1] + (sub ? "<small>" + esc(sub) + "</small>" : "") + "</div></div>";
-    }).join("") + "</div><p class=\"caveat\">" + esc(n < 30 ? t("caveat.small", { n: n }) : tl("caveat.mid")) + "</p>";
+      return '<li class="f-row"><div class="f-label">' + esc(tl(st[0])) + '</div><div class="f-track" aria-hidden="true"><div class="f-bar" style="width:' + (100 * st[1] / top) + '%"></div></div><div class="f-val">' + st[1] + (sub ? " <small>" + esc(sub) + "</small>" : "") + "</div></li>";
+    }).join("") + "</ol><p class=\"caveat\">" + esc(n < 30 ? t("caveat.small", { n: n }) : tl("caveat.mid")) + "</p>";
   }
   function oddsCard(s) {
     var n = s.applied.length, k = s.inter.length, w = wilson(k, n), p = n ? 100 * k / n : 0;
@@ -502,7 +511,7 @@
     var keys = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
     if (!keys.length) return '<p class="empty">' + esc(tl("none")) + "</p>";
     var top = counts[keys[0]];
-    return '<div class="bars">' + keys.map(function (k) { return '<div class="b-row"><span class="b-label">' + esc(k) + '</span><span class="b-track"><i style="width:' + (100 * counts[k] / top) + '%"></i></span><span class="b-val">' + counts[k] + "</span></div>"; }).join("") + "</div>";
+    return '<ul class="bars">' + keys.map(function (k) { return '<li class="b-row"><span class="b-label">' + esc(k) + '</span><span class="b-track" aria-hidden="true"><i style="width:' + (100 * counts[k] / top) + '%"></i></span><span class="b-val">' + counts[k] + "</span></li>"; }).join("") + "</ul>";
   }
   function sourcesHTML() {
     var by = {};
@@ -510,7 +519,7 @@
     var keys = Object.keys(by).sort(function (a, b) { return by[b].a - by[a].a; });
     if (!keys.length) return '<p class="empty">' + esc(tl("noapps")) + "</p>";
     var top = by[keys[0]].a;
-    return '<div class="bars">' + keys.map(function (k) { var v = by[k]; return '<div class="b-row"><span class="b-label">' + esc(k) + '</span><span class="b-track"><i style="width:' + (100 * v.a / top) + '%"></i></span><span class="b-val">' + v.a + " / " + v.h + " / " + v.i + "</span></div>"; }).join("") + "</div>";
+    return '<ul class="bars">' + keys.map(function (k) { var v = by[k]; return '<li class="b-row"><span class="b-label">' + esc(k) + '</span><span class="b-track" aria-hidden="true"><i style="width:' + (100 * v.a / top) + '%"></i></span><span class="b-val" aria-hidden="true">' + v.a + " / " + v.h + " / " + v.i + '</span><span class="sr">' + esc(t("src.read", { a: v.a, h: v.h, i: v.i })) + "</span></li>"; }).join("") + "</ul>";
   }
   function waitingHTML() {
     var list = state.rows.filter(function (r) { return r.stateKey === "waiting" && r.dApplied; }).map(function (r) { return { r: r, d: days(r.dApplied, state.ref) }; }).filter(function (x) { return x.d >= 14; }).sort(function (a, b) { return b.d - a.d; });
@@ -632,8 +641,8 @@
     var plantsOK = !!hooks && placed.length > 0 && !placed.some(function (h, i) { var g = (h.grade || "").toUpperCase(); return g === "E" || g === "Q"; });
     var storiesOK = !!hooks && placed.length > 0 && placed.every(function (h) { return !!h.story; });
     var items = [
-      ["pos", m.pos, tl("pr.pos"), '<button class="btn ghost" type="button" data-act="proof-tick" data-k="pos">' + esc(m.pos ? "✓" : "○") + "</button>"],
-      ["sig", m.sig, tl("pr.sig"), '<button class="btn ghost" type="button" data-act="proof-tick" data-k="sig">' + esc(m.sig ? "✓" : "○") + "</button>"],
+      ["pos", m.pos, tl("pr.pos"), '<button class="btn ghost" type="button" data-act="proof-tick" data-k="pos" aria-pressed="' + (m.pos ? "true" : "false") + '">' + esc(tl(m.pos ? "pr.done" : "pr.mark")) + "</button>"],
+      ["sig", m.sig, tl("pr.sig"), '<button class="btn ghost" type="button" data-act="proof-tick" data-k="sig" aria-pressed="' + (m.sig ? "true" : "false") + '">' + esc(tl(m.sig ? "pr.done" : "pr.mark")) + "</button>"],
       ["fmt", !!m.fmt, tl("pr.fmt"), '<select id="proofFmt" aria-label="' + esc(tl("pr.fmt")) + '">' + PR_FORMATS.map(function (f) { return '<option value="' + f[0] + '"' + (m.fmt === f[0] ? " selected" : "") + ">" + esc(tl(f[1])) + "</option>"; }).join("") + "</select>"],
       ["cases", m.cases >= 3, tl("pr.cases") + ": " + m.cases + " / 3", '<span class="stepper"><button class="btn ghost" type="button" data-act="proof-cases" data-d="-1" aria-label="' + esc(tl("pr.less")) + '">−</button><button class="btn ghost" type="button" data-act="proof-cases" data-d="1" aria-label="' + esc(tl("pr.more")) + '">+</button></span>'],
       ["plants", plantsOK, tl("pr.plants"), hooks ? "" : '<span class="muted small">' + esc(tl("pr.needhooks")) + "</span>"],
@@ -641,7 +650,7 @@
     ];
     var done = items.filter(function (x) { return x[1]; }).length;
     var list = '<ul class="chk">' + items.map(function (x) { return '<li class="' + (x[1] ? "ok" : "") + '"><i aria-hidden="true">' + (x[1] ? "✓" : "") + "</i><span>" + esc(x[2]) + "</span>" + x[3] + "</li>"; }).join("") + "</ul>";
-    var h = '<p class="muted" style="max-width:66ch;margin-bottom:18px">' + esc(tl("proof.intro")) + "</p><div class=\"grid12\">";
+    var h = '<p class="muted" style="max-width:66ch;margin-bottom:' + (hooks || vault ? 18 : 8) + 'px">' + esc(tl("proof.intro")) + "</p>" + (hooks || vault ? "" : '<p class="proof-empty">' + esc(tl("proof.empty")) + "</p>") + "<div class=\"grid12\">";
     h += '<section class="card c5"><div class="card-head"><h2>' + esc(tl("proof.k")) + '</h2><p>' + esc(tl("proof.sub")) + '</p></div><p class="proof-big">' + esc(t("proof.of", { n: done, t: items.length })) + "</p>" + list + "</section>";
     // vault card
     var vb;
@@ -985,7 +994,14 @@
 
   /* ---------- Soon ---------- */
   function viewSoon(v) {
-    return '<div class="card soon"><span class="tag">' + esc(tl("soon.status")) + " · " + esc(tl("soon.phase")) + " " + PHASE[v] + '</span><h2>' + esc(tl("nav." + v)) + '</h2><p class="lede">' + esc(tl("soon." + v + ".l")) + "</p><ul>" + I["soon." + v + ".b"][state.lang === "es" ? 1 : 0].map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul></div>";
+    var p = tl("soon.p." + v);
+    return '<div class="card soon"><span class="tag">' + esc(tl("soon.status")) + " · " + esc(tl("soon.dash")) + '</span><h2>' + esc(tl("nav." + v)) + '</h2><p class="lede">' + esc(tl("soon." + v + ".l")) + "</p><ul>" + I["soon." + v + ".b"][state.lang === "es" ? 1 : 0].map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + '</ul><div class="soon-try"><p class="label" id="soonLbl-' + v + '">' + esc(tl("soon.try")) + '</p><div class="prompt-text" id="soonText-' + v + '" aria-labelledby="soonLbl-' + v + '">' + esc(p) + '</div><button class="btn" type="button" data-act="soon-copy" data-k="' + v + '">' + esc(tl("soon.copy")) + "</button></div></div>";
+  }
+  function soonCopy(v) {
+    var txt = tl("soon.p." + v);
+    var done = function () { toast(tl("craft.copied")); };
+    var old = function () { var ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) { /* ignore */ } ta.remove(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { old(); done(); }); else { old(); done(); }
   }
 
   /* ---------- Step forms ---------- */
@@ -1317,7 +1333,9 @@
     if (lg) { state.lang = lg.dataset.langSet; store("jo.lang", state.lang); renorm(); render(); return; }
     var el = e.target.closest("[data-act]"); if (!el) return;
     var act = el.dataset.act, i = +el.dataset.i;
+    var mo = el.closest("details.more"); if (mo) mo.removeAttribute("open");
     if (act === "select") { state.selected = state.rows[i]; $("#view").innerHTML = viewOverview(); var sb = $('.fit-item[data-i="' + i + '"]'); if (sb) sb.focus({ preventScroll: true }); }
+    else if (act === "welcome-off") { state.welcomeOff = true; store("jo.welcome", "off"); render(); var tt = $("#title"); if (tt) tt.focus({ preventScroll: true }); }
     else if (act === "edit") openEditor(i);
     else if (act === "add") openEditor(-1);
     else if (act === "sample") load(window.SAMPLE_CSV, "Sample data (fictional)");
@@ -1347,6 +1365,7 @@
     else if (act === "rev-focus") { state.rev.data.focus = el.dataset.v; render(); setTimeout(revFinish, 160); }
     else if (act === "craft-by") { state.craft.by = el.dataset.v; render(); }
     else if (act === "craft-copy") craftCopy(el.dataset.k);
+    else if (act === "soon-copy") soonCopy(el.dataset.k);
     else if (act === "fu-open") { state.fu = { open: i, lang: "", tone: "", text: "", edited: false }; fuRefill(); render(); }
     else if (act === "fu-close") { state.fu.open = -1; render(); }
     else if (act === "fu-lang") { state.fu.lang = el.dataset.v; fuRefill(); render(); }
@@ -1369,6 +1388,7 @@
   });
   document.addEventListener("keydown", function (e) {
     var el = e.target;
+    if (e.key === "Escape") { var om = document.querySelector("details.more[open]"); if (om) { om.removeAttribute("open"); var sm = om.querySelector("summary"); if (sm) sm.focus(); return; } }
     if ((e.key === "Enter" || e.key === " ") && el.matches && el.matches("th[data-sort]")) { e.preventDefault(); el.click(); return; }
     if (e.key === "Enter" && state.view === "log" && state.wiz && !state.wiz.done && el.id === "wizIn" && (el.tagName !== "TEXTAREA" || e.metaKey || e.ctrlKey)) { e.preventDefault(); wizNext(); }
   });

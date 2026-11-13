@@ -378,3 +378,35 @@ th { position: relative; }
   .dots i.on { background: Highlight; border-color: Highlight; forced-color-adjust: none; }
   .dot { background: CanvasText; box-shadow: none; }
 }
+
+.soon-try { margin-top: 26px; display: grid; gap: 10px; justify-items: start; }
+.soon-try .prompt-text { width: 100%; max-width: 60ch; }
+
+/* Phones: keep the folder card from pushing the page content down */
+@media (max-width: 720px) {
+  .folder .fd-note.muted, .folder .fd-files, .folder .label + .fd-note { display: none; }
+}
+
+/* Semantic lists (funnel, gates, sources) keep the old look */
+ol.funnel, ul.bars { list-style: none; margin: 0; padding: 0; }
+ol.funnel { display: grid; gap: 12px; }
+li.f-row, li.b-row { margin: 0; padding: 0; }
+.b-row .sr { position: absolute; }
+li.b-row { position: relative; }
+
+/* Header: one primary action, the rest under More */
+.actions details.more { position: relative; }
+.actions details.more > summary { list-style: none; cursor: pointer; }
+.actions details.more > summary::-webkit-details-marker { display: none; }
+.actions details.more > summary::after { content: "\25BE"; margin-left: 8px; font-size: 11px; }
+.more-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; display: grid; gap: 4px; min-width: 200px; padding: 8px; background: var(--surface-raised); border: 1px solid var(--line-strong); border-radius: 16px; box-shadow: 0 12px 32px rgba(20, 24, 60, .14); }
+.more-menu .btn { justify-content: flex-start; text-align: left; border-color: transparent; }
+.more-menu .btn:hover { background: var(--accent-soft); }
+@media (forced-colors: active) { .more-menu { border: 1px solid CanvasText; } }
+
+/* First-run card */
+.welcome { display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 20px; border-color: var(--accent); }
+.welcome h2 { margin: 4px 0 6px; }
+.welcome p { max-width: 62ch; margin: 0; color: var(--ink-muted); }
+.welcome-act { display: flex; gap: 8px; flex-wrap: wrap; }
+.proof-empty { max-width: 66ch; margin: 0 0 18px; padding: 10px 14px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 12px 12px 0; }
