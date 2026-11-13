@@ -10,7 +10,7 @@ En mi propia búsqueda hasta ahora (del 3 de agosto al 12 de noviembre de 2026):
 
 Creado por [Jose L. Blas](https://joselblas.com), diseñador de producto, durante una búsqueda real de roles remotos desde España. Sin framework, sin servidor, sin telemetría en el panel.
 
-**[Configúralo en 15 minutos](https://joselblas.github.io/jobops-kit/setup/)** ([versión en texto](docs/setup.es.md)) · [Demo](https://joselblas.github.io/jobops-kit/app/) · [Diseño e historia](https://joselblas.github.io/jobops-kit/design/) · [Privacidad](docs/privacy.es.md)
+**[Configúralo en 15 minutos](https://joselblas.github.io/jobops-kit/setup/)** ([versión en texto](docs/setup.es.md)) · [Demo](https://joselblas.github.io/jobops-kit/app/) · [Diseño e historia](https://joselblas.github.io/jobops-kit/design/) · [Design system](docs/design-system.es.md) · [Privacidad](docs/privacy.es.md)
 
 ![Resumen](docs/screenshots/overview-light.png)
 

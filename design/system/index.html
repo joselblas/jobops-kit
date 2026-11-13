@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jobops design system</title>
+<meta name="description" content="The tokens and components behind the Jobops dashboard, shown with the real stylesheet.">
+<link rel="stylesheet" href="../../app/style.css">
+<style>
+body { font-size: 16px; }
+.ds-skip { position: absolute; left: 12px; top: -60px; background: var(--accent); color: var(--on-accent); padding: 10px 16px; border-radius: var(--r-pill); z-index: 50; }
+.ds-skip:focus { top: 12px; }
+.ds-bar { position: sticky; top: 0; z-index: 10; display: flex; gap: var(--s-4); align-items: center; justify-content: space-between; flex-wrap: wrap; padding: var(--s-3) var(--gutter); background: var(--surface); border-bottom: 1px solid var(--line); }
+.ds-bar nav { display: flex; gap: var(--s-4); flex-wrap: wrap; }
+.ds-bar a { color: var(--ink-muted); text-decoration: none; font-size: 14px; }
+.ds-bar a:hover { color: var(--ink); text-decoration: underline; }
+.ds-wrap { width: min(1080px, 100% - 2 * var(--gutter)); margin-inline: auto; padding-bottom: var(--s-8); }
+.ds-hero { padding: var(--s-7) 0 var(--s-5); }
+.ds-hero h1 { max-width: 16ch; }
+.ds-hero p { font-size: 20px; color: var(--ink-muted); max-width: 52ch; margin-top: var(--s-4); }
+.ds-sec { padding-top: var(--s-7); }
+.ds-sec > h2 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); margin-bottom: var(--s-2); }
+.ds-sec > .lead { color: var(--ink-muted); max-width: 62ch; margin-bottom: var(--s-5); }
+.ds-principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--s-4); list-style: none; padding: 0; margin: 0; }
+.ds-principles li { background: var(--surface-raised); box-shadow: var(--shadow); border-radius: var(--r-md); padding: var(--s-5); }
+.ds-principles h3 { font-size: 20px; margin-bottom: var(--s-2); }
+.ds-principles p { color: var(--ink-muted); font-size: 14px; }
+.ds-swatches { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--s-4); }
+.ds-swatches li { display: flex; gap: var(--s-3); align-items: flex-start; font-size: 13px; }
+.ds-sw { width: 44px; height: 44px; border-radius: var(--r-sm); border: 1px solid var(--line-strong); flex: none; }
+table.ds-t { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--surface-raised); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow); }
+.ds-t th, .ds-t td { text-align: left; padding: 10px var(--s-4); border-bottom: 1px solid var(--line); }
+.ds-t th { font-weight: 500; color: var(--ink-muted); font-size: 13px; }
+.ds-pass { font-weight: 600; }
+.ds-type { display: grid; gap: var(--s-4); }
+.ds-type > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: var(--s-4); align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: var(--s-3); }
+.ds-type code { color: var(--ink-muted); font-size: 12px; }
+.ds-scale { display: grid; gap: var(--s-2); }
+.ds-scale > div { display: grid; grid-template-columns: 110px 60px minmax(0, 1fr); gap: var(--s-3); align-items: center; font-size: 13px; }
+.ds-scale i { display: block; max-width: 100%; height: 14px; background: var(--accent); border-radius: 3px; }
+.ds-radii { display: flex; gap: var(--s-5); flex-wrap: wrap; }
+.ds-radii div { width: 120px; height: 84px; background: var(--surface-raised); box-shadow: var(--shadow); display: grid; place-items: center; font-size: 13px; text-align: center; }
+.ds-comp { margin-top: var(--s-6); padding: var(--s-5); background: var(--surface-sunken); border-radius: var(--r-md); }
+.ds-comp-head { margin-bottom: var(--s-4); }
+.ds-comp-head h3 { font-size: 24px; }
+.ds-comp-head p { color: var(--ink-muted); max-width: 64ch; margin-top: 4px; }
+.ds-demo { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); padding: var(--s-5); display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: flex-start; }
+.ds-demo > .callout, .ds-demo > .field, .ds-demo > .kpis, .ds-demo > .chk, .ds-demo > .proof-empty, .ds-demo > .chips, .ds-demo > .seg { flex: 1 1 100%; }
+.ds-demo .more-menu { position: static; margin-top: 6px; }
+.ds-demo details.more { position: static; }
+.ds-code { margin-top: var(--s-3); }
+.ds-code summary { cursor: pointer; font-size: 14px; color: var(--ink-muted); }
+.ds-code pre { overflow-x: auto; background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--r-sm); padding: var(--s-4); font-size: 12.5px; line-height: 1.5; }
+.ds-a11y { margin-top: var(--s-3); font-size: 14px; color: var(--ink-muted); max-width: 70ch; }
+@media (max-width: 560px) { .ds-type > div { grid-template-columns: minmax(0, 1fr); gap: 4px; } .ds-scale > div { grid-template-columns: 70px 50px minmax(0, 1fr); } .ds-demo { padding: var(--s-4); } .ds-comp { padding: var(--s-4); } }
+footer.ds-foot { padding: var(--s-6) var(--gutter); color: var(--ink-muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<a class="ds-skip" href="#main">Skip to content</a>
+<header class="ds-bar">
+  <a class="brand" href="../../app/index.html" style="padding:0"><span class="mark" aria-hidden="true"></span>Jobops</a>
+  <nav aria-label="On this page"><a href="#principles">Principles</a><a href="#color">Color</a><a href="#type">Type</a><a href="#space">Space and shape</a><a href="#motion">Motion</a><a href="#components">Components</a></nav>
+  <div class="seg" role="group" aria-label="Theme"><button type="button" data-theme-set="light" aria-pressed="true">Light</button><button type="button" data-theme-set="dark" aria-pressed="false">Dark</button></div>
+</header>
+<main id="main" tabindex="-1" class="ds-wrap">
+  <div class="ds-hero">
+    <p class="eyebrow">Design system</p>
+    <h1>Calm, on purpose.</h1>
+    <p>The tokens and components behind the dashboard. This page uses the real stylesheet, so what you see here is what ships.</p>
+  </div>
+
+  <section class="ds-sec" id="principles" aria-labelledby="h-pr"><h2 id="h-pr">Principles</h2>
+    <p class="lead">Four rules decide most design questions in this product.</p>
+    <ul class="ds-principles">
+      <li><h3>Calm over urgent</h3><p>A job search is stressful already. No red alarms, no streaks, no countdowns. Caution is amber and always says why.</p></li>
+      <li><h3>Honest numbers</h3><p>Small samples are labelled small. A number never appears without its label and, when it matters, its range.</p></li>
+      <li><h3>Text carries meaning</h3><p>Colour, shape and position only add emphasis. Every state has words, so it survives forced colors and colour blindness.</p></li>
+      <li><h3>Works with a keyboard</h3><p>Every control is a real button, link or field with a visible focus ring and a 40 px target.</p></li>
+    </ul>
+  </section>
+
+  <section class="ds-sec" id="color" aria-labelledby="h-co"><h2 id="h-co">Color</h2>
+    <p class="lead">Tokens are CSS custom properties with a light and a dark set. Switch the theme above and the values and ratios below update.</p>
+    <ul class="ds-swatches"><li><span class="ds-sw" style="background:var(--surface)"></span><span><code>--surface</code><br><span class="muted">Page background</span><br><span class="muted ds-hex" data-v="surface"></span></span></li><li><span class="ds-sw" style="background:var(--surface-raised)"></span><span><code>--surface-raised</code><br><span class="muted">Cards</span><br><span class="muted ds-hex" data-v="surface-raised"></span></span></li><li><span class="ds-sw" style="background:var(--surface-sunken)"></span><span><code>--surface-sunken</code><br><span class="muted">Sidebar, wells</span><br><span class="muted ds-hex" data-v="surface-sunken"></span></span></li><li><span class="ds-sw" style="background:var(--ink)"></span><span><code>--ink</code><br><span class="muted">Text</span><br><span class="muted ds-hex" data-v="ink"></span></span></li><li><span class="ds-sw" style="background:var(--ink-muted)"></span><span><code>--ink-muted</code><br><span class="muted">Secondary text</span><br><span class="muted ds-hex" data-v="ink-muted"></span></span></li><li><span class="ds-sw" style="background:var(--ink-faint)"></span><span><code>--ink-faint</code><br><span class="muted">Tertiary text</span><br><span class="muted ds-hex" data-v="ink-faint"></span></span></li><li><span class="ds-sw" style="background:var(--accent)"></span><span><code>--accent</code><br><span class="muted">Primary action</span><br><span class="muted ds-hex" data-v="accent"></span></span></li><li><span class="ds-sw" style="background:var(--accent-soft)"></span><span><code>--accent-soft</code><br><span class="muted">Selected, info</span><br><span class="muted ds-hex" data-v="accent-soft"></span></span></li><li><span class="ds-sw" style="background:var(--calm)"></span><span><code>--calm</code><br><span class="muted">Reassurance</span><br><span class="muted ds-hex" data-v="calm"></span></span></li><li><span class="ds-sw" style="background:var(--calm-soft)"></span><span><code>--calm-soft</code><br><span class="muted">Reassurance fill</span><br><span class="muted ds-hex" data-v="calm-soft"></span></span></li><li><span class="ds-sw" style="background:var(--closed)"></span><span><code>--closed</code><br><span class="muted">Closed, rejected</span><br><span class="muted ds-hex" data-v="closed"></span></span></li><li><span class="ds-sw" style="background:var(--closed-soft)"></span><span><code>--closed-soft</code><br><span class="muted">Closed fill</span><br><span class="muted ds-hex" data-v="closed-soft"></span></span></li><li><span class="ds-sw" style="background:var(--caution)"></span><span><code>--caution</code><br><span class="muted">Care</span><br><span class="muted ds-hex" data-v="caution"></span></span></li><li><span class="ds-sw" style="background:var(--caution-soft)"></span><span><code>--caution-soft</code><br><span class="muted">Care fill</span><br><span class="muted ds-hex" data-v="caution-soft"></span></span></li><li><span class="ds-sw" style="background:var(--line)"></span><span><code>--line</code><br><span class="muted">Hairlines</span><br><span class="muted ds-hex" data-v="line"></span></span></li><li><span class="ds-sw" style="background:var(--line-strong)"></span><span><code>--line-strong</code><br><span class="muted">Control borders</span><br><span class="muted ds-hex" data-v="line-strong"></span></span></li></ul>
+    <h3 style="margin:var(--s-6) 0 var(--s-3);font-size:22px">Contrast, measured live</h3>
+    <p class="muted" style="margin-bottom:var(--s-3);max-width:62ch">Text needs 4.5 to 1. Control borders need 3 to 1. The numbers are computed in your browser from the current theme.</p>
+    <div class="table-wrap" style="overflow-x:auto"><table class="ds-t"><thead><tr><th scope="col">Use</th><th scope="col">Pair</th><th scope="col">Ratio</th><th scope="col">Result</th></tr></thead><tbody><tr data-fg="ink" data-bg="surface" data-min="4.5"><td>Body text</td><td><code>--ink</code> on <code>--surface</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="ink-muted" data-bg="surface" data-min="4.5"><td>Secondary text</td><td><code>--ink-muted</code> on <code>--surface</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="ink-muted" data-bg="surface-raised" data-min="4.5"><td>Secondary text on cards</td><td><code>--ink-muted</code> on <code>--surface-raised</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="ink-faint" data-bg="surface" data-min="4.5"><td>Tertiary text</td><td><code>--ink-faint</code> on <code>--surface</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="accent" data-bg="surface" data-min="4.5"><td>Links, KPI accent</td><td><code>--accent</code> on <code>--surface</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="on-accent" data-bg="accent" data-min="4.5"><td>Filled button</td><td><code>--on-accent</code> on <code>--accent</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="accent" data-bg="accent-soft" data-min="4.5"><td>Info tag</td><td><code>--accent</code> on <code>--accent-soft</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="calm" data-bg="calm-soft" data-min="4.5"><td>Calm tag</td><td><code>--calm</code> on <code>--calm-soft</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="closed" data-bg="closed-soft" data-min="4.5"><td>Closed tag</td><td><code>--closed</code> on <code>--closed-soft</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="caution" data-bg="caution-soft" data-min="4.5"><td>Caution tag, callout</td><td><code>--caution</code> on <code>--caution-soft</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr><tr data-fg="line-strong" data-bg="surface" data-min="3"><td>Control borders (non-text)</td><td><code>--line-strong</code> on <code>--surface</code></td><td class="num ds-ratio"></td><td class="ds-pass"></td></tr></tbody></table></div>
+  </section>
+
+  <section class="ds-sec" id="type" aria-labelledby="h-ty"><h2 id="h-ty">Type</h2>
+    <p class="lead">Two families, both from the system, so the page makes no font requests. Display for headings and numbers, sans for everything else, mono for dates and code.</p>
+    <div class="ds-type">
+      <div><code>h1 / --t-xl</code><span style="font-family:var(--display);font-size:clamp(2.2rem,4vw,3.4rem);line-height:1.02;letter-spacing:-.02em">The search, in numbers.</span></div>
+      <div><code>KPI number</code><span class="num" style="font-family:var(--display);font-weight:300;font-size:clamp(2.6rem,4.4vw,4.2rem);line-height:1">94</span></div>
+      <div><code>h2 / --t-lg 28</code><span style="font-family:var(--display);font-size:28px;letter-spacing:-.02em">Funnel</span></div>
+      <div><code>--t-md 18</code><span style="font-size:18px;color:var(--ink-muted)">Search for free, from new sources, or check a link.</span></div>
+      <div><code>--t-base 15</code><span>Body text. Line height 1.55, at most 70 characters wide.</span></div>
+      <div><code>--t-sm 13</code><span class="label">Label and caption text</span></div>
+      <div><code>--mono</code><span style="font-family:var(--mono);font-size:13px">2026-03-16</span></div>
+    </div>
+  </section>
+
+  <section class="ds-sec" id="space" aria-labelledby="h-sp"><h2 id="h-sp">Space and shape</h2>
+    <p class="lead">Space follows a 4 point scale. Corners are soft: pills for controls, rounded squares for cards.</p>
+    <div class="ds-scale" aria-label="Spacing scale">
+      <div><code>--s-1</code><span class="num">4px</span><i style="width:16px"></i></div><div><code>--s-2</code><span class="num">8px</span><i style="width:32px"></i></div><div><code>--s-3</code><span class="num">12px</span><i style="width:48px"></i></div><div><code>--s-4</code><span class="num">16px</span><i style="width:64px"></i></div><div><code>--s-5</code><span class="num">24px</span><i style="width:96px"></i></div><div><code>--s-6</code><span class="num">32px</span><i style="width:128px"></i></div><div><code>--s-7</code><span class="num">48px</span><i style="width:192px"></i></div><div><code>--s-8</code><span class="num">64px</span><i style="width:256px"></i></div>
+    </div>
+    <div class="ds-radii" style="margin-top:var(--s-6)">
+      <div style="border-radius:var(--r-sm)"><span><code>--r-sm</code><br>12</span></div>
+      <div style="border-radius:var(--r-md)"><span><code>--r-md</code><br>22</span></div>
+      <div style="border-radius:var(--r-lg)"><span><code>--r-lg</code><br>28</span></div>
+      <div style="border-radius:var(--r-pill)"><span><code>--r-pill</code></span></div>
+      <div style="border-radius:var(--r-md);box-shadow:var(--shadow-pop)"><span><code>--shadow-pop</code><br>menus</span></div>
+    </div>
+  </section>
+
+  <section class="ds-sec" id="motion" aria-labelledby="h-mo"><h2 id="h-mo">Motion</h2>
+    <p class="lead">Motion is short and only confirms an action. Two durations: 120 ms for controls, 250 ms for bars that change width. Everything is switched off when the system asks for reduced motion.</p>
+    <div style="overflow-x:auto"><table class="ds-t"><thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Used for</th></tr></thead><tbody>
+      <tr><td><code>--dur-1</code></td><td class="num">120 ms</td><td>Hover, press and selection on buttons, chips and tags</td></tr>
+      <tr><td><code>--dur-2</code></td><td class="num">250 ms</td><td>Bars in the funnel, gates and fit charts</td></tr>
+      <tr><td><code>--ease</code></td><td>ease</td><td>All transitions</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="ds-sec" id="components" aria-labelledby="h-cm"><h2 id="h-cm">Components</h2>
+    <p class="lead">Each component shows the real markup, when to use it, and what it does for accessibility.</p>
+    <section class="ds-comp" aria-labelledby="c0"><div class="ds-comp-head"><h3 id="c0">Button</h3><p>The one thing to do on this page is a filled button. Everything else is ghost. Use small for dense rows, caution only for actions that lose data.</p></div>
+<div class="ds-demo"><button class="btn" type="button">Add listing</button>
+<button class="btn ghost" type="button">Download CSV</button>
+<button class="btn ghost sm" type="button">Edit</button>
+<button class="btn caution" type="button">Clear data</button>
+<button class="btn" type="button" aria-disabled="true">Save</button>
+<button class="btn ghost" type="button" aria-pressed="true">Done</button></div>
+<details class="ds-code"><summary>Markup</summary><pre><code>&lt;button class=&quot;btn&quot; type=&quot;button&quot;&gt;Add listing&lt;/button&gt;
+&lt;button class=&quot;btn ghost&quot; type=&quot;button&quot;&gt;Download CSV&lt;/button&gt;
+&lt;button class=&quot;btn ghost sm&quot; type=&quot;button&quot;&gt;Edit&lt;/button&gt;
+&lt;button class=&quot;btn caution&quot; type=&quot;button&quot;&gt;Clear data&lt;/button&gt;
+&lt;button class=&quot;btn&quot; type=&quot;button&quot; aria-disabled=&quot;true&quot;&gt;Save&lt;/button&gt;
+&lt;button class=&quot;btn ghost&quot; type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;Done&lt;/button&gt;</code></pre></details>
+<p class="ds-a11y"><strong>Accessibility.</strong> Real &lt;button&gt; elements. Minimum height 40 px (WCAG 2.2 target size asks for 24). Disabled uses aria-disabled so it stays focusable and explainable. Toggles use aria-pressed and change their text, not only their colour.</p></section>
+<section class="ds-comp" aria-labelledby="c1"><div class="ds-comp-head"><h3 id="c1">Tag</h3><p>A status the reader needs at a glance. Always has text. Colour only adds emphasis.</p></div>
+<div class="ds-demo"><span class="tag">Waiting</span>
+<span class="tag accent">Interview</span>
+<span class="tag closed">Closed</span>
+<span class="tag calm">Steady</span>
+<span class="tag caution">Check this</span></div>
+<details class="ds-code"><summary>Markup</summary><pre><code>&lt;span class=&quot;tag&quot;&gt;Waiting&lt;/span&gt;
+&lt;span class=&quot;tag accent&quot;&gt;Interview&lt;/span&gt;
+&lt;span class=&quot;tag closed&quot;&gt;Closed&lt;/span&gt;
+&lt;span class=&quot;tag calm&quot;&gt;Steady&lt;/span&gt;
+&lt;span class=&quot;tag caution&quot;&gt;Check this&lt;/span&gt;</code></pre></details>
+<p class="ds-a11y"><strong>Accessibility.</strong> Text carries the meaning, so the tag still works in forced-colors mode and for colour-blind readers. Contrast is checked in both themes on the table above.</p></section>
+<section class="ds-comp" aria-labelledby="c2"><div class="ds-comp-head"><h3 id="c2">Chip filter and segmented control</h3><p>Chips filter a list. A segmented control switches between two or three modes of the same view.</p></div>
+<div class="ds-demo"><div class="chips" role="group" aria-label="Filter">
+  <button class="chip" type="button" aria-pressed="true">All</button>
+  <button class="chip" type="button" aria-pressed="false">Waiting</button>
+  <button class="chip" type="button" aria-pressed="false">Interview</button>
+</div>
+<div class="seg" role="group" aria-label="Language" style="max-width:160px;margin-top:12px">
+  <button type="button" aria-pressed="true">EN</button>
+  <button type="button" aria-pressed="false">ES</button>
+</div></div>
+<details class="ds-code"><summary>Markup</summary><pre><code>&lt;div class=&quot;chips&quot; role=&quot;group&quot; aria-label=&quot;Filter&quot;&gt;
+  &lt;button class=&quot;chip&quot; type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;All&lt;/button&gt;
+  &lt;button class=&quot;chip&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;Waiting&lt;/button&gt;
+  &lt;button class=&quot;chip&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;Interview&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;seg&quot; role=&quot;group&quot; aria-label=&quot;Language&quot; style=&quot;max-width:160px;margin-top:12px&quot;&gt;
+  &lt;button type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;EN&lt;/button&gt;
+  &lt;button type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;ES&lt;/button&gt;
+&lt;/div&gt;</code></pre></details>
+<p class="ds-a11y"><strong>Accessibility.</strong> A group with an aria-label, each button with aria-pressed. Arrow keys are not needed because every option is a tab stop. The pressed state has a fill and a heavier weight.</p></section>
+<section class="ds-comp" aria-labelledby="c3"><div class="ds-comp-head"><h3 id="c3">Field</h3><p>A label above, a hint below, an error as text. The error never relies on colour alone.</p></div>
+<div class="ds-demo"><div class="field">
+  <label class="label" for="ds-name">Your name</label>
+  <input class="input" id="ds-name" type="text" aria-describedby="ds-name-h">
+  <span class="hint" id="ds-name-h">Used only in the follow-up drafts you copy.</span>
+</div>
+<div class="field" style="margin-top:16px">
+  <label class="label" for="ds-link">Portfolio link</label>
+  <input class="input" id="ds-link" type="url" value="joselblas" aria-invalid="true" aria-describedby="ds-link-e">
+  <span class="err" id="ds-link-e">Add https:// at the start.</span>
+</div></div>
+<details class="ds-code"><summary>Markup</summary><pre><code>&lt;div class=&quot;field&quot;&gt;
+  &lt;label class=&quot;label&quot; for=&quot;ds-name&quot;&gt;Your name&lt;/label&gt;
+  &lt;input class=&quot;input&quot; id=&quot;ds-name&quot; type=&quot;text&quot; aria-describedby=&quot;ds-name-h&quot;&gt;
+  &lt;span class=&quot;hint&quot; id=&quot;ds-name-h&quot;&gt;Used only in the follow-up drafts you copy.&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;field&quot; style=&quot;margin-top:16px&quot;&gt;
+  &lt;label class=&quot;label&quot; for=&quot;ds-link&quot;&gt;Portfolio link&lt;/label&gt;
+  &lt;input class=&quot;input&quot; id=&quot;ds-link&quot; type=&quot;url&quot; value=&quot;joselblas&quot; aria-invalid=&quot;true&quot; aria-describedby=&quot;ds-link-e&quot;&gt;
+  &lt;span class=&quot;err&quot; id=&quot;ds-link-e&quot;&gt;Add https:// at the start.&lt;/span&gt;
+&lt;/div&gt;</code></pre></details>
+<p class="ds-a11y"><strong>Accessibility.</strong> The label is a real label element. The hint and the error are linked with aria-describedby. Invalid fields get a thicker border plus the message.</p></section>
+<section class="ds-comp" aria-labelledby="c4"><div class="ds-comp-head"><h3 id="c4">Callout</h3><p>A short note inside a page. Info explains, calm reassures, caution asks for care.</p></div>
+<div class="ds-demo"><div class="callout info"><i aria-hidden="true">i</i><p><strong>Sample data.</strong> Nothing here is real until you connect your folder.</p></div>
+<div class="callout calm" style="margin-top:12px"><i aria-hidden="true">&#10003;</i><p><strong>Stays on your computer.</strong> The dashboard makes no network requests.</p></div>
+<div class="callout caution" style="margin-top:12px"><i aria-hidden="true">!</i><p><strong>Small sample.</strong> 26 applications is a hint, not a result.</p></div></div>
+<details class="ds-code"><summary>Markup</summary><pre><code>&lt;div class=&quot;callout info&quot;&gt;&lt;i aria-hidden=&quot;true&quot;&gt;i&lt;/i&gt;&lt;p&gt;&lt;strong&gt;Sample data.&lt;/strong&gt; Nothing here is real until you connect your folder.&lt;/p&gt;&lt;/div&gt;
+&lt;div class=&quot;callout calm&quot; style=&quot;margin-top:12px&quot;&gt;&lt;i aria-hidden=&quot;true&quot;&gt;&amp;#10003;&lt;/i&gt;&lt;p&gt;&lt;strong&gt;Stays on your computer.&lt;/strong&gt; The dashboard makes no network requests.&lt;/p&gt;&lt;/div&gt;
+&lt;div class=&quot;callout caution&quot; style=&quot;margin-top:12px&quot;&gt;&lt;i aria-hidden=&quot;true&quot;&gt;!&lt;/i&gt;&lt;p&gt;&lt;strong&gt;Small sample.&lt;/strong&gt; 26 applications is a hint, not a result.&lt;/p&gt;&lt;/div&gt;</code></pre></details>
+<p class="ds-a11y"><strong>Accessibility.</strong> The icon is decorative and hidden from assistive tech, the first word does the work. Use role=&quot;status&quot; only for a note that appears after an action.</p></section>
+<section class="ds-comp" aria-labelledby="c5"><div class="ds-comp-head"><h3 id="c5">Card and KPI</h3><p>A card groups one idea. A KPI is one number and one label, never a number alone.</p></div>
+<div class="ds-demo"><div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr))">
+  <div class="card kpi"><div class="n">37</div><div class="label">Logged</div></div>
+  <div class="card kpi"><div class="n">26</div><div class="label">Applied</div></div>
+  <div class="card kpi accent"><div class="n">2</div><div class="label">Interview or better</div></div>
+</div></div>
+<details class="ds-code"><summary>Markup</summary><pre><code>&lt;div class=&quot;kpis&quot; style=&quot;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))&quot;&gt;
+  &lt;div class=&quot;card kpi&quot;&gt;&lt;div class=&quot;n&quot;&gt;37&lt;/div&gt;&lt;div class=&quot;label&quot;&gt;Logged&lt;/div&gt;&lt;/div&gt;
+  &lt;div class=&quot;card kpi&quot;&gt;&lt;div class=&quot;n&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;label&quot;&gt;Applied&lt;/div&gt;&lt;/div&gt;
+  &lt;div class=&quot;card kpi accent&quot;&gt;&lt;div class=&quot;n&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;label&quot;&gt;Interview or better&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></details>
+<p class="ds-a11y"><strong>Accessibility.</strong> Cards are sections with a heading. KPI numbers use tabular figures so they do not jump. The label is always visible text.</p></section>
+<section class="ds-comp" aria-labelledby="c6"><div class="ds-comp-head"><h3 id="c6">Checklist row</h3><p>One step with a state and, when it needs it, one action. Used on Proof.</p></div>
+<div class="ds-demo"><ul class="chk" style="max-width:460px">
+  <li class="ok"><i aria-hidden="true">&#10003;</i><span>Positioning sentence written</span><button class="btn ghost" type="button" aria-pressed="true">Done</button></li>
+  <li><i aria-hidden="true"></i><span>Six-second signal check done</span><button class="btn ghost" type="button" aria-pressed="false">Mark done</button></li>
+</ul></div>
+<details class="ds-code"><summary>Markup</summary><pre><code>&lt;ul class=&quot;chk&quot; style=&quot;max-width:460px&quot;&gt;
+  &lt;li class=&quot;ok&quot;&gt;&lt;i aria-hidden=&quot;true&quot;&gt;&amp;#10003;&lt;/i&gt;&lt;span&gt;Positioning sentence written&lt;/span&gt;&lt;button class=&quot;btn ghost&quot; type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;Done&lt;/button&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span&gt;Six-second signal check done&lt;/span&gt;&lt;button class=&quot;btn ghost&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;Mark done&lt;/button&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre></details>
+<p class="ds-a11y"><strong>Accessibility.</strong> The circle is decorative. State is in the button text (Mark done, Done) and in aria-pressed.</p></section>
+<section class="ds-comp" aria-labelledby="c7"><div class="ds-comp-head"><h3 id="c7">More menu</h3><p>One primary action and the rest tucked away. Built on a native details element.</p></div>
+<div class="ds-demo"><div class="actions" style="min-height:190px;align-items:flex-start">
+  <button class="btn" type="button">Add listing</button>
+  <details class="more"><summary class="btn ghost">More</summary>
+    <div class="more-menu"><button class="btn ghost" type="button">Load tracker.csv</button><button class="btn ghost" type="button">Sample data</button><button class="btn ghost" type="button">Download CSV</button></div>
+  </details>
+</div></div>
+<details class="ds-code"><summary>Markup</summary><pre><code>&lt;div class=&quot;actions&quot; style=&quot;min-height:190px;align-items:flex-start&quot;&gt;
+  &lt;button class=&quot;btn&quot; type=&quot;button&quot;&gt;Add listing&lt;/button&gt;
+  &lt;details class=&quot;more&quot;&gt;&lt;summary class=&quot;btn ghost&quot;&gt;More&lt;/summary&gt;
+    &lt;div class=&quot;more-menu&quot;&gt;&lt;button class=&quot;btn ghost&quot; type=&quot;button&quot;&gt;Load tracker.csv&lt;/button&gt;&lt;button class=&quot;btn ghost&quot; type=&quot;button&quot;&gt;Sample data&lt;/button&gt;&lt;button class=&quot;btn ghost&quot; type=&quot;button&quot;&gt;Download CSV&lt;/button&gt;&lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre></details>
+<p class="ds-a11y"><strong>Accessibility.</strong> Works without JavaScript. The app closes it on a choice and on Escape, and returns focus to the summary.</p></section>
+<section class="ds-comp" aria-labelledby="c8"><div class="ds-comp-head"><h3 id="c8">Empty state</h3><p>Say what is missing and what to do next, in one line.</p></div>
+<div class="ds-demo"><p class="proof-empty">Nothing loaded yet. Try the sample data to see how it works, or load your own files.</p></div>
+<details class="ds-code"><summary>Markup</summary><pre><code>&lt;p class=&quot;proof-empty&quot;&gt;Nothing loaded yet. Try the sample data to see how it works, or load your own files.&lt;/p&gt;</code></pre></details>
+<p class="ds-a11y"><strong>Accessibility.</strong> Plain text next to the primary action, not an illustration alone.</p></section>
+
+  </section>
+</main>
+<footer class="ds-foot">Part of <a href="https://github.com/joselblas/jobops-kit">jobops-kit</a>. Tokens live in <code>app/style.css</code>.</footer>
+<script>
+(function () {
+  var root = document.documentElement;
+  function probe(v) { var p = document.createElement("span"); p.style.color = "var(--" + v + ")"; p.style.display = "none"; document.body.appendChild(p); var c = getComputedStyle(p).color; p.remove(); return c; }
+  function rgb(s) { var m = s.match(/[\d.]+/g).map(Number); return m.slice(0, 3); }
+  function lum(c) { var a = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2]; }
+  function hex(c) { return "#" + c.map(function (v) { return ("0" + Math.round(v).toString(16)).slice(-2); }).join(""); }
+  function update() {
+    document.querySelectorAll(".ds-hex").forEach(function (e) { e.textContent = hex(rgb(probe(e.dataset.v))); });
+    document.querySelectorAll("tr[data-fg]").forEach(function (r) {
+      var a = lum(rgb(probe(r.dataset.fg))), b = lum(rgb(probe(r.dataset.bg))), hi = Math.max(a, b), lo = Math.min(a, b), ratio = (hi + 0.05) / (lo + 0.05), min = +r.dataset.min;
+      r.querySelector(".ds-ratio").textContent = ratio.toFixed(2) + " : 1";
+      r.querySelector(".ds-pass").textContent = ratio >= min ? "Pass" : "Fail";
+    });
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-theme-set]"); if (!b) return;
+    root.dataset.theme = b.dataset.themeSet; try { localStorage.setItem("jo.theme", b.dataset.themeSet); } catch (e) {}
+    document.querySelectorAll("[data-theme-set]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+    update();
+  });
+  try { var sv = localStorage.getItem("jo.theme"); if (sv === "dark" || sv === "light") { root.dataset.theme = sv; document.querySelectorAll("[data-theme-set]").forEach(function (x) { x.setAttribute("aria-pressed", String(x.dataset.themeSet === sv)); }); } } catch (e) {}
+  update();
+})();
+</script>
+</body>
+</html>
