@@ -5,7 +5,7 @@
 <link rel="alternate" hreflang="es" href="es/">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The JobOps story</title>
-<meta name="description" content="A UX designer used AI to look for work, got 46 rejections, and designed the tool he wished he had. Real numbers, honest limits, open source.">
+<meta name="description" content="A UX designer used AI to look for work, got 50 rejections, and designed the tool he wished he had. Real numbers, honest limits, open source.">
 <style>
 :root {
   --surface: #f1f2fb; --raised: #ffffff; --sunken: #e6e8f6;
@@ -68,7 +68,7 @@ nav { position: sticky; top: 14px; z-index: 20; display: flex; justify-content: 
 /* statement */
 .statement { background: var(--ink); color: var(--surface); }
 .statement .display { font-size: clamp(2.6rem, 7.4vw, 6rem); }
-.statement .display em { color: var(--accent);  }
+.statement .display em { color: #b4bbff; }
 :root[data-theme="dark"] .statement { background: var(--raised); color: var(--ink); }
 .statement p { color: color-mix(in srgb, var(--surface) 70%, transparent); }
 :root[data-theme="dark"] .statement p { color: var(--muted); }
@@ -193,11 +193,16 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
 @media (max-width: 980px) { .nums { grid-template-columns: repeat(2, minmax(0, 1fr)); } .break { grid-template-columns: repeat(2, minmax(0, 1fr)); } .feat { grid-template-columns: 1fr; } .pill a.hide-s { display: none; } }
 @media (max-width: 560px) { .nums, .break { grid-template-columns: 1fr; } .limits .card { grid-template-columns: 1fr; } .limits small { grid-column: 1; } }
 
+.skip { position: absolute; left: 16px; top: -64px; z-index: 100; padding: 12px 18px; border-radius: 12px; background: var(--ink); color: var(--surface); font: 600 1rem var(--sans); text-decoration: none; }
+.skip:focus { top: 16px; outline: 3px solid var(--calm); outline-offset: 3px; }
+main:focus { outline: none; }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <nav aria-label="Page"><div class="pill"><b>JobOps</b><a class="hide-s" href="#numbers">Numbers</a><a class="hide-s" href="#built">Built with AI</a><a class="hide-s" href="#limits">Limits</a><a href="../app/">Demo</a><a href="es/">ES</a><button type="button" id="theme" aria-pressed="false">Dark</button></div></nav>
 
+<main id="main" tabindex="-1">
 <header class="hero"><div class="wrap center hero-stage"><div class="glow" aria-hidden="true"></div>
 <p class="eyebrow rv">The story</p>
 <h1 class="display h1 rv">Forty-six noes.<br>One idea.</h1>
@@ -213,15 +218,15 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
 
 <section id="numbers"><div class="wrap"><div class="center"><p class="eyebrow rv">Real numbers</p><h2 class="display h2 rv">My own search.<br>Not a demo.</h2></div>
 <div class="nums">
-<div class="num-card rv"><span class="big-no">126</span><p>listings found and logged</p></div>
-<div class="num-card hl rv"><span class="big-no">29</span><p>stopped at a gate, before any work</p></div>
-<div class="num-card rv"><span class="big-no">89</span><p>applications sent</p></div>
-<div class="num-card rv"><span class="big-no">46</span><p>rejections, 2 automatic and 1 after an interview</p></div>
+<div class="num-card rv"><span class="big-no">148</span><p>listings found and logged</p></div>
+<div class="num-card hl rv"><span class="big-no">27</span><p>stopped at a gate, before any work</p></div>
+<div class="num-card rv"><span class="big-no">94</span><p>applications sent</p></div>
+<div class="num-card rv"><span class="big-no">50</span><p>rejections, 2 automatic and 1 after an interview</p></div>
 <div class="num-card rv"><span class="big-no">1</span><p>interview call, which ended in a no</p></div>
 </div>
-<div class="card rv" style="margin-top:20px;padding:34px 32px 36px"><h3>What the gates caught</h3><p>Before I wrote a CV, 29 of the 126 listings failed a hard check on the employer's own page. Each one was caught before I spent time on it.</p>
+<div class="card rv" style="margin-top:20px;padding:34px 32px 36px"><h3>What the gates caught</h3><p>Before I wrote a CV, 27 of the 148 listings failed a hard check on the employer's own page. Each one was caught before I spent time on it.</p>
 <div class="break"><div><b>9</b><span>hybrid or office days</span></div><div><b>8</b><span>my country excluded</span></div><div><b>6</b><span>already closed</span></div><div><b>6</b><span>language or domain</span></div></div></div>
-<p class="note rv">From my own tracker, 3 August to 5 November 2026. No company is named. One person, one search: a story, not a study.</p>
+<p class="note rv">From my own tracker, 3 August to 12 November 2026. No company is named. One person, one search: a story, not a study.</p>
 </div></section>
 
 <section class="alt"><div class="wrap"><div class="chap">
@@ -263,7 +268,7 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
 <p class="eyebrow rv">Chapter five</p><h2 class="display h2 rv">The honest part.</h2>
 <p class="rv">I would rather tell you than have you find out.</p>
 <div class="limits">
-<div class="card rv"><span class="n">1</span><p>One interview from 89 applications.</p><small>The tool did not fix the market. It made my search clearer and my effort less wasteful.</small></div>
+<div class="card rv"><span class="n">1</span><p>One interview from 94 applications.</p><small>The tool did not fix the market. It made my search clearer and my effort less wasteful.</small></div>
 <div class="card rv"><span class="n">2</span><p>It is early, and it is one person's search.</p><small>A few months of data. Treat every number as a story, not a study.</small></div>
 <div class="card rv"><span class="n">3</span><p>It misses things.</p><small>The email sweep matches phrases and still misses some replies. Read every CV before it goes anywhere.</small></div>
 </div></div></div></section>
@@ -274,6 +279,7 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
 <div class="cta rv"><a class="btn accent" href="https://joselblas.com">See my portfolio</a><a class="btn" href="../app/">Try the demo</a><a class="btn ghost" href="https://github.com/joselblas/jobops-kit">Get the kit</a></div>
 </div></section>
 
+</main>
 <footer><div class="wrap"><p class="center" style="margin:0;font-family:var(--serif);font-size:1.5rem">JobOps</p>
 <div class="links"><a href="../app/">Demo</a><a href="../setup/">Set up</a><a href="../design/">Design</a><a href="https://github.com/joselblas/jobops-kit">GitHub</a><a href="https://joselblas.com">Built by Jose L. Blas</a></div>
 <p class="fine">Open source, MIT licence. Numbers come from the author's own tracker and are aggregates only. The demo uses fictional data.</p></div></footer>

@@ -1,22 +1,44 @@
 # Job Ops for Claude
 
-A calm, careful way to run a remote job search with Claude. You stay in control of everything that leaves your hands.
+A calm, careful way to run a remote job search with Claude. **Everything is context, written as text.** You stay in control of everything that leaves your hands.
+
+[Español](README.es.md)
 
 **Why this exists.** I am a UX designer. I used AI to look for work and the results were poor: lots of rejections, and some applications asked how I use AI in my job. I kept seeing repos with tens of thousands of stars, a full studio of agents or a content workflow in a box, and wanted to add what I know as a UX designer to something like that: a tool that is useful from day one, not an example, and easy for creatives with no AI background. This is that, built with Claude and used on my own search. It is also my portfolio. [Read the story](https://joselblas.github.io/jobops-kit/story/) ([en español](https://joselblas.github.io/jobops-kit/story/es/)).
 
-In my own search so far (3 August to 5 November 2026): 126 listings logged, 29 stopped at a gate before any work, 89 applications, 46 rejections (one after an interview call), 1 interview call. It is early, it is one person's data, and the tool did not fix the market. It made the search clearer.
+In my own search so far (3 August to 12 November 2026): 148 listings logged, 27 stopped at a gate before any work, 94 applications, 50 rejections (2 automatic, one after an interview call), 1 interview call. It is one person's data, and the tool did not fix the market. It made the search clearer.
 
-Built by [Jose L. Blas](https://joselblas.com), a product designer, during a real search for remote roles from Spain. No framework, no server, no telemetry.
+Built by [Jose L. Blas](https://joselblas.com), a product designer, during a real search for remote roles from Spain. No framework, no server, no telemetry in the dashboard.
 
-**[Set it up in 30 minutes](https://joselblas.github.io/jobops-kit/setup/)** ([text version](docs/setup.md)) · [Live demo](https://joselblas.github.io/jobops-kit/app/) · [Design and story](https://joselblas.github.io/jobops-kit/design/)
+**[Set it up in 15 minutes](https://joselblas.github.io/jobops-kit/setup/)** ([text version](docs/setup.md)) · [Live demo](https://joselblas.github.io/jobops-kit/app/) · [Design and story](https://joselblas.github.io/jobops-kit/design/) · [Privacy](docs/privacy.md)
 
 ![Overview](docs/screenshots/overview-light.png)
+
+## Everything is context
+
+You do not write code and you do not configure anything. Claude works from a few plain text files: who you are (`career-context.md`), what you want (`profile.yml`) and what you have done so far (`tracker.csv`). You do not fill them in by hand. Say `Start` and Claude interviews you, shows you each fact before keeping it, and writes the three files. Change a file, change what Claude does. That is how an AI developer works too, and now it is how you work.
+
+## Start in three moves
+
+1. **Add the skills.** Download the repo and add five skills from `skills/` to Claude (Settings, Skills).
+2. **Say Start.** In a Claude Project, attach your CV and type `Start`. Answer about 15 minutes of questions. Save the three files Claude gives you in a private folder.
+3. **Open the dashboard.** Open `app/index.html` in Chrome or Edge and connect that folder.
+
+Full steps with what you should see at each one: [docs/setup.md](docs/setup.md).
+
+## Private by design, honest about where the line is
+
+- **On your computer only:** the dashboard, your tracker and your private folder. The dashboard makes no network requests, has no accounts and no analytics. We loaded nine pages and recorded the requests to check.
+- **In your Claude account:** what you type or upload to the Project is processed by Claude under your account's privacy settings. You decide what goes in, and `jobops-start` asks you at the start what to keep out.
+- **The assistant never** submits, sends a message, creates an account or invents a fact about you.
+
+Read [docs/privacy.md](docs/privacy.md) (two minutes).
 
 ## Two parts, one search
 
 | | The Claude kit | The dashboard |
 |---|---|---|
-| What it is | Four Claude skills (or the same playbooks as plain markdown) that turn a Claude Project or Claude Code into a job-search assistant | A page in your browser that shows your tracker and gives you small tools |
+| What it is | Five Claude skills (or the same playbooks as plain markdown) that turn a Claude Project or Claude Code into a job-search assistant | A page in your browser that shows your tracker and gives you small tools |
 | Where it lives | `skills/`, `AGENTS.md`, `playbooks/`, `templates/`, `scripts/` | `app/` |
 | What it does | Finds and screens listings, checks the gates, tailors CVs from your facts, fills forms and stops before Submit, reads your email export for replies | Funnel and odds, tracker, step-by-step updates, proposed updates, follow-up drafts, weekly review |
 | Needs | A Claude account with Projects | A browser. Chrome or Edge to save to your file |
@@ -25,8 +47,8 @@ They share one file, `tracker.csv`. The assistant writes proposals. You accept t
 
 ## Pick your path
 
-- **I want the assistant.** Follow [docs/setup.md](docs/setup.md), parts 1 to 4. Install four skills, make a Claude Project, no code.
-- **I use Claude Code.** Same guide, "Using Claude Code instead".
+- **I want the assistant.** Follow [docs/setup.md](docs/setup.md), steps 1 to 8. Install five skills, make a Claude Project, say `Start`. No code.
+- **I use Claude Code.** Same guide, "Other ways to run it".
 - **I only want the dashboard.** Open the [demo](https://joselblas.github.io/jobops-kit/app/), or open `app/index.html` in Chrome or Edge and press **Connect folder** (columns in `app/README.md`).
 
 ## Principles
@@ -41,6 +63,7 @@ They share one file, `tracker.csv`. The assistant writes proposals. You accept t
 
 | Skill | Covers |
 |---|---|
+| `jobops-start` | First-run interview that writes your three starter files |
 | `jobops-screen` | Scout, gates, legitimacy check, fit score |
 | `jobops-craft` | Audit the master CV and portfolio, tune them for each listing |
 | `jobops-apply` | Tailor the CV, fact check, fill the form, stop before Submit |
@@ -103,7 +126,7 @@ Rounded cards, a left menu, light by default with a dark option, English and Spa
 
 ## Privacy
 
-Everything personal stays local and gitignored. Keep your private files in a folder outside this repo. `python3 scripts/privacy_check.py` flags leaks before you publish a fork. See `docs/lessons-learned.md`.
+The full picture is in [docs/privacy.md](docs/privacy.md). In short: your files stay in a folder outside this repo and are gitignored, and `python3 scripts/privacy_check.py` flags leaks before you publish a fork. See `docs/lessons-learned.md`.
 
 ## Credits and license
 

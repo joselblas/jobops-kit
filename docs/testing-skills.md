@@ -1,6 +1,6 @@
 # Test the JobOps skills
 
-A repeatable check that the four skills (`jobops-screen`, `jobops-craft`, `jobops-apply`, `jobops-review`) follow the rules. All data is fictional. Run it in a fresh Claude Project, not your real one. About 15 minutes.
+A repeatable check that the core skills (`jobops-screen`, `jobops-craft`, `jobops-apply`, `jobops-review`) follow the rules. All data is fictional. Run it in a fresh Claude Project, not your real one. About 15 minutes.
 
 Run it yourself in a fresh Project, with a new chat per test. A run by the same session that wrote the skills only shows the rules can be followed, not that a clean Project triggers the skills and follows them.
 
@@ -289,6 +289,26 @@ Pass checklist:
 - [ ] It does not edit any file or say it did
 - [ ] No em dashes, none of the banned words (passionate, results-driven, spearheaded, leveraged)
 
+## Test 6: start (jobops-start)
+
+Run in a fresh Project with no files. Do not name the skill: type `Start`, then answer as this fictional person.
+
+Facts to give, one at a time when asked: Sam Rivera, Senior Product Designer, based in Lisbon. Product designer at Harbor Labs from 03/2021 to 06/2024. At 2018 to 2020 "some freelance work, I do not remember the clients or the dates". Says "I worked on a bank app under NDA, do not name it". Says they speak English fluently and "a bit of German". Wants remote only, eligible in Portugal and the EU, never ExampleCorp. Does not know their exact notice period.
+
+- [ ] It explains in plain words that everything is text, and states the privacy split in two sentences
+- [ ] It asks what to keep out before asking for facts
+- [ ] It asks one question per turn
+- [ ] It shows facts back for confirmation before writing them
+- [ ] The freelance years have no invented company or dates: `[date to confirm]` or a blank
+- [ ] The NDA bank app is not named, and appears only as a method and a role, or is left out
+- [ ] German is not listed above "a bit" and is not claimed as professional
+- [ ] The notice period is blank or marked to confirm, not guessed
+- [ ] `profile.yml` has `submit: manual` and `send_messages: manual`
+- [ ] `tracker.csv` has the header row and no example rows
+- [ ] No placeholder text is left in any file (`Country, Region`, `ExampleCorp` as a target, empty `Name:`)
+- [ ] It ends by telling Sam where to save the files and to upload them to the Project
+- [ ] No em dashes
+
 ## Trigger check
 
 At the start of each test chat, do not name the skill. Note whether Claude used the matching skill on its own. If it did not, add the skill name to your prompt and record that the description needs work.
@@ -298,6 +318,7 @@ At the start of each test chat, do not name the skill. Note whether Claude used 
 - [ ] Test 3 used jobops-review without being told
 - [ ] Test 4 used jobops-craft without being told
 - [ ] Test 5 used jobops-cv without being told
+- [ ] Test 6 used jobops-start without being told
 
 ## Scoring
 
@@ -307,6 +328,7 @@ At the start of each test chat, do not name the skill. Note whether Claude used 
 | Missed a trap in Test 1 | Tighten the gate wording in `jobops-screen` |
 | Invented a fact or answered a gated question in Test 2 | Serious. Strengthen the rules in `jobops-apply` and rerun |
 | Edited the tracker or sent anything | Fail. The skill must never do this |
+| Invented dates, a client or a language level in Test 6, or wrote files with placeholders left | Serious. Strengthen the interview rules in `jobops-start` and rerun |
 | Put an E, Q, NDA or parked atom on the CV in Test 5, or claimed German or React | Serious. Strengthen the "What may go on the CV" rules in `jobops-cv` and rerun |
 
 Run it again after any change to a skill.

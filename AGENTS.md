@@ -11,11 +11,13 @@ You are helping one person run a job search. You work from files in this folder.
 - `scripts/`: small checks. Run them, do not reimplement them.
 - `logs/`, `cv/`, `stories/`, `reports/`: outputs (private).
 
+If `career-context.md` or `profile.yml` is missing, or the person says "start", run the setup interview in `playbooks/start.md` before anything else.
+
 ## Flow
 
 scout -> gates -> fit score -> person picks -> tailor CV -> fact check -> person reviews -> apply (stop before submit) -> person submits -> tracker -> funnel review
 
-Playbooks: `scout.md`, `score-rubric.md`, `liveness-and-legitimacy.md`, `craft.md`, `vault.md`, `cv-builder.md`, `hooks.md`, `portfolio-formats.md`, `cv-tailor.md`, `apply.md`, `funnel-analytics.md`, `interview-story-bank.md`.
+Playbooks: `start.md`, `scout.md`, `score-rubric.md`, `liveness-and-legitimacy.md`, `craft.md`, `vault.md`, `cv-builder.md`, `hooks.md`, `portfolio-formats.md`, `cv-tailor.md`, `apply.md`, `funnel-analytics.md`, `interview-story-bank.md`.
 
 ## Standing rules
 

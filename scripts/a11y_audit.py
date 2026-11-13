@@ -9,8 +9,8 @@ Setup (once):
     pip install playwright && playwright install chromium
     npm install axe-core
 
-Run (serve the app folder first, for example: python3 -m http.server 8765 --directory app):
-    python3 scripts/a11y_audit.py --url http://localhost:8765/index.html --axe node_modules/axe-core/axe.min.js
+Run (serve the repo folder first: python3 -m http.server 8765):
+    python3 scripts/a11y_audit.py --url http://localhost:8765/app/index.html --site http://localhost:8765/ --axe node_modules/axe-core/axe.min.js
 
 This is an automated check. It cannot judge reading order, wording or how a
 screen reader sounds. Keyboard, contrast and reflow checks are listed in
@@ -25,11 +25,11 @@ RUN = ("axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21
        ".then(r=>r.violations.map(x=>({id:x.id,impact:x.impact,help:x.help,ex:x.nodes.slice(0,2).map(n=>n.target.join(' '))})))")
 
 
-async def main(url, axe_path):
+async def main(url, axe_path, chrome=None, site=None):
     axe = open(axe_path, encoding="utf-8").read()
     found = {}
     async with async_playwright() as p:
-        browser = await p.chromium.launch()
+        browser = await p.chromium.launch(executable_path=chrome) if chrome else await p.chromium.launch()
         for theme in ("light", "dark"):
             for lang in ("en", "es"):
                 page = await (await browser.new_context(viewport={"width": 1280, "height": 900})).new_page()
@@ -47,6 +47,19 @@ async def main(url, axe_path):
                     for v in await page.evaluate(RUN):
                         entry = found.setdefault(v["id"], {"impact": v["impact"], "help": v["help"], "where": [], "ex": v["ex"]})
                         entry["where"].append(f"{theme}-{lang}-{view}")
+        if site:
+            # Marketing pages (setup, story, design): landmarks, skip link, 320 px reflow
+            for path in ("setup/index.html", "story/index.html", "story/es/index.html", "design/index.html"):
+                for scheme in ("light", "dark"):
+                    page = await (await browser.new_context(viewport={"width": 1280, "height": 900}, color_scheme=scheme, reduced_motion="reduce")).new_page()
+                    await page.goto(site.rstrip("/") + "/" + path)
+                    await page.add_script_tag(content=axe)
+                    for v in await page.evaluate(RUN):
+                        entry = found.setdefault(v["id"], {"impact": v["impact"], "help": v["help"], "where": [], "ex": v["ex"]})
+                        entry["where"].append(f"{scheme}-{path}")
+                    await page.set_viewport_size({"width": 320, "height": 700})
+                    if await page.evaluate("document.documentElement.scrollWidth") > 320:
+                        found.setdefault("reflow-320", {"impact": "serious", "help": "Page scrolls sideways at 320 px", "where": [], "ex": []})["where"].append(f"{scheme}-{path}")
         await browser.close()
     for vid, e in found.items():
         print(f"{vid} ({e['impact']}) in {len(e['where'])} places: {e['help']}")
@@ -60,5 +73,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="http://localhost:8765/index.html")
     ap.add_argument("--axe", default="node_modules/axe-core/axe.min.js")
+    ap.add_argument("--chrome", default=None, help="Path to an installed Chrome or Chromium, instead of the Playwright download")
+    ap.add_argument("--site", default=None, help="Also check the setup, story and design pages, e.g. http://localhost:8765/")
     a = ap.parse_args()
-    asyncio.run(main(a.url, a.axe))
+    asyncio.run(main(a.url, a.axe, a.chrome, a.site))

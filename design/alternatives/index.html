@@ -148,9 +148,14 @@ td.n{font-variant-numeric:tabular-nums;font-weight:600}
 .sw i{width:34px;height:34px;border-radius:8px;border:1px solid rgba(0,0,0,.15)}
 @media (max-width:1000px){.stage{grid-template-columns:1fr}.side{border-right:0!important;border-bottom:1px solid var(--line);flex-direction:row;flex-wrap:wrap;align-items:center}.nav{grid-auto-flow:column;overflow-x:auto}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.row2,.proof,.notes{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:no-preference){.stage,.panel,.closed{transition:background-color .25s,color .25s}}
+.skip { position: absolute; left: 16px; top: -64px; z-index: 100; padding: 12px 18px; border-radius: 12px; background: var(--ink); color: var(--surface); font: 600 1rem var(--sans); text-decoration: none; }
+.skip:focus { top: 16px; outline: 3px solid var(--calm); outline-offset: 3px; }
+main:focus { outline: none; }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<main id="main" tabindex="-1">
 <div class="bar">
   <h1>JobOps design directions</h1>
   <div class="ctrls">
@@ -238,6 +243,7 @@ td.n{font-variant-numeric:tabular-nums;font-weight:600}
 
   <div class="notes" id="notes"></div>
 </div>
+</main>
 <script>
 (function(){
   var stage=document.getElementById('stage'),notes=document.getElementById('notes');

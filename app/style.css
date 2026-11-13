@@ -126,7 +126,7 @@ footer { padding: 16px var(--gutter) 28px; color: var(--ink-muted); font-size: 1
 .waiting { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); max-height: 340px; overflow-y: auto; }
 .waiting li { display: grid; grid-template-columns: 76px 1fr auto; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
 .waiting .d { font-family: var(--display); font-size: 22px; font-variant-numeric: tabular-nums; }
-.waiting .d small { font-family: var(--sans); font-size: 10px; color: var(--ink-muted); margin-left: 4px; letter-spacing: .08em; }
+.waiting .d small { font-family: var(--sans); font-size: 10px; color: var(--ink-muted); margin-left: 0; letter-spacing: .08em; }
 
 /* Tracker table */
 .controls { display: flex; gap: 12px; justify-content: space-between; flex-wrap: wrap; margin-bottom: 18px; }
@@ -269,7 +269,7 @@ body.dragging .main { outline: 2px dashed var(--accent); outline-offset: -8px; }
 .card.fu { padding: 16px 22px; }
 .fu-row { display: grid; grid-template-columns: 84px minmax(0, 1fr) auto auto; gap: 14px; align-items: center; }
 .fu-row .d { font-family: var(--display); font-size: 22px; font-variant-numeric: tabular-nums; }
-.fu-row .d small { font-family: var(--sans); font-size: 10px; color: var(--ink-muted); margin-left: 4px; letter-spacing: .08em; }
+.fu-row .d small { font-family: var(--sans); font-size: 10px; color: var(--ink-muted); margin-left: 0; letter-spacing: .08em; }
 .fu-who { min-width: 0; overflow-wrap: anywhere; }
 .fu-panel { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); display: grid; gap: 14px; }
 .fu-controls { display: flex; gap: 22px; flex-wrap: wrap; }
@@ -368,3 +368,13 @@ input::placeholder, textarea::placeholder { color: var(--ink-muted); opacity: 1;
 .main { min-width: 0; }
 .th-btn { min-height: 32px; padding: 4px 10px 4px 0; }
 th { position: relative; }
+
+/* Windows high contrast (forced colors): keep shapes that carry meaning */
+@media (forced-colors: active) {
+  .card, .kpi { border: 1px solid CanvasText; box-shadow: none; }
+  .f-bar, .meter .fill, .dim-bar i, .b-track i { background: Highlight; forced-color-adjust: none; }
+  .meter .track, .dim-bar, .b-track { background: Canvas; border: 1px solid CanvasText; }
+  .dots i { border: 2px solid CanvasText; }
+  .dots i.on { background: Highlight; border-color: Highlight; forced-color-adjust: none; }
+  .dot { background: CanvasText; box-shadow: none; }
+}

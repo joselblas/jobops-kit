@@ -365,21 +365,21 @@
       else {
         a += '<button class="btn ghost" type="button" data-act="sample">' + esc(tl("btn.sample")) + "</button>";
         a += '<button class="btn ghost" type="button" data-act="download">' + esc(tl("btn.download")) + "</button>";
-        a += '<label class="btn ghost" for="file">' + esc(tl("btn.load")) + "</label>";
+        a += '<button type="button" class="btn ghost" data-act="pick-file" data-target="file">' + esc(tl("btn.load")) + "</button>";
         if (!canDir && window.showOpenFilePicker) a += '<button class="btn" type="button" data-act="open">' + esc(tl("btn.open")) + "</button>";
       }
     }
     if (state.view === "inbox") {
       if (!ready) {
         a += '<button class="btn ghost" type="button" data-act="prop-sample">' + esc(tl("inbox.sample")) + "</button>";
-        a += '<label class="btn" for="pfile">' + esc(tl("inbox.load")) + "</label>";
+        a += '<button type="button" class="btn" data-act="pick-file" data-target="pfile">' + esc(tl("inbox.load")) + "</button>";
       }
     }
     if (state.view === "proof") {
       a += '<button class="btn ghost" type="button" data-act="proof-sample">' + esc(tl("btn.psample")) + "</button>";
       if (!ready) {
-        a += '<label class="btn ghost" for="vfile">' + esc(tl("btn.vault")) + "</label>";
-        a += '<label class="btn" for="hfile">' + esc(tl("btn.hooks")) + "</label>";
+        a += '<button type="button" class="btn ghost" data-act="pick-file" data-target="vfile">' + esc(tl("btn.vault")) + "</button>";
+        a += '<button type="button" class="btn" data-act="pick-file" data-target="hfile">' + esc(tl("btn.hooks")) + "</button>";
       }
     }
     $("#actions").innerHTML = a;
@@ -470,6 +470,12 @@
     var list = DIMS.map(function (d, k) { return "<li><span>" + esc(tl(DIM_KEY[d])) + '</span><span class="dim-bar"><i style="width:' + (r.dims[k] * 20) + '%"></i></span><b>' + r.dims[k] + "</b></li>"; }).join("");
     return head + '<svg viewBox="' + [-60, 0, 480, 360].join(" ") + '" role="img" aria-label="' + esc(r.company) + ": " + DIMS.map(function (d, k) { return tl(DIM_KEY[d]) + " " + r.dims[k]; }).join(", ") + '">' + svg + '</svg><ul class="dim-list">' + list + "</ul>" + (r.notes ? '<p class="radar-note">' + esc(r.notes) + "</p>" : "");
   }
+  function swarmLabel(apps) {
+    var g = { interview: [], rejected: [], other: [] };
+    apps.forEach(function (a) { (g[a.stateKey === "interview" ? "interview" : a.stateKey === "rejected" ? "rejected" : "other"]).push(a.score); });
+    function part(k, lbl) { var v = g[k]; if (!v.length) return ""; var m = v.reduce(function (p, c) { return p + c; }, 0) / v.length; return tl(lbl) + ": " + v.length + ", " + m.toFixed(1); }
+    return [tl("card.swarm") + ". " + tl("kpi.applied") + " " + apps.length, part("interview", "lg.int"), part("rejected", "lg.rej"), part("other", "lg.wait")].filter(Boolean).join(". ");
+  }
   function swarmHTML() {
     var apps = state.rows.filter(function (r) { return r.applied && r.score != null; });
     if (!apps.length) return '<p class="empty">' + esc(tl("swarm.none")) + "</p>";
@@ -487,7 +493,7 @@
       else if (a.stateKey === "rejected") svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="var(--ink-faint)"><title>' + ti + "</title></circle>";
       else svg += '<circle cx="' + cx + '" cy="' + cy + '" r="7" fill="none" stroke="var(--ink)" stroke-width="1.5"><title>' + ti + "</title></circle>";
     });
-    return '<div class="swarm"><svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + esc(tl("card.swarm")) + '">' + svg + '</svg><div class="legend"><span class="l-int">' + esc(tl("lg.int")) + '</span><span class="l-rej">' + esc(tl("lg.rej")) + '</span><span class="l-wait">' + esc(tl("lg.wait")) + "</span></div></div>" +
+    return '<div class="swarm"><svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + esc(swarmLabel(apps)) + '">' + svg + '</svg><div class="legend"><span class="l-int">' + esc(tl("lg.int")) + '</span><span class="l-rej">' + esc(tl("lg.rej")) + '</span><span class="l-wait">' + esc(tl("lg.wait")) + "</span></div></div>" +
       '<p class="caveat">' + esc(t(apps.length < 30 ? "swarm.n" : "swarm.n2", { n: apps.length })) + "</p>";
   }
   function gatesHTML() {
@@ -509,7 +515,7 @@
   function waitingHTML() {
     var list = state.rows.filter(function (r) { return r.stateKey === "waiting" && r.dApplied; }).map(function (r) { return { r: r, d: days(r.dApplied, state.ref) }; }).filter(function (x) { return x.d >= 14; }).sort(function (a, b) { return b.d - a.d; });
     return list.length ? '<ul class="waiting" tabindex="0" aria-label="' + esc(tl("a11y.list")) + '">' + list.map(function (x) {
-      return '<li><span class="d num">' + x.d + "<small>" + esc(tl("wait.days")) + "</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + "</span></span>" + (x.d >= 30 ? '<span class="tag accent">' + esc(tl("wait.follow")) + "</span>" : '<span class="tag">14+</span>') + "</li>";
+      return '<li><span class="d num">' + x.d + " <small>" + esc(tl("wait.days")) + "</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + "</span></span>" + (x.d >= 30 ? '<span class="tag accent">' + esc(tl("wait.follow")) + "</span>" : '<span class="tag">14+</span>') + "</li>";
     }).join("") + "</ul>" : '<p class="empty">' + esc(tl("wait.none")) + "</p>";
   }
 
@@ -561,7 +567,7 @@
     h += '<div class="fu-list">' + list.map(function (x) {
       var open = state.fu.open === x.i, sent = lastSent(x.r), tag = "";
       if (sent) { var n = days(sent, state.ref); tag = '<span class="tag calm">' + esc(n <= 0 ? tl("fu.agotoday") : t("fu.ago", { n: n })) + "</span>"; }
-      var row = '<div class="fu-row"><span class="d num">' + x.d + "<small>" + esc(tl("fu.days")) + "</small></span><span class=\"fu-who\">" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + "</span></span>" + tag +
+      var row = '<div class="fu-row"><span class="d num">' + x.d + " <small>" + esc(tl("fu.days")) + "</small></span><span class=\"fu-who\">" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + "</span></span>" + tag +
         '<button class="btn ' + (open ? "ghost" : "") + '" type="button" data-act="' + (open ? "fu-close" : "fu-open") + '" data-i="' + x.i + '">' + esc(tl(open ? "fu.hide" : "fu.draft")) + "</button></div>";
       return '<section class="card fu">' + row + (open ? fuPanel(x) : "") + "</section>";
     }).join("") + "</div>";
@@ -957,7 +963,7 @@
       var fresh = wait.filter(function (x) { return x.d < 14; }).length, mid = wait.filter(function (x) { return x.d >= 14 && x.d < 30; }).length, old = wait.filter(function (x) { return x.d >= 30; }).sort(function (a, b) { return b.d - a.d; });
       h += '<p class="hint">' + esc(tl("rev.h2")) + '</p><p class="muted" style="margin:0 0 12px">' + esc(t("rev.fresh", { n: fresh })) + " " + esc(t("rev.midn", { n: mid })) + "</p>";
       h += old.length ? '<ul class="waiting" style="max-height:340px" tabindex="0" aria-label="' + esc(tl("a11y.list")) + '">' + old.slice(0, 40).map(function (x) {
-        return '<li><span class="d num">' + x.d + "<small>" + esc(tl("wait.days")) + "</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + '</span></span><button type="button" class="btn ghost" data-act="rev-close" data-i="' + state.rows.indexOf(x.r) + '">' + esc(tl("rev.close")) + "</button></li>";
+        return '<li><span class="d num">' + x.d + " <small>" + esc(tl("wait.days")) + "</small></span><span>" + esc(x.r.company) + ' <span class="fit-role">' + esc(x.r.role) + '</span></span><button type="button" class="btn ghost" data-act="rev-close" data-i="' + state.rows.indexOf(x.r) + '">' + esc(tl("rev.close")) + "</button></li>";
       }).join("") + "</ul>" : '<p class="empty">' + esc(tl("rev.none30")) + "</p>";
     } else if (i === 2) {
       h += '<p class="hint">' + esc(tl("rev.h3")) + '</p><textarea class="big-input" id="revIn" rows="3">' + esc(w.data.win || "") + "</textarea>";
@@ -1358,6 +1364,7 @@
     else if (act === "prop-accept") { if (applyProp(state.props[i])) { render(); propRemember(); persist(); } }
     else if (act === "prop-skip") { state.props[i].status = "skipped"; propRemember(); render(); }
     else if (act === "prop-acceptall") { var n = 0; state.props.forEach(function (p) { if (p.status === "pending" && (p.kind === "applied" || p.match >= 0) && !p.bad && applyProp(p)) n++; }); render(); propRemember(); if (n) persist(); }
+    else if (act === "pick-file") { var pf = document.getElementById(el.getAttribute("data-target")); if (pf) pf.click(); }
     else if (act === "prop-sample") loadProps(window.SAMPLE_PROPOSALS || "", true);
   });
   document.addEventListener("keydown", function (e) {

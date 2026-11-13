@@ -67,7 +67,7 @@ nav { position: sticky; top: 14px; z-index: 20; display: flex; justify-content: 
 /* statement */
 .statement { background: var(--ink); color: var(--surface); }
 .statement .display { font-size: clamp(2.6rem, 7.4vw, 6rem); }
-.statement .display em { color: var(--accent);  }
+.statement .display em { color: #b4bbff; }
 :root[data-theme="dark"] .statement { background: var(--raised); color: var(--ink); }
 .statement p { color: color-mix(in srgb, var(--surface) 70%, transparent); }
 :root[data-theme="dark"] .statement p { color: var(--muted); }
@@ -92,7 +92,7 @@ nav { position: sticky; top: 14px; z-index: 20; display: flex; justify-content: 
 .swatches { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; margin-top: 56px; }
 .sw { border-radius: 22px; padding: 16px; min-height: 150px; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid var(--line); font-size: 13px; line-height: 1.3; }
 .sw b { font-weight: 600; display: block; font-size: 14px; }
-.sw span { font-family: var(--mono); opacity: .8; }
+.sw span { font-family: var(--mono); }
 .sw.a { background: var(--surface); } .sw.b { background: var(--raised); } .sw.c { background: var(--ink); color: var(--surface); border-color: transparent; }
 .sw.d { background: var(--accent); color: var(--on-accent); border-color: transparent; } .sw.e { background: var(--closed-soft); color: var(--closed); } .sw.f { background: var(--calm-soft); color: var(--calm); } .sw.g { background: var(--accent-soft); color: var(--accent); }
 .ds-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; margin-top: 20px; }
@@ -168,9 +168,13 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
   .pill a.hide-s { display: none; }
 }
 @media (max-width: 560px) { body { font-size: 17px; } .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pill a { padding: 8px 8px; } .shot { border-radius: 18px; } }
+.skip { position: absolute; left: 16px; top: -64px; z-index: 100; padding: 12px 18px; border-radius: 12px; background: var(--ink); color: var(--surface); font: 600 1rem var(--sans); text-decoration: none; }
+.skip:focus { top: 16px; outline: 3px solid var(--calm); outline-offset: 3px; }
+main:focus { outline: none; }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
 <nav aria-label="Page">
   <div class="pill">
@@ -185,6 +189,7 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
   </div>
 </nav>
 
+<main id="main" tabindex="-1">
 <header class="hero">
   <div class="wrap center hero-stage">
     <div class="glow" aria-hidden="true"></div>
@@ -402,6 +407,7 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
   </div>
 </section>
 
+</main>
 <footer>
   <div class="wrap">
     <p class="center" style="margin:0;font-family:var(--serif);font-size:1.5rem">JobOps</p>

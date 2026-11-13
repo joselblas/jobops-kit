@@ -5,7 +5,7 @@
 <link rel="alternate" hreflang="en" href="../">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>La historia de JobOps</title>
-<meta name="description" content="Un diseñador UX usó IA para buscar trabajo, recibió 46 rechazos y diseñó la herramienta que le faltaba. Cifras reales, límites honestos, código abierto.">
+<meta name="description" content="Un diseñador UX usó IA para buscar trabajo, recibió 50 rechazos y diseñó la herramienta que le faltaba. Cifras reales, límites honestos, código abierto.">
 <style>
 :root {
   --surface: #f1f2fb; --raised: #ffffff; --sunken: #e6e8f6;
@@ -68,7 +68,7 @@ nav { position: sticky; top: 14px; z-index: 20; display: flex; justify-content: 
 /* statement */
 .statement { background: var(--ink); color: var(--surface); }
 .statement .display { font-size: clamp(2.6rem, 7.4vw, 6rem); }
-.statement .display em { color: var(--accent);  }
+.statement .display em { color: #b4bbff; }
 :root[data-theme="dark"] .statement { background: var(--raised); color: var(--ink); }
 .statement p { color: color-mix(in srgb, var(--surface) 70%, transparent); }
 :root[data-theme="dark"] .statement p { color: var(--muted); }
@@ -193,11 +193,16 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
 @media (max-width: 980px) { .nums { grid-template-columns: repeat(2, minmax(0, 1fr)); } .break { grid-template-columns: repeat(2, minmax(0, 1fr)); } .feat { grid-template-columns: 1fr; } .pill a.hide-s { display: none; } }
 @media (max-width: 560px) { .nums, .break { grid-template-columns: 1fr; } .limits .card { grid-template-columns: 1fr; } .limits small { grid-column: 1; } }
 
+.skip { position: absolute; left: 16px; top: -64px; z-index: 100; padding: 12px 18px; border-radius: 12px; background: var(--ink); color: var(--surface); font: 600 1rem var(--sans); text-decoration: none; }
+.skip:focus { top: 16px; outline: 3px solid var(--calm); outline-offset: 3px; }
+main:focus { outline: none; }
 </style>
 </head>
 <body>
-<nav aria-label="Page"><div class="pill"><b>JobOps</b><a class="hide-s" href="#numbers">Cifras</a><a class="hide-s" href="#built">Hecho con IA</a><a class="hide-s" href="#limits">Límites</a><a href="../../app/">Demo</a><a href="../">EN</a><button type="button" id="theme" aria-pressed="false">Oscuro</button></div></nav>
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav aria-label="Página"><div class="pill"><b>JobOps</b><a class="hide-s" href="#numbers">Cifras</a><a class="hide-s" href="#built">Hecho con IA</a><a class="hide-s" href="#limits">Límites</a><a href="../../app/">Demo</a><a href="../">EN</a><button type="button" id="theme" aria-pressed="false">Oscuro</button></div></nav>
 
+<main id="main" tabindex="-1">
 <header class="hero"><div class="wrap center hero-stage"><div class="glow" aria-hidden="true"></div>
 <p class="eyebrow rv">La historia</p>
 <h1 class="display h1 rv">Cuarenta y seis noes.<br>Una idea.</h1>
@@ -213,15 +218,15 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
 
 <section id="numbers"><div class="wrap"><div class="center"><p class="eyebrow rv">Cifras reales</p><h2 class="display h2 rv">Mi propia búsqueda.<br>No una demo.</h2></div>
 <div class="nums">
-<div class="num-card rv"><span class="big-no">126</span><p>ofertas encontradas y registradas</p></div>
-<div class="num-card hl rv"><span class="big-no">29</span><p>frenadas en un filtro, antes de hacer nada</p></div>
-<div class="num-card rv"><span class="big-no">89</span><p>candidaturas enviadas</p></div>
-<div class="num-card rv"><span class="big-no">46</span><p>rechazos, 2 automáticos y 1 tras una entrevista</p></div>
+<div class="num-card rv"><span class="big-no">148</span><p>ofertas encontradas y registradas</p></div>
+<div class="num-card hl rv"><span class="big-no">27</span><p>frenadas en un filtro, antes de hacer nada</p></div>
+<div class="num-card rv"><span class="big-no">94</span><p>candidaturas enviadas</p></div>
+<div class="num-card rv"><span class="big-no">50</span><p>rechazos, 2 automáticos y 1 tras una entrevista</p></div>
 <div class="num-card rv"><span class="big-no">1</span><p>llamada de entrevista, que acabó en un no</p></div>
 </div>
-<div class="card rv" style="margin-top:20px;padding:34px 32px 36px"><h3>Lo que detectaron los filtros</h3><p>Antes de escribir un CV, 29 de las 126 ofertas no pasaron una comprobación estricta en la página del propio empleador. Cada una se detectó antes de gastar tiempo en ella.</p>
+<div class="card rv" style="margin-top:20px;padding:34px 32px 36px"><h3>Lo que detectaron los filtros</h3><p>Antes de escribir un CV, 27 de las 148 ofertas no pasaron una comprobación estricta en la página del propio empleador. Cada una se detectó antes de gastar tiempo en ella.</p>
 <div class="break"><div><b>9</b><span>híbrido o días de oficina</span></div><div><b>8</b><span>mi país excluido</span></div><div><b>6</b><span>ya cerradas</span></div><div><b>6</b><span>idioma o ámbito</span></div></div></div>
-<p class="note rv">De mi propio seguimiento, del 3 de agosto al 5 de noviembre de 2026. No se nombra ninguna empresa. Una persona, una búsqueda: una historia, no un estudio.</p>
+<p class="note rv">De mi propio seguimiento, del 3 de agosto al 12 de noviembre de 2026. No se nombra ninguna empresa. Una persona, una búsqueda: una historia, no un estudio.</p>
 </div></section>
 
 <section class="alt"><div class="wrap"><div class="chap">
@@ -263,7 +268,7 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
 <p class="eyebrow rv">Capítulo cinco</p><h2 class="display h2 rv">La parte honesta.</h2>
 <p class="rv">Prefiero contártelo yo a que lo descubras tú.</p>
 <div class="limits">
-<div class="card rv"><span class="n">1</span><p>Una entrevista con 89 candidaturas.</p><small>La herramienta no arregló el mercado. Hizo mi búsqueda más clara y mi esfuerzo menos derrochado.</small></div>
+<div class="card rv"><span class="n">1</span><p>Una entrevista con 94 candidaturas.</p><small>La herramienta no arregló el mercado. Hizo mi búsqueda más clara y mi esfuerzo menos derrochado.</small></div>
 <div class="card rv"><span class="n">2</span><p>Es pronto, y es la búsqueda de una sola persona.</p><small>Unos meses de datos. Trata cada cifra como una historia, no como un estudio.</small></div>
 <div class="card rv"><span class="n">3</span><p>Se le escapan cosas.</p><small>El barrido del correo busca frases y aún se le escapan algunas respuestas. Lee cada CV antes de que salga a ningún sitio.</small></div>
 </div></div></div></section>
@@ -274,6 +279,7 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
 <div class="cta rv"><a class="btn accent" href="https://joselblas.com">Ver mi portafolio</a><a class="btn" href="../../app/">Probar la demo</a><a class="btn ghost" href="https://github.com/joselblas/jobops-kit">Conseguir el kit</a></div>
 </div></section>
 
+</main>
 <footer><div class="wrap"><p class="center" style="margin:0;font-family:var(--serif);font-size:1.5rem">JobOps</p>
 <div class="links"><a href="../../app/">Demo</a><a href="../../setup/">Configuración</a><a href="../../design/">Diseño</a><a href="https://github.com/joselblas/jobops-kit">GitHub</a><a href="https://joselblas.com">Creado por Jose L. Blas</a></div>
 <p class="fine">Código abierto, licencia MIT. Las cifras salen del seguimiento del propio autor y son solo agregados. La demo usa datos ficticios. La guía de configuración está en inglés.</p></div></footer>
