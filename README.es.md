@@ -1,4 +1,8 @@
-# Job Ops para Claude
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="design/brand/assets/wordmark-dark.svg"><img src="design/brand/assets/wordmark-light.svg" alt="fAInd" height="64"></picture></p>
+
+# fAInd: el kit abierto de búsqueda de empleo para Claude
+
+*Find a job. Keep your head.* Se dice "find". El repositorio y las habilidades conservan el nombre técnico `jobops-kit`.
 
 Una forma tranquila y cuidadosa de llevar una búsqueda de trabajo remoto con Claude. **Todo es contexto, escrito en texto.** Tú controlas todo lo que sale de tus manos.
 
@@ -10,7 +14,7 @@ En mi propia búsqueda hasta ahora (del 3 de agosto al 12 de noviembre de 2026):
 
 Creado por [Jose L. Blas](https://joselblas.com), diseñador de producto, durante una búsqueda real de roles remotos desde España. Sin framework, sin servidor, sin telemetría en el panel.
 
-**[Configúralo en 15 minutos](https://joselblas.github.io/jobops-kit/setup/)** ([versión en texto](docs/setup.es.md)) · [Demo](https://joselblas.github.io/jobops-kit/app/) · [Diseño e historia](https://joselblas.github.io/jobops-kit/design/) · [Design system](docs/design-system.es.md) · [Privacidad](docs/privacy.es.md)
+**[Configúralo en 15 minutos](https://joselblas.github.io/jobops-kit/setup/)** ([versión en texto](docs/setup.es.md)) · [Demo](https://joselblas.github.io/jobops-kit/app/) · [Diseño e historia](https://joselblas.github.io/jobops-kit/design/) · [Design system](docs/design-system.es.md) · [Marca](docs/brand.es.md) · [Privacidad](docs/privacy.es.md)
 
 ![Resumen](docs/screenshots/overview-light.png)
 

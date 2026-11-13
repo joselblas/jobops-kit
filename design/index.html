@@ -2,27 +2,33 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="../design/brand/assets/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JobOps. Job hunting, with a clear head.</title>
-<meta name="description" content="JobOps keeps an honest record of your job search, shows your real odds, and helps you stay steady when the replies are no. Open source. Runs in your browser.">
+<title>fAInd. Find a job. Keep your head.</title>
+<meta name="description" content="fAInd keeps an honest record of your job search, shows your real odds, and helps you stay steady when the replies are no. Open source. Runs in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="fAInd. Find a job. Keep your head.">
+<meta property="og:description" content="fAInd keeps an honest record of your job search, shows your real odds, and helps you stay steady when the replies are no. Open source. Runs in your browser.">
+<meta property="og:image" content="https://joselblas.github.io/jobops-kit/design/brand/assets/og-card-1200x630.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 :root {
-  --surface: #f1f2fb; --raised: #ffffff; --sunken: #e6e8f6;
-  --ink: #1a1d3a; --muted: #555a82; --faint: #626799;
-  --line: #e0e3f4; --accent: #4652d8; --accent-soft: #e4e7ff; --on-accent: #ffffff;
-  --closed: #4a4f7a; --closed-soft: #eceefb; --aqua: #0d8c92;
-  --rust: #a0264f; --rust-soft: #ffe4ec; --calm: #0a7075; --calm-soft: #dcf3f3;
-  --shadow: 0 30px 80px -30px rgba(46,52,120,.35), 0 8px 24px -12px rgba(46,52,120,.18);
+  --surface: #E1EBF0; --raised: #ffffff; --sunken: #D2E1E8;
+  --ink: #17313E; --muted: #4A6574; --faint: #476675;
+  --line: #C8D9E1; --accent: #2E5C72; --accent-soft: #CBE0E8; --on-accent: #ffffff;
+  --closed: #3F5967; --closed-soft: #E9F0F3; --aqua: #477A91;
+  --rust: #a0264f; --rust-soft: #ffe4ec; --calm: #1D5F6B; --calm-soft: #D3E8EC;
+  --shadow: 0 30px 80px -30px rgba(23,49,62,.32), 0 8px 24px -12px rgba(23,49,62,.16);
   --serif: "Avenir Next", "Century Gothic", Futura, "Trebuchet MS", system-ui, sans-serif;
   --sans: ui-sans-serif, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 :root[data-theme="dark"] {
-  --surface: #11132a; --raised: #1a1d3c; --sunken: #0d0f22;
-  --ink: #e9ebff; --muted: #a0a6d4; --faint: #7f86b8;
-  --line: #2a2e5a; --accent: #9aa7ff; --accent-soft: #262b57; --on-accent: #11132a;
-  --closed: #b7bce6; --closed-soft: #161936; --aqua: #6fe3e1;
-  --rust: #ff9db8; --rust-soft: #3a1b2a; --calm: #6fe3e1; --calm-soft: #12363a;
+  --surface: #0F2029; --raised: #16303C; --sunken: #0B171E;
+  --ink: #E1EBF0; --muted: #A9BEC8; --faint: #93AAB6;
+  --line: #244757; --accent: #D6AA58; --accent-soft: #20404E; --on-accent: #0F2029;
+  --closed: #B3C7D1; --closed-soft: #12262F; --aqua: #A9CDD4;
+  --rust: #ff9db8; --rust-soft: #3a1b2a; --calm: #A9CDD4; --calm-soft: #14323A;
   --shadow: 0 30px 90px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.05);
 }
 * { box-sizing: border-box; }
@@ -67,7 +73,7 @@ nav { position: sticky; top: 14px; z-index: 20; display: flex; justify-content: 
 /* statement */
 .statement { background: var(--ink); color: var(--surface); }
 .statement .display { font-size: clamp(2.6rem, 7.4vw, 6rem); }
-.statement .display em { color: #b4bbff; }
+.statement .display em { color: #D6AA58; }
 :root[data-theme="dark"] .statement { background: var(--raised); color: var(--ink); }
 .statement p { color: color-mix(in srgb, var(--surface) 70%, transparent); }
 :root[data-theme="dark"] .statement p { color: var(--muted); }
@@ -171,6 +177,13 @@ footer .fine { color: var(--faint); font-size: 14px; text-align: center; margin-
 .skip { position: absolute; left: 16px; top: -64px; z-index: 100; padding: 12px 18px; border-radius: 12px; background: var(--ink); color: var(--surface); font: 600 1rem var(--sans); text-decoration: none; }
 .skip:focus { top: 16px; outline: 3px solid var(--calm); outline-offset: 3px; }
 main:focus { outline: none; }
+
+/* fAInd wordmark: colours come from tokens, so it follows the theme */
+:root { --gold: #D6AA58; --wm-ai: #477A91; --wm-disc: #477A91; }
+:root[data-theme="dark"] { --wm-ai: #D6AA58; --wm-disc: #A9CDD4; }
+.wm { display: inline-block; height: 30px; width: auto; vertical-align: middle; }
+.wm .i { fill: var(--ink); } .wm .a { fill: var(--wm-ai); } .wm .d { fill: var(--wm-disc); } .wm .o { fill: var(--gold); }
+.pill .wm { height: 24px; } .center .wm { height: 38px; }
 </style>
 </head>
 <body>
@@ -178,7 +191,7 @@ main:focus { outline: none; }
 
 <nav aria-label="Page">
   <div class="pill">
-    <b>JobOps</b>
+    <b><svg class="wm" viewBox="0 0 358 110" role="img" aria-label="find"><circle class="d" cx="38" cy="54" r="34"/><circle class="o" cx="38" cy="54" r="13"/><path class="i" d="M118.6 34.199999999999996H108.4V80.0H96.9V34.199999999999996H90.4V24.9H96.9V21.0Q96.9 11.5 101.95 7.149999999999999Q107.0 2.799999999999997 117.8 2.799999999999997V12.299999999999997Q112.6 12.299999999999997 110.5 14.249999999999996Q108.4 16.199999999999996 108.4 21.0V24.9H118.6Z M281.0 47.5V80.0H269.7V49.2Q269.7 41.8 266.0 37.849999999999994Q262.3 33.9 255.9 33.9Q249.5 33.9 245.75 37.849999999999994Q242.0 41.8 242.0 49.2V80.0H230.6V24.9H242.0V31.199999999999996Q244.8 27.799999999999997 249.15 25.9Q253.5 24.0 258.4 24.0Q264.9 24.0 270.04999999999995 26.7Q275.2 29.4 278.1 34.7Q281.0 40.0 281.0 47.5Z M315.8 24.0Q321.2 24.0 326.45 26.349999999999998Q331.7 28.699999999999996 334.8 32.599999999999994V6.0H346.3V80.0H334.8V71.7Q332.0 75.7 327.05 78.30000000000001Q322.1 80.9 315.7 80.9Q308.5 80.9 302.55 77.25Q296.6 73.6 293.15 67.05Q289.7 60.5 289.7 52.2Q289.7 43.9 293.15 37.5Q296.6 31.099999999999994 302.55 27.549999999999997Q308.5 24.0 315.8 24.0ZM318.1 33.9Q313.7 33.9 309.9 36.05Q306.1 38.199999999999996 303.75 42.349999999999994Q301.4 46.5 301.4 52.2Q301.4 57.9 303.75 62.2Q306.1 66.5 309.95000000000005 68.75Q313.8 71.0 318.1 71.0Q322.5 71.0 326.3 68.8Q330.1 66.6 332.45000000000005 62.349999999999994Q334.8 58.099999999999994 334.8 52.4Q334.8 46.699999999999996 332.45000000000005 42.5Q330.1 38.3 326.3 36.099999999999994Q322.5 33.9 318.1 33.9Z"/><path class="a" d="M168.60000000000002 65.8H139.5L134.5 80.0H122.60000000000001L147.5 10.399999999999991H160.7L185.60000000000002 80.0H173.60000000000002ZM165.4 56.5 154.1 24.199999999999996 142.7 56.5Z M188.40 80.00H222.60V72.16H212.62V18.34H222.60V10.50H188.40V18.34H198.38V72.16H188.40Z"/></svg></b>
     <a class="hide-s" href="#product">Product</a>
     <a class="hide-s" href="#design">Design</a>
     <a class="hide-s" href="#voice">Voice</a>
@@ -193,14 +206,14 @@ main:focus { outline: none; }
 <header class="hero">
   <div class="wrap center hero-stage">
     <div class="glow" aria-hidden="true"></div>
-    <p class="eyebrow rv">JobOps</p>
+    <p class="eyebrow rv">The open job search kit</p>
     <h1 class="display h1 rv">Job hunting.<br>With a clear head.</h1>
     <p class="lede rv">Keep an honest record of your search. See your real odds. Stay steady when the replies are no.</p>
     <div class="cta rv">
       <a class="btn" href="../app/">Try the demo</a>
       <a class="btn ghost" href="https://github.com/joselblas/jobops-kit">Get the kit</a>
     </div>
-    <div class="shot rv"><img class="light-img" src="../docs/screenshots/overview-light.png" alt="The JobOps overview: key numbers, funnel, odds of an interview and a fit radar, in light theme." width="1440" height="900"><img class="dark-img" src="../docs/screenshots/overview-dark.png" alt="The JobOps overview in dark theme." width="1440" height="900"></div>
+    <div class="shot rv"><img class="light-img" src="../docs/screenshots/overview-light.png" alt="The fAInd overview: key numbers, funnel, odds of an interview and a fit radar, in light theme." width="1440" height="900"><img class="dark-img" src="../docs/screenshots/overview-dark.png" alt="The fAInd overview in dark theme." width="1440" height="900"></div>
   </div>
 </header>
 
@@ -208,7 +221,7 @@ main:focus { outline: none; }
   <div class="wrap center">
     <p class="eyebrow rv">Steady</p>
     <h2 class="display rv">A rejection is mail.<br><em>Not a verdict.</em></h2>
-    <p class="lede rv">Most applications end in a no. That is the arithmetic of a search, not a judgement of you. JobOps puts the number where you can see it, then gives you something to do next.</p>
+    <p class="lede rv">Most applications end in a no. That is the arithmetic of a search, not a judgement of you. fAInd puts the number where you can see it, then gives you something to do next.</p>
   </div>
 </section>
 
@@ -270,7 +283,7 @@ main:focus { outline: none; }
     <div class="center">
       <p class="eyebrow rv">Private by design</p>
       <h2 class="display h2 rv">Your search stays yours.</h2>
-      <p class="lede rv">JobOps runs in your browser and edits one CSV file on your computer. Nothing is uploaded.</p>
+      <p class="lede rv">fAInd runs in your browser and edits one CSV file on your computer. Nothing is uploaded.</p>
     </div>
     <div class="trio">
       <div class="card rv"><div class="big-no">No</div><h3>account.</h3><p>Open the page. That is the whole setup.</p></div>
@@ -285,17 +298,17 @@ main:focus { outline: none; }
     <div class="center">
       <p class="eyebrow rv">Design</p>
       <h2 class="display h2 rv">Calm is a design decision.</h2>
-      <p class="lede rv">Deep indigo and soft light, with one periwinkle accent and an aqua for calm. Cards lift with shadow instead of borders. A no is a closed door, not a red alarm, so it gets a quiet slate and an aqua dot. Periwinkle marks what is yours to act on.</p>
+      <p class="lede rv">Mist blue and deep steel in light, deep night and warm gold in dark. Cards lift with shadow instead of borders. A no is a closed door, not a red alarm, so it gets a quiet slate. The action colour marks what is yours to act on, and gold is kept for the AI in the name and for small highlights.</p>
     </div>
 
     <div class="swatches rv" role="list" aria-label="Colour tokens">
       <div class="sw a" role="listitem"><b>Surface</b><span>surface</span></div>
       <div class="sw b" role="listitem"><b>Card</b><span>surface-raised</span></div>
       <div class="sw c" role="listitem"><b>Ink</b><span>ink</span></div>
-      <div class="sw d" role="listitem"><b>Periwinkle</b><span>accent</span></div>
-      <div class="sw g" role="listitem"><b>Periwinkle soft</b><span>accent-soft</span></div>
+      <div class="sw d" role="listitem"><b>Action</b><span>accent</span></div>
+      <div class="sw g" role="listitem"><b>Action soft</b><span>accent-soft</span></div>
       <div class="sw e" role="listitem"><b>Slate</b><span>closed</span></div>
-      <div class="sw f" role="listitem"><b>Aqua</b><span>calm</span></div>
+      <div class="sw f" role="listitem"><b>Calm</b><span>calm</span></div>
     </div>
 
     <div class="ds-grid">
@@ -337,7 +350,7 @@ main:focus { outline: none; }
     <div class="center">
       <p class="eyebrow rv">Voice</p>
       <h2 class="display h2 rv">Dry wit. Stoic backbone.</h2>
-      <p class="lede rv">Encouragement fatigue is real. So JobOps never says "don't worry". It says the number, what it means, and one line worth keeping. In English and in Spanish, as equals.</p>
+      <p class="lede rv">Encouragement fatigue is real. So fAInd never says "don't worry". It says the number, what it means, and one line worth keeping. In English and in Spanish, as equals.</p>
     </div>
     <div class="voice">
       <div class="vrow rv">
@@ -410,8 +423,8 @@ main:focus { outline: none; }
 </main>
 <footer>
   <div class="wrap">
-    <p class="center" style="margin:0;font-family:var(--serif);font-size:1.5rem">JobOps</p>
-    <div class="links"><a href="../app/">Demo</a><a href="../setup/">Set up</a><a href="../story/">Story</a><a href="system/">Design system</a><a href="https://github.com/joselblas/jobops-kit">GitHub</a><a href="https://joselblas.com">Built by Jose L. Blas</a></div>
+    <p class="center" style="margin:0;font-family:var(--serif);font-size:1.5rem"><svg class="wm" viewBox="0 0 358 110" role="img" aria-label="find"><circle class="d" cx="38" cy="54" r="34"/><circle class="o" cx="38" cy="54" r="13"/><path class="i" d="M118.6 34.199999999999996H108.4V80.0H96.9V34.199999999999996H90.4V24.9H96.9V21.0Q96.9 11.5 101.95 7.149999999999999Q107.0 2.799999999999997 117.8 2.799999999999997V12.299999999999997Q112.6 12.299999999999997 110.5 14.249999999999996Q108.4 16.199999999999996 108.4 21.0V24.9H118.6Z M281.0 47.5V80.0H269.7V49.2Q269.7 41.8 266.0 37.849999999999994Q262.3 33.9 255.9 33.9Q249.5 33.9 245.75 37.849999999999994Q242.0 41.8 242.0 49.2V80.0H230.6V24.9H242.0V31.199999999999996Q244.8 27.799999999999997 249.15 25.9Q253.5 24.0 258.4 24.0Q264.9 24.0 270.04999999999995 26.7Q275.2 29.4 278.1 34.7Q281.0 40.0 281.0 47.5Z M315.8 24.0Q321.2 24.0 326.45 26.349999999999998Q331.7 28.699999999999996 334.8 32.599999999999994V6.0H346.3V80.0H334.8V71.7Q332.0 75.7 327.05 78.30000000000001Q322.1 80.9 315.7 80.9Q308.5 80.9 302.55 77.25Q296.6 73.6 293.15 67.05Q289.7 60.5 289.7 52.2Q289.7 43.9 293.15 37.5Q296.6 31.099999999999994 302.55 27.549999999999997Q308.5 24.0 315.8 24.0ZM318.1 33.9Q313.7 33.9 309.9 36.05Q306.1 38.199999999999996 303.75 42.349999999999994Q301.4 46.5 301.4 52.2Q301.4 57.9 303.75 62.2Q306.1 66.5 309.95000000000005 68.75Q313.8 71.0 318.1 71.0Q322.5 71.0 326.3 68.8Q330.1 66.6 332.45000000000005 62.349999999999994Q334.8 58.099999999999994 334.8 52.4Q334.8 46.699999999999996 332.45000000000005 42.5Q330.1 38.3 326.3 36.099999999999994Q322.5 33.9 318.1 33.9Z"/><path class="a" d="M168.60000000000002 65.8H139.5L134.5 80.0H122.60000000000001L147.5 10.399999999999991H160.7L185.60000000000002 80.0H173.60000000000002ZM165.4 56.5 154.1 24.199999999999996 142.7 56.5Z M188.40 80.00H222.60V72.16H212.62V18.34H222.60V10.50H188.40V18.34H198.38V72.16H188.40Z"/></svg></p>
+    <div class="links"><a href="../app/">Demo</a><a href="../setup/">Set up</a><a href="../story/">Story</a><a href="brand/">Brand</a><a href="system/">Design system</a><a href="https://github.com/joselblas/jobops-kit">GitHub</a><a href="https://joselblas.com">Built by Jose L. Blas</a></div>
     <p class="fine">Open source, MIT licence. Made by a product designer during a real search. This page is a design board and the product is in active development. The demo uses fictional data.</p>
   </div>
 </footer>

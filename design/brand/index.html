@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fAInd brand</title>
+<meta name="description" content="The fAInd name, wordmark, colour, voice and ready-to-use text and images.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="fAInd brand">
+<meta property="og:description" content="The fAInd name, wordmark, colour, voice and ready-to-use text and images.">
+<meta property="og:image" content="https://joselblas.github.io/jobops-kit/design/brand/assets/og-card-1200x630.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../app/style.css">
+<style>
+body { font-size: 16px; }
+.ds-skip { position: absolute; left: 12px; top: -60px; background: var(--accent); color: var(--on-accent); padding: 10px 16px; border-radius: var(--r-pill); z-index: 50; }
+.ds-skip:focus { top: 12px; }
+.ds-bar { position: sticky; top: 0; z-index: 10; display: flex; gap: var(--s-4); align-items: center; justify-content: space-between; flex-wrap: wrap; padding: var(--s-3) var(--gutter); background: var(--surface); border-bottom: 1px solid var(--line); }
+.ds-bar nav { display: flex; gap: var(--s-4); flex-wrap: wrap; }
+.ds-bar a { color: var(--ink-muted); text-decoration: none; font-size: 14px; }
+.ds-bar a:hover { color: var(--ink); text-decoration: underline; }
+.ds-wrap { width: min(1080px, 100% - 2 * var(--gutter)); margin-inline: auto; padding-bottom: var(--s-8); }
+.ds-hero { padding: var(--s-7) 0 var(--s-5); }
+.ds-hero h1 { max-width: 16ch; }
+.ds-hero p { font-size: 20px; color: var(--ink-muted); max-width: 52ch; margin-top: var(--s-4); }
+.ds-sec { padding-top: var(--s-7); }
+.ds-sec > h2 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); margin-bottom: var(--s-2); }
+.ds-sec > .lead { color: var(--ink-muted); max-width: 62ch; margin-bottom: var(--s-5); }
+.ds-principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--s-4); list-style: none; padding: 0; margin: 0; }
+.ds-principles li { background: var(--surface-raised); box-shadow: var(--shadow); border-radius: var(--r-md); padding: var(--s-5); }
+.ds-principles h3 { font-size: 20px; margin-bottom: var(--s-2); }
+.ds-principles p { color: var(--ink-muted); font-size: 14px; }
+.ds-swatches { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--s-4); }
+.ds-swatches li { display: flex; gap: var(--s-3); align-items: flex-start; font-size: 13px; }
+.ds-sw { width: 44px; height: 44px; border-radius: var(--r-sm); border: 1px solid var(--line-strong); flex: none; }
+table.ds-t { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--surface-raised); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow); }
+.ds-t th, .ds-t td { text-align: left; padding: 10px var(--s-4); border-bottom: 1px solid var(--line); }
+.ds-t th { font-weight: 500; color: var(--ink-muted); font-size: 13px; }
+.ds-pass { font-weight: 600; }
+.ds-type { display: grid; gap: var(--s-4); }
+.ds-type > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: var(--s-4); align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: var(--s-3); }
+.ds-type code { color: var(--ink-muted); font-size: 12px; }
+.ds-scale { display: grid; gap: var(--s-2); }
+.ds-scale > div { display: grid; grid-template-columns: 110px 60px minmax(0, 1fr); gap: var(--s-3); align-items: center; font-size: 13px; }
+.ds-scale i { display: block; max-width: 100%; height: 14px; background: var(--accent); border-radius: 3px; }
+.ds-radii { display: flex; gap: var(--s-5); flex-wrap: wrap; }
+.ds-radii div { width: 120px; height: 84px; background: var(--surface-raised); box-shadow: var(--shadow); display: grid; place-items: center; font-size: 13px; text-align: center; }
+.ds-comp { margin-top: var(--s-6); padding: var(--s-5); background: var(--surface-sunken); border-radius: var(--r-md); }
+.ds-comp-head { margin-bottom: var(--s-4); }
+.ds-comp-head h3 { font-size: 24px; }
+.ds-comp-head p { color: var(--ink-muted); max-width: 64ch; margin-top: 4px; }
+.ds-demo { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); padding: var(--s-5); display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: flex-start; }
+.ds-demo > .callout, .ds-demo > .field, .ds-demo > .kpis, .ds-demo > .chk, .ds-demo > .proof-empty, .ds-demo > .chips, .ds-demo > .seg { flex: 1 1 100%; }
+.ds-demo .more-menu { position: static; margin-top: 6px; }
+.ds-demo details.more { position: static; }
+.ds-code { margin-top: var(--s-3); }
+.ds-code summary { cursor: pointer; font-size: 14px; color: var(--ink-muted); }
+.ds-code pre { overflow-x: auto; background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--r-sm); padding: var(--s-4); font-size: 12.5px; line-height: 1.5; }
+.ds-a11y { margin-top: var(--s-3); font-size: 14px; color: var(--ink-muted); max-width: 70ch; }
+@media (max-width: 560px) { .ds-type > div { grid-template-columns: minmax(0, 1fr); gap: 4px; } .ds-scale > div { grid-template-columns: 70px 50px minmax(0, 1fr); } .ds-demo { padding: var(--s-4); } .ds-comp { padding: var(--s-4); } }
+footer.ds-foot { padding: var(--s-6) var(--gutter); color: var(--ink-muted); font-size: 13px; }
+
+/* fAInd wordmark: colours come from tokens, so it follows the theme */
+:root { --gold: #D6AA58; --wm-ai: #477A91; --wm-disc: #477A91; }
+:root[data-theme="dark"] { --wm-ai: #D6AA58; --wm-disc: #A9CDD4; }
+.wm { display: inline-block; height: 30px; width: auto; vertical-align: middle; }
+.wm .i { fill: var(--ink); } .wm .a { fill: var(--wm-ai); } .wm .d { fill: var(--wm-disc); } .wm .o { fill: var(--gold); }
+.pill .wm { height: 24px; } .center .wm { height: 38px; }
+
+.ds-lock { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s-4); }
+.ds-lock > figure { margin: 0; border-radius: var(--r-md); padding: var(--s-6) var(--s-5); display: grid; gap: var(--s-3); justify-items: start; border: 1px solid var(--line); }
+.ds-lock figcaption { font-size: 13px; opacity: .85; }
+.ds-lock img { height: 64px; width: auto; max-width: 100%; }
+.lk-l { background: #E1EBF0; color: #17313E; } .lk-d { background: #0F2029; color: #E1EBF0; } .lk-i { background: #17313E; color: #fff; }
+.bp { background: var(--surface-raised); box-shadow: var(--shadow); border-radius: var(--r-md); padding: var(--s-5); }
+.bp + .bp { margin-top: var(--s-4); }
+.bp h3 { font-size: 18px; margin-bottom: var(--s-2); }
+.bp-t { font-size: 16px; max-width: 68ch; }
+.ds-assets { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--s-4); }
+.ds-assets li { background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--s-4); display: grid; gap: var(--s-2); }
+.ds-assets .th { background: #E1EBF0; border-radius: var(--r-sm); height: 110px; display: grid; place-items: center; overflow: hidden; }
+.ds-assets .th img { max-width: 90%; max-height: 90px; }
+.ds-assets a { color: var(--accent); }
+.say { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--s-4); }
+.say > div { background: var(--surface-raised); box-shadow: var(--shadow); border-radius: var(--r-md); padding: var(--s-5); }
+.say h3 { font-size: 16px; margin-bottom: var(--s-3); }
+.say p + p { margin-top: var(--s-2); }
+.say .no { color: var(--ink-muted); text-decoration: line-through; }
+.pal { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--s-3); list-style: none; padding: 0; margin: 0; }
+.pal li { border-radius: var(--r-md); padding: var(--s-4); min-height: 130px; display: flex; flex-direction: column; justify-content: flex-end; font-size: 13px; }
+.pal b { font-size: 14px; }
+</style>
+</head>
+<body>
+<a class="ds-skip" href="#main">Skip to content</a>
+<header class="ds-bar">
+  <a class="brand" href="../../app/index.html" style="padding:0"><svg class="wm" viewBox="0 0 358 110" role="img" aria-label="find"><circle class="d" cx="38" cy="54" r="34"/><circle class="o" cx="38" cy="54" r="13"/><path class="i" d="M118.6 34.199999999999996H108.4V80.0H96.9V34.199999999999996H90.4V24.9H96.9V21.0Q96.9 11.5 101.95 7.149999999999999Q107.0 2.799999999999997 117.8 2.799999999999997V12.299999999999997Q112.6 12.299999999999997 110.5 14.249999999999996Q108.4 16.199999999999996 108.4 21.0V24.9H118.6Z M281.0 47.5V80.0H269.7V49.2Q269.7 41.8 266.0 37.849999999999994Q262.3 33.9 255.9 33.9Q249.5 33.9 245.75 37.849999999999994Q242.0 41.8 242.0 49.2V80.0H230.6V24.9H242.0V31.199999999999996Q244.8 27.799999999999997 249.15 25.9Q253.5 24.0 258.4 24.0Q264.9 24.0 270.04999999999995 26.7Q275.2 29.4 278.1 34.7Q281.0 40.0 281.0 47.5Z M315.8 24.0Q321.2 24.0 326.45 26.349999999999998Q331.7 28.699999999999996 334.8 32.599999999999994V6.0H346.3V80.0H334.8V71.7Q332.0 75.7 327.05 78.30000000000001Q322.1 80.9 315.7 80.9Q308.5 80.9 302.55 77.25Q296.6 73.6 293.15 67.05Q289.7 60.5 289.7 52.2Q289.7 43.9 293.15 37.5Q296.6 31.099999999999994 302.55 27.549999999999997Q308.5 24.0 315.8 24.0ZM318.1 33.9Q313.7 33.9 309.9 36.05Q306.1 38.199999999999996 303.75 42.349999999999994Q301.4 46.5 301.4 52.2Q301.4 57.9 303.75 62.2Q306.1 66.5 309.95000000000005 68.75Q313.8 71.0 318.1 71.0Q322.5 71.0 326.3 68.8Q330.1 66.6 332.45000000000005 62.349999999999994Q334.8 58.099999999999994 334.8 52.4Q334.8 46.699999999999996 332.45000000000005 42.5Q330.1 38.3 326.3 36.099999999999994Q322.5 33.9 318.1 33.9Z"/><path class="a" d="M168.60000000000002 65.8H139.5L134.5 80.0H122.60000000000001L147.5 10.399999999999991H160.7L185.60000000000002 80.0H173.60000000000002ZM165.4 56.5 154.1 24.199999999999996 142.7 56.5Z M188.40 80.00H222.60V72.16H212.62V18.34H222.60V10.50H188.40V18.34H198.38V72.16H188.40Z"/></svg></a>
+  <nav aria-label="On this page"><a href="#name">Name</a><a href="#wordmark">Wordmark</a><a href="#colour">Colour</a><a href="#voice">Voice</a><a href="#words">Words to use</a><a href="#assets">Downloads</a></nav>
+  <div class="seg" role="group" aria-label="Theme"><button type="button" data-theme-set="light" aria-pressed="true">Light</button><button type="button" data-theme-set="dark" aria-pressed="false">Dark</button></div>
+</header>
+<main id="main" tabindex="-1" class="ds-wrap">
+  <div class="ds-hero">
+    <p class="eyebrow">Brand</p>
+    <h1>Find a job. Keep your head.</h1>
+    <p>How fAInd is named, drawn and spoken, with the text and images ready to use on a profile, a site or a post.</p>
+  </div>
+
+  <section class="ds-sec" id="name" aria-labelledby="h-n"><h2 id="h-n">The name</h2>
+    <p class="lead">Say it "find". The AI is written into the word, quietly, and is not the headline.</p>
+    <div class="say">
+      <div><h3>Write it like this</h3><p>fAInd, with a lower case f and n d, and a capital A and I.</p><p>The first time on a page, add what it is: "fAInd, the open job search kit".</p></div>
+      <div><h3>Not like this</h3><p class="no">FAIND, Faind, faind, Find.ai</p><p>Capitals in the middle of a word are read letter by letter by some screen readers. That is why the wordmark carries the text "find" for assistive tech.</p></div>
+      <div><h3>What stays as it is</h3><p>The repository, the file names and the skills keep their technical names (<code>jobops-kit</code>, <code>jobops-start</code> and the others), so nothing you installed breaks.</p></div>
+    </div>
+  </section>
+
+  <section class="ds-sec" id="wordmark" aria-labelledby="h-w"><h2 id="h-w">Wordmark</h2>
+    <p class="lead">A round mark and the name. The AI is set in the accent colour. The I has serifs on purpose: in a plain sans, a capital I looks like a lower case l and the name reads "fAlnd".</p>
+    <div class="ds-lock">
+      <figure class="lk-l"><img src="assets/wordmark-light.svg" alt="fAInd wordmark on a light background"><figcaption>On mist blue or white</figcaption></figure>
+      <figure class="lk-d"><img src="assets/wordmark-dark.svg" alt="fAInd wordmark on a dark background"><figcaption>On night blue</figcaption></figure>
+      <figure class="lk-i"><img src="assets/wordmark-onink.svg" alt="fAInd wordmark on deep ink blue"><figcaption>On deep ink blue, for banners</figcaption></figure>
+    </div>
+    <div class="say" style="margin-top:var(--s-5)">
+      <div><h3>Space and size</h3><p>Keep clear space around the wordmark equal to the height of the mark's inner dot, times three. The wordmark is never smaller than 96 px wide. The mark alone is never smaller than 16 px.</p></div>
+      <div><h3>Do</h3><p>Use the supplied files. Use the light version on light, the dark version on dark. Keep the gold only on dark or as the small dot.</p></div>
+      <div><h3>Do not</h3><p>Do not retype it in a font. Do not put the gold AI on a light background, it fails contrast. Do not stretch, outline, shadow or recolour it.</p></div>
+    </div>
+  </section>
+
+  <section class="ds-sec" id="colour" aria-labelledby="h-c"><h2 id="h-c">Colour</h2>
+    <p class="lead">Six colours, taken from a palette of mist, teal, steel and gold. Gold is an accent. It is never used for small text on a light background.</p>
+    <ul class="pal">
+      <li style="background:#E1EBF0;color:#17313E"><b>Mist</b>#E1EBF0<br>Light surface</li>
+      <li style="background:#A9CDD4;color:#17313E"><b>Teal</b>#A9CDD4<br>Soft fills, dark mark</li>
+      <li style="background:#477A91;color:#fff"><b>Steel</b>#477A91<br>Mark, secondary</li>
+      <li style="background:#2E5C72;color:#fff"><b>Deep steel</b>#2E5C72<br>Buttons, links</li>
+      <li style="background:#17313E;color:#fff"><b>Ink</b>#17313E<br>Text</li>
+      <li style="background:#D6AA58;color:#17313E"><b>Gold</b>#D6AA58<br>The AI, the dot</li>
+    </ul>
+    <p class="muted" style="margin-top:var(--s-3)">The product tokens, with live contrast checks, are on the <a href="../system/">design system page</a>.</p>
+  </section>
+
+  <section class="ds-sec" id="voice" aria-labelledby="h-v"><h2 id="h-v">Voice</h2>
+    <p class="lead">Dry wit and a stoic backbone. Say the number, what it means, and one line worth keeping. Never "don't worry".</p>
+    <div class="say">
+      <div><h3>Sounds like fAInd</h3><p>A rejection is mail. Not a verdict.</p><p>26 applications is a small sample. Treat every comparison as a hint, not a result.</p></div>
+      <div><h3>Does not</h3><p class="no">Don't worry, the right role is out there!</p><p class="no">Supercharge your career with AI.</p></div>
+      <div><h3>Plain words</h3><p>Short sentences. No hype words. Numbers with their label. Write for someone who reads English as a second language.</p></div>
+    </div>
+  </section>
+
+  <section class="ds-sec" id="words" aria-labelledby="h-t"><h2 id="h-t">Words to use</h2>
+    <p class="lead">Copy and paste. Each one is true of the product today.</p>
+    <div class="bp"><h3>One line</h3><p class="bp-t" id="bp-39356">fAInd is an open-source job search kit. It keeps an honest record, shows your real odds, and keeps your files on your computer.</p></div><div class="bp"><h3>Short description</h3><p class="bp-t" id="bp-57499">fAInd helps you run a calm, honest job search with Claude. Everything is plain text, the dashboard runs in your browser, and your files stay yours.</p></div><div class="bp"><h3>Bio for LinkedIn, X and GitHub</h3><p class="bp-t" id="bp-56973">Open-source job search kit for Claude. Honest numbers, plain-text context, your files on your computer. Built by a UX designer during a real search.</p></div><div class="bp"><h3>Repository description</h3><p class="bp-t" id="bp-52601">fAInd: a calm, honest job search kit for Claude. Plain-text context, local dashboard, nothing uploaded by the dashboard.</p></div><div class="bp"><h3>Tagline</h3><p class="bp-t" id="bp-37357">Find a job. Keep your head.</p></div>
+  </section>
+
+  <section class="ds-sec" id="assets" aria-labelledby="h-a"><h2 id="h-a">Downloads</h2>
+    <p class="lead">The wordmark is drawn as outlines, so it looks the same everywhere without any font. Right click and save, or use the links.</p>
+    <ul class="ds-assets">
+      <li><div class="th"><img src="assets/wordmark-light.svg" alt=""></div><a href="assets/wordmark-light.svg" download>wordmark-light.svg</a><span class="muted">Wordmark with mark, for light backgrounds</span></li><li><div class="th"><img src="assets/wordmark-dark.svg" alt=""></div><a href="assets/wordmark-dark.svg" download>wordmark-dark.svg</a><span class="muted">Wordmark with mark, for dark backgrounds</span></li><li><div class="th"><img src="assets/wordmark-onink.svg" alt=""></div><a href="assets/wordmark-onink.svg" download>wordmark-onink.svg</a><span class="muted">Wordmark with mark, for deep night blue</span></li><li><div class="th"><img src="assets/wordmark-text-light.svg" alt=""></div><a href="assets/wordmark-text-light.svg" download>wordmark-text-light.svg</a><span class="muted">Wordmark without the mark, light</span></li><li><div class="th"><img src="assets/wordmark-text-dark.svg" alt=""></div><a href="assets/wordmark-text-dark.svg" download>wordmark-text-dark.svg</a><span class="muted">Wordmark without the mark, dark</span></li><li><div class="th"><img src="assets/mark.svg" alt=""></div><a href="assets/mark.svg" download>mark.svg</a><span class="muted">The mark on its own</span></li><li><div class="th"><img src="assets/favicon.svg" alt=""></div><a href="assets/favicon.svg" download>favicon.svg</a><span class="muted">Favicon, follows the system theme</span></li><li><div class="th"><img src="assets/avatar-512.png" alt=""></div><a href="assets/avatar-512.png" download>avatar-512.png</a><span class="muted">Profile picture, 512 px</span></li><li><div class="th"><img src="assets/og-card-1200x630.png" alt=""></div><a href="assets/og-card-1200x630.png" download>og-card-1200x630.png</a><span class="muted">Share card for links, 1200 by 630</span></li><li><div class="th"><img src="assets/linkedin-banner-1584x396.png" alt=""></div><a href="assets/linkedin-banner-1584x396.png" download>linkedin-banner-1584x396.png</a><span class="muted">LinkedIn banner, 1584 by 396</span></li>
+    </ul>
+  </section>
+</main>
+<footer class="ds-foot">Part of <a href="https://github.com/joselblas/jobops-kit">jobops-kit</a>. <a href="../">Design and story</a> · <a href="../system/">Design system</a></footer>
+<script>
+(function () {
+  var root = document.documentElement;
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-theme-set]"); if (!b) return;
+    root.dataset.theme = b.dataset.themeSet; try { localStorage.setItem("jo.theme", b.dataset.themeSet); } catch (x) {}
+    document.querySelectorAll("[data-theme-set]").forEach(function (y) { y.setAttribute("aria-pressed", String(y === b)); });
+  });
+  try { var sv = localStorage.getItem("jo.theme"); if (sv === "dark" || sv === "light") { root.dataset.theme = sv; document.querySelectorAll("[data-theme-set]").forEach(function (y) { y.setAttribute("aria-pressed", String(y.dataset.themeSet === sv)); }); } } catch (x) {}
+})();
+</script>
+</body>
+</html>

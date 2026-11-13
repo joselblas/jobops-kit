@@ -1,4 +1,8 @@
-# Job Ops for Claude
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="design/brand/assets/wordmark-dark.svg"><img src="design/brand/assets/wordmark-light.svg" alt="fAInd" height="64"></picture></p>
+
+# fAInd: the open job search kit for Claude
+
+*Find a job. Keep your head.* Say it "find". The repository and the skills keep the technical name `jobops-kit`.
 
 A calm, careful way to run a remote job search with Claude. **Everything is context, written as text.** You stay in control of everything that leaves your hands.
 
@@ -10,7 +14,7 @@ In my own search so far (3 August to 12 November 2026): 148 listings logged, 27 
 
 Built by [Jose L. Blas](https://joselblas.com), a product designer, during a real search for remote roles from Spain. No framework, no server, no telemetry in the dashboard.
 
-**[Set it up in 15 minutes](https://joselblas.github.io/jobops-kit/setup/)** ([text version](docs/setup.md)) · [Live demo](https://joselblas.github.io/jobops-kit/app/) · [Design and story](https://joselblas.github.io/jobops-kit/design/) · [Design system](docs/design-system.md) · [Privacy](docs/privacy.md)
+**[Set it up in 15 minutes](https://joselblas.github.io/jobops-kit/setup/)** ([text version](docs/setup.md)) · [Live demo](https://joselblas.github.io/jobops-kit/app/) · [Design and story](https://joselblas.github.io/jobops-kit/design/) · [Design system](docs/design-system.md) · [Brand](docs/brand.md) · [Privacy](docs/privacy.md)
 
 ![Overview](docs/screenshots/overview-light.png)
 

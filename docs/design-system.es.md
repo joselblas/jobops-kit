@@ -1,6 +1,6 @@
 # Design system
 
-Los tokens y componentes detrás del panel. La versión en vivo está en [design/system/](https://joselblas.github.io/jobops-kit/design/system/) (en inglés). Usa la hoja de estilos real (`app/style.css`), así que la página y el producto no pueden separarse.
+Los tokens y componentes detrás del panel de fAInd. La versión en vivo está en [design/system/](https://joselblas.github.io/jobops-kit/design/system/) (en inglés). Usa la hoja de estilos real (`app/style.css`), así que la página y el producto no pueden separarse.
 
 ## Principios
 
@@ -26,11 +26,13 @@ Todos los tokens son propiedades CSS en `:root`, con un conjunto oscuro bajo `[d
 | Movimiento | `--dur-1` 120 ms, `--dur-2` 250 ms, `--ease` |
 | Áreas táctiles | `--target` 40 px |
 
+La paleta es bruma, teal, acero y dorado (ver [marca](brand.es.md)). En el tema claro el color de acción es un acero profundo, `#2E5C72`. En el oscuro es dorado, `#D6AA58`, con texto oscuro encima. El dorado nunca se usa para texto pequeño sobre fondo claro, porque ahí solo llega a 2,15 a 1.
+
 Los tokens de escala (espacio, tipografía, movimiento) son nuevos. Las reglas existentes los adoptan poco a poco, así que algunos valores antiguos siguen siendo números literales.
 
 ### Contraste
 
-Los pares de texto necesitan 4,5 a 1 y los bordes de controles 3 a 1. La página de diseño calcula cada par en vivo en los dos temas. Hoy todos pasan; el par de texto más bajo es 4,96 a 1 (acento sobre su fondo suave, tema claro) y el borde más bajo es 3,58 a 1.
+Los pares de texto necesitan 4,5 a 1 y los bordes de controles 3 a 1. La página de diseño calcula cada par en vivo en los dos temas. Hoy todos pasan; el par de texto más bajo es 5,06 a 1 (texto terciario sobre el fondo de página, tema claro) y el borde más bajo es 3,44 a 1.
 
 ## Componentes
 

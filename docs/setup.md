@@ -1,4 +1,4 @@
-# Set up JobOps in 15 minutes
+# Set up fAInd in 15 minutes
 
 Spanish version: [setup.es.md](setup.es.md). An illustrated version is at https://joselblas.github.io/jobops-kit/setup/.
 

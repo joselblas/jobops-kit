@@ -2,7 +2,7 @@
 
 Versión en inglés: [privacy.md](privacy.md).
 
-**Resumen.** JobOps tiene dos capas y funcionan de forma distinta. El panel y tus archivos son locales. El asistente es Claude, así que lo que le des lo procesa Claude según los ajustes de tu cuenta. Tú decides qué le das.
+**Resumen.** fAInd tiene dos capas y funcionan de forma distinta. El panel y tus archivos son locales. El asistente es Claude, así que lo que le des lo procesa Claude según los ajustes de tu cuenta. Tú decides qué le das.
 
 ## Capa 1: en tu ordenador
 
@@ -60,7 +60,7 @@ Son reglas de `AGENTS.md`, no suposiciones sobre su comportamiento:
 - Usa solo los scripts. Igual.
 - Usa Claude Code con tus archivos en disco. Los archivos se quedan en tu ordenador, pero las partes que Claude lee se envían a Claude para procesarlas.
 
-No hay manera de usar un asistente de IA sin enviarle el texto con el que trabaja. JobOps lo reduce al mínimo y te dice dónde está la línea.
+No hay manera de usar un asistente de IA sin enviarle el texto con el que trabaja. fAInd lo reduce al mínimo y te dice dónde está la línea.
 
 ## Antes de publicar un fork
 

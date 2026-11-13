@@ -2,7 +2,7 @@
 
 Spanish version: [privacy.es.md](privacy.es.md).
 
-**Short version.** JobOps has two layers, and they work differently. The dashboard and your files are local. The assistant is Claude, so whatever you give it is processed by Claude under your account's settings. You decide what to give it.
+**Short version.** fAInd has two layers, and they work differently. The dashboard and your files are local. The assistant is Claude, so whatever you give it is processed by Claude under your account's settings. You decide what to give it.
 
 ## Layer 1: on your computer
 
@@ -60,7 +60,7 @@ These are rules in `AGENTS.md`, not guesses about behaviour:
 - Use the scripts alone. Same.
 - Use Claude Code with your files on disk. The files stay on your computer, but the parts Claude reads are still sent to Claude to be processed.
 
-There is no way to use an AI assistant without sending it the text it works on. JobOps keeps that to the minimum, and tells you where the line is.
+There is no way to use an AI assistant without sending it the text it works on. fAInd keeps that to the minimum, and tells you where the line is.
 
 ## Before you publish a fork
 

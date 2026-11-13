@@ -1,6 +1,6 @@
 # Design system
 
-The tokens and components behind the dashboard. The live version is [design/system/](https://joselblas.github.io/jobops-kit/design/system/). It uses the real stylesheet (`app/style.css`), so the page and the product cannot drift apart.
+The tokens and components behind the fAInd dashboard. The live version is [design/system/](https://joselblas.github.io/jobops-kit/design/system/). It uses the real stylesheet (`app/style.css`), so the page and the product cannot drift apart.
 
 ## Principles
 
@@ -26,11 +26,13 @@ All tokens are CSS custom properties in `:root`, with a dark set under `[data-th
 | Motion | `--dur-1` 120 ms, `--dur-2` 250 ms, `--ease` |
 | Targets | `--target` 40 px |
 
+The palette is mist, teal, steel and gold (see [brand](brand.md)). In the light theme the action colour is a deep steel, `#2E5C72`. In the dark theme it is gold, `#D6AA58`, with dark text on it. Gold is never used for small text on a light background, because it only reaches 2.15 to 1 there.
+
 The scale tokens (space, type, motion) are new. Existing rules adopt them gradually, so some older values are still literal numbers.
 
 ### Contrast
 
-Text pairs need 4.5 to 1 and control borders 3 to 1. The design page computes every pair live in both themes. At the time of writing all pairs pass; the lowest text pair is 4.96 to 1 (accent on its soft fill, light theme) and the lowest border is 3.58 to 1.
+Text pairs need 4.5 to 1 and control borders 3 to 1. The design page computes every pair live in both themes. At the time of writing all pairs pass; the lowest text pair is 5.06 to 1 (tertiary text on the page background, light theme) and the lowest border is 3.44 to 1.
 
 ## Components
 

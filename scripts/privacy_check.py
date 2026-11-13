@@ -48,7 +48,9 @@ def main():
                 if not any(ok in m for ok in OK_EMAIL):
                     found.append("email " + m)
             if "SAMPLE_CSV" not in line:
-                for m in PHONE.findall(line):
+                # drawing data (SVG paths, points, viewBox) is long runs of numbers, not phone numbers
+                scan = re.sub(r'\b(?:d|points|viewBox)="[^"]*"', "", line)
+                for m in PHONE.findall(scan):
                     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", m.strip()):
                         found.append("number " + m.strip())
             low = line.lower()

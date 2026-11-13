@@ -1,4 +1,4 @@
-# Test the JobOps skills
+# Test the fAInd skills
 
 A repeatable check that the core skills (`jobops-screen`, `jobops-craft`, `jobops-apply`, `jobops-review`) follow the rules. All data is fictional. Run it in a fresh Claude Project, not your real one. About 15 minutes.
 

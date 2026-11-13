@@ -1,11 +1,11 @@
 :root {
-  --surface: #f1f2fb; --surface-raised: #ffffff; --surface-sunken: #e6e8f6;
-  --ink: #1a1d3a; --ink-muted: #555a82; --ink-faint: #5c618c;
-  --line: #e0e3f4; --line-strong: #767cae;
-  --accent: #4652d8; --accent-soft: #e4e7ff; --on-accent: #ffffff;
-  --closed: #4a4f7a; --closed-soft: #eceefb;
-  --calm: #0a7075; --calm-soft: #dcf3f3; --aqua: #0d8c92;
-  --shadow: 0 1px 0 rgba(26, 29, 58, .04), 0 10px 30px -12px rgba(46, 52, 120, .25);
+  --surface: #E1EBF0; --surface-raised: #ffffff; --surface-sunken: #D2E1E8;
+  --ink: #17313E; --ink-muted: #4A6574; --ink-faint: #476675;
+  --line: #C8D9E1; --line-strong: #5F8191;
+  --accent: #2E5C72; --accent-soft: #CBE0E8; --on-accent: #ffffff;
+  --closed: #3F5967; --closed-soft: #E9F0F3;
+  --calm: #1D5F6B; --calm-soft: #D3E8EC; --aqua: #477A91;
+  --shadow: 0 1px 0 rgba(23, 49, 62, .04), 0 10px 30px -12px rgba(23, 49, 62, .22);
   --focus: var(--ink);
   --r-sm: 12px; --r-md: 22px; --r-lg: 28px; --r-pill: 999px;
   --display: "Avenir Next", "Century Gothic", Futura, "Trebuchet MS", system-ui, sans-serif;
@@ -13,7 +13,7 @@
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --gutter: clamp(16px, 3vw, 40px);
   --caution: #8a4b00; --caution-soft: #fff1dc;
-  --shadow-pop: 0 12px 32px rgba(20, 24, 60, .14);
+  --shadow-pop: 0 12px 32px rgba(15, 32, 41, .16);
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
   --t-xs: 12px; --t-sm: 13px; --t-base: 15px; --t-md: 18px; --t-lg: 28px;
   --dur-1: 120ms; --dur-2: 250ms; --ease: ease;
@@ -21,12 +21,12 @@
   color-scheme: light;
 }
 :root[data-theme="dark"] {
-  --surface: #11132a; --surface-raised: #1a1d3c; --surface-sunken: #0d0f22;
-  --ink: #e9ebff; --ink-muted: #a0a6d4; --ink-faint: #939acb;
-  --line: #2a2e5a; --line-strong: #6a71ab;
-  --accent: #9aa7ff; --accent-soft: #262b57; --on-accent: #11132a;
-  --closed: #b7bce6; --closed-soft: #161936;
-  --calm: #6fe3e1; --calm-soft: #12363a; --aqua: #6fe3e1;
+  --surface: #0F2029; --surface-raised: #16303C; --surface-sunken: #0B171E;
+  --ink: #E1EBF0; --ink-muted: #A9BEC8; --ink-faint: #93AAB6;
+  --line: #244757; --line-strong: #5F8697;
+  --accent: #D6AA58; --accent-soft: #20404E; --on-accent: #0F2029;
+  --closed: #B3C7D1; --closed-soft: #12262F;
+  --calm: #A9CDD4; --calm-soft: #14323A; --aqua: #A9CDD4;
   --shadow: 0 10px 30px -14px rgba(0, 0, 0, .7);
   --caution: #ffc875; --caution-soft: #3a2a10;
   --shadow-pop: 0 12px 32px rgba(0, 0, 0, .55);
@@ -447,3 +447,10 @@ li.b-row { position: relative; }
 @media (prefers-reduced-motion: no-preference) {
   .btn, .chip, .tag { transition: background-color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
 }
+
+/* fAInd wordmark: colours come from tokens, so it follows the theme */
+:root { --gold: #D6AA58; --wm-ai: #477A91; --wm-disc: #477A91; }
+:root[data-theme="dark"] { --wm-ai: #D6AA58; --wm-disc: #A9CDD4; }
+.wm { display: inline-block; height: 30px; width: auto; vertical-align: middle; }
+.wm .i { fill: var(--ink); } .wm .a { fill: var(--wm-ai); } .wm .d { fill: var(--wm-disc); } .wm .o { fill: var(--gold); }
+.brand .wm { height: 32px; }

@@ -45,11 +45,15 @@ The dashboard and the site pages (setup, story, design) are checked against WCAG
 | No skip link, and focus stayed behind after changing page | Added, and focus now moves to the page title |
 | A small optional-file note in the folder card was too faint | Full-strength text |
 
+## Result (2026-11-13, after the fAInd palette change)
+
+The whole product moved to a new palette (mist, teal, steel and gold). The automated check was run again on the dashboard and on every page, in both themes, and found no violations. Every text colour pair was recomputed: the lowest text pair is 5.06 to 1 and the lowest control border is 3.44 to 1. Gold is used for small text only on dark backgrounds, where it reaches 7.74 to 1.
+
 ## Not tested
 
 - **Screen readers.** The semantics are in place and the accessibility tree reads in a sensible order, but nobody has listened to the pages with VoiceOver, NVDA or JAWS. That needs a person.
 - **Real Windows high contrast.** Forced colors was emulated in Chrome, not run on Windows.
-- **Funnel, gates and sources are read as plain text** by a screen reader (numbers next to labels, no table or list structure). It is understandable, but a definition list would be better.
+- **Funnel, gates and sources** are now real lists (2026-11-13), with the decorative bars hidden and the Sources numbers read as a sentence. Checked in the accessibility tree, not with a real screen reader.
 - **Voice control and switch access.**
 - **Zoom beyond 400 percent**, and Windows forced-colours mode.
 - **Reading order and wording.** Automated tools cannot judge whether the labels make sense. Please tell us if one does not.

@@ -2,27 +2,33 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="../design/brand/assets/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Set up JobOps in 15 minutes</title>
-<meta name="description" content="Step-by-step setup for JobOps: nine single-action steps, each with what you should see. No code needed.">
+<title>Set up fAInd in 15 minutes</title>
+<meta name="description" content="Step-by-step setup for fAInd: nine single-action steps, each with what you should see. No code needed.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Set up fAInd in 15 minutes">
+<meta property="og:description" content="Step-by-step setup for fAInd: nine single-action steps, each with what you should see. No code needed.">
+<meta property="og:image" content="https://joselblas.github.io/jobops-kit/design/brand/assets/og-card-1200x630.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 :root {
-  --surface: #f1f2fb; --raised: #ffffff; --sunken: #e6e8f6;
-  --ink: #1a1d3a; --muted: #555a82; --faint: #626799;
-  --line: #e0e3f4; --accent: #4652d8; --accent-soft: #e4e7ff; --on-accent: #ffffff;
-  --closed: #4a4f7a; --closed-soft: #eceefb; --aqua: #0d8c92;
-  --rust: #a0264f; --rust-soft: #ffe4ec; --calm: #0a7075; --calm-soft: #dcf3f3;
-  --shadow: 0 30px 80px -30px rgba(46,52,120,.35), 0 8px 24px -12px rgba(46,52,120,.18);
+  --surface: #E1EBF0; --raised: #ffffff; --sunken: #D2E1E8;
+  --ink: #17313E; --muted: #4A6574; --faint: #476675;
+  --line: #C8D9E1; --accent: #2E5C72; --accent-soft: #CBE0E8; --on-accent: #ffffff;
+  --closed: #3F5967; --closed-soft: #E9F0F3; --aqua: #477A91;
+  --rust: #a0264f; --rust-soft: #ffe4ec; --calm: #1D5F6B; --calm-soft: #D3E8EC;
+  --shadow: 0 30px 80px -30px rgba(23,49,62,.32), 0 8px 24px -12px rgba(23,49,62,.16);
   --serif: "Avenir Next", "Century Gothic", Futura, "Trebuchet MS", system-ui, sans-serif;
   --sans: ui-sans-serif, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 :root[data-theme="dark"] {
-  --surface: #11132a; --raised: #1a1d3c; --sunken: #0d0f22;
-  --ink: #e9ebff; --muted: #a0a6d4; --faint: #7f86b8;
-  --line: #2a2e5a; --accent: #9aa7ff; --accent-soft: #262b57; --on-accent: #11132a;
-  --closed: #b7bce6; --closed-soft: #161936; --aqua: #6fe3e1;
-  --rust: #ff9db8; --rust-soft: #3a1b2a; --calm: #6fe3e1; --calm-soft: #12363a;
+  --surface: #0F2029; --raised: #16303C; --sunken: #0B171E;
+  --ink: #E1EBF0; --muted: #A9BEC8; --faint: #93AAB6;
+  --line: #244757; --accent: #D6AA58; --accent-soft: #20404E; --on-accent: #0F2029;
+  --closed: #B3C7D1; --closed-soft: #12262F; --aqua: #A9CDD4;
+  --rust: #ff9db8; --rust-soft: #3a1b2a; --calm: #A9CDD4; --calm-soft: #14323A;
   --shadow: 0 30px 90px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.05);
 }
 * { box-sizing: border-box; }
@@ -197,11 +203,18 @@ code { font-family: var(--mono); font-size: .86em; background: var(--sunken); pa
 .skip { position: absolute; left: 16px; top: -64px; z-index: 100; padding: 12px 18px; border-radius: 12px; background: var(--ink); color: var(--surface); font: 600 1rem var(--sans); text-decoration: none; }
 .skip:focus { top: 16px; outline: 3px solid var(--calm); outline-offset: 3px; }
 main:focus { outline: none; }
+
+/* fAInd wordmark: colours come from tokens, so it follows the theme */
+:root { --gold: #D6AA58; --wm-ai: #477A91; --wm-disc: #477A91; }
+:root[data-theme="dark"] { --wm-ai: #D6AA58; --wm-disc: #A9CDD4; }
+.wm { display: inline-block; height: 30px; width: auto; vertical-align: middle; }
+.wm .i { fill: var(--ink); } .wm .a { fill: var(--wm-ai); } .wm .d { fill: var(--wm-disc); } .wm .o { fill: var(--gold); }
+.pill .wm { height: 24px; } .center .wm { height: 38px; }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<nav aria-label="Page"><div class="pill"><b>JobOps</b><a class="hide-s" href="#parts">Parts</a><a class="hide-s" href="#steps">Steps</a><a class="hide-s" href="#rhythm">Weekly</a><a href="../app/">Demo</a><button type="button" id="theme" aria-pressed="false">Dark</button></div></nav>
+<nav aria-label="Page"><div class="pill"><b><svg class="wm" viewBox="0 0 358 110" role="img" aria-label="find"><circle class="d" cx="38" cy="54" r="34"/><circle class="o" cx="38" cy="54" r="13"/><path class="i" d="M118.6 34.199999999999996H108.4V80.0H96.9V34.199999999999996H90.4V24.9H96.9V21.0Q96.9 11.5 101.95 7.149999999999999Q107.0 2.799999999999997 117.8 2.799999999999997V12.299999999999997Q112.6 12.299999999999997 110.5 14.249999999999996Q108.4 16.199999999999996 108.4 21.0V24.9H118.6Z M281.0 47.5V80.0H269.7V49.2Q269.7 41.8 266.0 37.849999999999994Q262.3 33.9 255.9 33.9Q249.5 33.9 245.75 37.849999999999994Q242.0 41.8 242.0 49.2V80.0H230.6V24.9H242.0V31.199999999999996Q244.8 27.799999999999997 249.15 25.9Q253.5 24.0 258.4 24.0Q264.9 24.0 270.04999999999995 26.7Q275.2 29.4 278.1 34.7Q281.0 40.0 281.0 47.5Z M315.8 24.0Q321.2 24.0 326.45 26.349999999999998Q331.7 28.699999999999996 334.8 32.599999999999994V6.0H346.3V80.0H334.8V71.7Q332.0 75.7 327.05 78.30000000000001Q322.1 80.9 315.7 80.9Q308.5 80.9 302.55 77.25Q296.6 73.6 293.15 67.05Q289.7 60.5 289.7 52.2Q289.7 43.9 293.15 37.5Q296.6 31.099999999999994 302.55 27.549999999999997Q308.5 24.0 315.8 24.0ZM318.1 33.9Q313.7 33.9 309.9 36.05Q306.1 38.199999999999996 303.75 42.349999999999994Q301.4 46.5 301.4 52.2Q301.4 57.9 303.75 62.2Q306.1 66.5 309.95000000000005 68.75Q313.8 71.0 318.1 71.0Q322.5 71.0 326.3 68.8Q330.1 66.6 332.45000000000005 62.349999999999994Q334.8 58.099999999999994 334.8 52.4Q334.8 46.699999999999996 332.45000000000005 42.5Q330.1 38.3 326.3 36.099999999999994Q322.5 33.9 318.1 33.9Z"/><path class="a" d="M168.60000000000002 65.8H139.5L134.5 80.0H122.60000000000001L147.5 10.399999999999991H160.7L185.60000000000002 80.0H173.60000000000002ZM165.4 56.5 154.1 24.199999999999996 142.7 56.5Z M188.40 80.00H222.60V72.16H212.62V18.34H222.60V10.50H188.40V18.34H198.38V72.16H188.40Z"/></svg></b><a class="hide-s" href="#parts">Parts</a><a class="hide-s" href="#steps">Steps</a><a class="hide-s" href="#rhythm">Weekly</a><a href="../app/">Demo</a><button type="button" id="theme" aria-pressed="false">Dark</button></div></nav>
 <main id="main" tabindex="-1">
 <header class="hero"><div class="wrap center hero-stage"><div class="glow" aria-hidden="true"></div>
 <p class="eyebrow rv">Setup</p>
@@ -252,7 +265,7 @@ main:focus { outline: none; }
 <div class="fx rv"><b>A listing said remote but is not</b><span>Expected. Gates are checked on the employer's page. Tell Claude. It logs the reason.</span></div>
 </div><div class="steady rv" style="margin-top:34px"><span class="k">Keep it private</span><p class="big">Never commit career-context.md, profile.yml, tracker.csv, cv/ or logs/.</p><p style="margin:0;color:var(--muted);font-size:16px">They are gitignored. Run <code>python3 scripts/privacy_check.py</code> before you publish a fork.</p></div></div></section>
 </main>
-<footer><div class="wrap"><p class="center" style="margin:0;font-family:var(--serif);font-size:1.5rem">JobOps</p>
+<footer><div class="wrap"><p class="center" style="margin:0;font-family:var(--serif);font-size:1.5rem"><svg class="wm" viewBox="0 0 358 110" role="img" aria-label="find"><circle class="d" cx="38" cy="54" r="34"/><circle class="o" cx="38" cy="54" r="13"/><path class="i" d="M118.6 34.199999999999996H108.4V80.0H96.9V34.199999999999996H90.4V24.9H96.9V21.0Q96.9 11.5 101.95 7.149999999999999Q107.0 2.799999999999997 117.8 2.799999999999997V12.299999999999997Q112.6 12.299999999999997 110.5 14.249999999999996Q108.4 16.199999999999996 108.4 21.0V24.9H118.6Z M281.0 47.5V80.0H269.7V49.2Q269.7 41.8 266.0 37.849999999999994Q262.3 33.9 255.9 33.9Q249.5 33.9 245.75 37.849999999999994Q242.0 41.8 242.0 49.2V80.0H230.6V24.9H242.0V31.199999999999996Q244.8 27.799999999999997 249.15 25.9Q253.5 24.0 258.4 24.0Q264.9 24.0 270.04999999999995 26.7Q275.2 29.4 278.1 34.7Q281.0 40.0 281.0 47.5Z M315.8 24.0Q321.2 24.0 326.45 26.349999999999998Q331.7 28.699999999999996 334.8 32.599999999999994V6.0H346.3V80.0H334.8V71.7Q332.0 75.7 327.05 78.30000000000001Q322.1 80.9 315.7 80.9Q308.5 80.9 302.55 77.25Q296.6 73.6 293.15 67.05Q289.7 60.5 289.7 52.2Q289.7 43.9 293.15 37.5Q296.6 31.099999999999994 302.55 27.549999999999997Q308.5 24.0 315.8 24.0ZM318.1 33.9Q313.7 33.9 309.9 36.05Q306.1 38.199999999999996 303.75 42.349999999999994Q301.4 46.5 301.4 52.2Q301.4 57.9 303.75 62.2Q306.1 66.5 309.95000000000005 68.75Q313.8 71.0 318.1 71.0Q322.5 71.0 326.3 68.8Q330.1 66.6 332.45000000000005 62.349999999999994Q334.8 58.099999999999994 334.8 52.4Q334.8 46.699999999999996 332.45000000000005 42.5Q330.1 38.3 326.3 36.099999999999994Q322.5 33.9 318.1 33.9Z"/><path class="a" d="M168.60000000000002 65.8H139.5L134.5 80.0H122.60000000000001L147.5 10.399999999999991H160.7L185.60000000000002 80.0H173.60000000000002ZM165.4 56.5 154.1 24.199999999999996 142.7 56.5Z M188.40 80.00H222.60V72.16H212.62V18.34H222.60V10.50H188.40V18.34H198.38V72.16H188.40Z"/></svg></p>
 <div class="links"><a href="../app/">Demo</a><a href="../design/">Design and story</a><a href="https://github.com/joselblas/jobops-kit">GitHub</a><a href="https://joselblas.com">Built by Jose L. Blas</a></div>
 <p class="fine">Open source, MIT licence. The full text of these steps is in docs/setup.md. Claude never submits, sends or creates accounts for you.</p></div></footer>
 <script>

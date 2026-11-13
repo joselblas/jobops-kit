@@ -1,4 +1,4 @@
-# Configura JobOps en 15 minutos
+# Configura fAInd en 15 minutos
 
 Versión en inglés: [setup.md](setup.md). Hay una versión ilustrada en https://joselblas.github.io/jobops-kit/setup/.
 

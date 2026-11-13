@@ -49,7 +49,7 @@ async def main(url, axe_path, chrome=None, site=None):
                         entry["where"].append(f"{theme}-{lang}-{view}")
         if site:
             # Marketing pages (setup, story, design): landmarks, skip link, 320 px reflow
-            for path in ("setup/index.html", "story/index.html", "story/es/index.html", "design/index.html", "design/system/index.html"):
+            for path in ("setup/index.html", "story/index.html", "story/es/index.html", "design/index.html", "design/system/index.html", "design/brand/index.html"):
                 for scheme in ("light", "dark"):
                     page = await (await browser.new_context(viewport={"width": 1280, "height": 900}, color_scheme=scheme, reduced_motion="reduce")).new_page()
                     await page.goto(site.rstrip("/") + "/" + path)
